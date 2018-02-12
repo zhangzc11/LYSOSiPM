@@ -59,27 +59,60 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::Construct() {
 
 void LYSOSiPMDetectorConstruction::DefineMaterials() {
 
-    G4NistManager *nistManager = G4NistManager::Instance();
+    G4NistManager *nist = G4NistManager::Instance();
     G4bool isotopes = false;
 
-    nistManager->FindOrBuildMaterial("G4_AIR");
+    nist->FindOrBuildMaterial("G4_AIR");
     G4double density = 2.700*g/cm3, a = 26.98*g/mole;
 
-    G4Element*  Al = nistManager->FindOrBuildElement("Al" , isotopes);
+    G4Element*  Al = nist->FindOrBuildElement("Al" , isotopes);
     G4Material* Aluminium = new G4Material("Al", density, 1);
     Aluminium->AddElement(Al, 1);
 
+	G4int ncomponents;
+	G4double prelude_density = 7.4*g/cm3;
+	G4Material* prelude = new G4Material("prelude", prelude_density, ncomponents=4);
+	prelude->AddElement(nist->FindOrBuildElement("Lu"),71*perCent);
+	prelude->AddElement(nist->FindOrBuildElement("Si"),7*perCent);
+	prelude->AddElement(nist->FindOrBuildElement("O"), 18*perCent);
+	prelude->AddElement(nist->FindOrBuildElement("Y"), 4*perCent);
 
-    G4Element*  O = nistManager->FindOrBuildElement("O" , isotopes);
-    G4Element* Si = nistManager->FindOrBuildElement("Si", isotopes);
-    G4Element* Lu = nistManager->FindOrBuildElement("Lu", isotopes);
-    G4Element* Y = nistManager->FindOrBuildElement("Y", isotopes);
+	G4Material* scintillator = new G4Material("scintillator", prelude_density ,ncomponents=2);
+	scintillator->AddMaterial(prelude,99.81*perCent);
+	scintillator->AddElement(nist->FindOrBuildElement("Ce"), 0.19*perCent);
 
-    G4Material* LYSO = new G4Material("LYSO", 7.4*g/cm3, 4);
-    LYSO->AddElement(Lu, 6);
-    LYSO->AddElement(Si, 10);
-    LYSO->AddElement(O , 50);
-    LYSO->AddElement(Y, 14);
+	G4MaterialPropertiesTable *mpt = new G4MaterialPropertiesTable();
+
+	const G4int num = 20;
+	G4double ene[num]   =  {1.79*eV, 1.85*eV, 1.91*eV, 1.97*eV,
+			2.04*eV, 2.11*eV, 2.19*eV, 2.27*eV,
+			2.36*eV, 2.45*eV, 2.56*eV, 2.67*eV,
+			2.80*eV, 2.94*eV, 3.09*eV, 3.25*eV,
+			3.44*eV, 3.65*eV, 3.89*eV, 4.16*eV};
+	G4double fast[num]  =  {0.01, 0.10, 0.20, 0.50,
+			0.90, 1.70, 2.90, 5.00,
+			8.30, 12.5, 17.0, 22.9,
+			26.4, 25.6, 16.8, 4.20,
+			0.30, 0.20, 0.10, 0.01};
+	G4double rLyso[num] =  {1.81, 1.81, 1.81, 1.81,
+			1.81, 1.81, 1.81, 1.81,
+			1.81, 1.81, 1.81, 1.81,
+			1.81, 1.81, 1.81, 1.81,
+			1.81, 1.81, 1.81, 1.81};
+	G4double abs[num]   =  {3.5*m, 3.5*m, 3.5*m, 3.5*m,
+			3.5*m, 3.5*m, 3.5*m, 3.5*m,
+			3.5*m, 3.5*m, 3.5*m, 3.5*m,
+			3.5*m, 3.5*m, 3.5*m, 3.5*m,
+			3.5*m, 3.5*m, 3.5*m, 3.5*m};
+
+	mpt->AddProperty("FASTCOMPONENT", ene, fast, num);
+	mpt->AddProperty("RINDEX", ene, rLyso , num);
+	mpt->AddProperty("ABSLENGTH", ene, abs, num);
+	mpt->AddConstProperty("SCINTILLATIONYIELD",32/keV);
+	mpt->AddConstProperty("RESOLUTIONSCALE", 1);
+	mpt->AddConstProperty("FASTTIMECONSTANT",41*ns);
+	scintillator->SetMaterialPropertiesTable(mpt);
+
 }
 
 
@@ -98,7 +131,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
 
     // Get materials
     G4Material* defaultMaterial = G4Material::GetMaterial("G4_AIR");
-    G4Material* cryst_mat = G4Material::GetMaterial("LYSO");
+    G4Material* cryst_mat = G4Material::GetMaterial("scintillator");
     G4Material* foil_mat = G4Material::GetMaterial("Al");
 
     //

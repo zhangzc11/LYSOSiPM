@@ -33,8 +33,8 @@ LYSOSiPMRunAction::LYSOSiPMRunAction()
     analysisManager->CreateH1("DeltaPhi", "Delta phi", 360, 0., 360*degree);
 
     // Creating ntuple
-    analysisManager->CreateNtuple("LYSOScint", "Edep");
-    analysisManager->CreateNtupleDColumn("EabsC");
+    analysisManager->CreateNtuple("tree", "Edep");
+    analysisManager->CreateNtupleDColumn("Eabs");
     analysisManager->CreateNtupleDColumn("ScatAngle");
     analysisManager->CreateNtupleDColumn("ScatPhi");
     analysisManager->CreateNtupleDColumn("DeltaPhi");
@@ -59,7 +59,7 @@ void LYSOSiPMRunAction::BeginOfRunAction(const G4Run* /*run*/)
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
     // Open an output file
-    G4String fileName = "LysoScatter_3x3x22_ypol_testing";
+    G4String fileName = "LYSOSiPM_out_ntuple";
     analysisManager->OpenFile(fileName);
 }
 

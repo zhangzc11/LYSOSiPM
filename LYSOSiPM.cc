@@ -83,7 +83,7 @@ int main(int argc,char** argv)
   LYSOSiPMDetectorConstruction* detConstruction = new LYSOSiPMDetectorConstruction();
   runManager->SetUserInitialization(detConstruction);
 
-  G4VModularPhysicsList* physicsList = new LYSOSiPMPhysicsList;
+  G4VUserPhysicsList* physicsList = new LYSOSiPMPhysicsList;
   runManager->SetUserInitialization(physicsList);
     
   LYSOSiPMActionInitialization* actionInitialization
