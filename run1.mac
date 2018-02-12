@@ -27,7 +27,8 @@
 
 #10GeV electron
 /gun/particle e-
-/gun/energy 10 GeV
+/gun/energy 1 GeV
+#/gun/position 1.0 0.0 0.0 mm 
 /tracking/verbose 0
 /run/printProgress 5
-/run/beamOn 100
+/run/beamOn 10000
