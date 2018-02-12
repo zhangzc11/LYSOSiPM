@@ -78,8 +78,11 @@ class LYSOSiPMDetectorConstruction : public G4VUserDetectorConstruction
     static G4ThreadLocal G4GlobalMagFieldMessenger*  fMagFieldMessenger;
                                       // magnetic field messenger
     G4VPhysicalVolume*   cAbsorberPV; // the absorber physical volume
+	G4VPhysicalVolume*	 gelPV;
     G4VPhysicalVolume*   cFoilPV;
+    G4VPhysicalVolume*   cFoil2PV;
     G4VPhysicalVolume*   gapPV;      // the gap physical volume
+    //G4VPhysicalVolume*   gap2PV;      // the gap physical volume
 
     G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
 };

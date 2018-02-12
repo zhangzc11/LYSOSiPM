@@ -83,5 +83,10 @@
 
 #to get nice view
 
-/vis/geometry/set/colour Crystal 0 0 0 1 1.0
-/vis/geometry/set/colour foilwrap 0 1 0 0 1.0
+/vis/geometry/set/colour Crystal 0 0 0 1 0.5
+/vis/geometry/set/colour opticalGel 0 1 0 1 0.5
+/vis/geometry/set/colour foilwrap 0 1 0 0 0.0
+/vis/geometry/set/colour foilwrap2 0 1 0 0 0.0
+/vis/viewer/set/style surface
+/vis/viewer/set/hiddenMarker true
+/vis/scene/add/scale
