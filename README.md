@@ -35,8 +35,8 @@ make install
 
 3. then you should be able to use your geant4 by source the following file:
 
-/YourPath/geant4_10_04-install/share/Geant4-10.4.0/geant4make/geant4make.sh
+  /YourPath/geant4_10_04-install/share/Geant4-10.4.0/geant4make/geant4make.sh
 
-Good Luck!
+  Good Luck!
 
 
