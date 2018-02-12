@@ -1,0 +1,57 @@
+# Macro file for LYSOSiPM
+# 
+# Can be run in batch, without graphic
+# or interactively: Idle> /control/execute run1.mac
+#
+# Change the default number of workers (in multi-threading mode) 
+#/run/numberOfWorkers 4
+#
+# Initialize kernel
+/run/initialize
+#
+# Default kinematics: 
+# electron 50 MeV in direction (0.,0.,1.)
+# 1 event with tracking/verbose
+#
+/tracking/verbose 1
+/run/beamOn 1
+#
+#
+# muon 300 MeV in direction (0.,0.,1.)
+# 3 events
+#
+#/gun/particle mu+
+#/gun/energy 3 MeV
+#/run/beamOn 3
+
+#373nm laser light in direction (0.,0.,1.)
+#/gun/particle opticalphoton
+#/gun/energy 3.33 eV
+#/run/beamOn 100
+
+/gun/particle gamma
+/gun/energy 10 GeV
+/run/beamOn 100
+
+#
+# 100 events
+#
+/tracking/verbose 0
+/run/printProgress 5
+/run/beamOn 100
+#
+# Magnetic field
+# 
+/globalField/setValue 0 0 0 tesla
+
+#/run/beamOn 3
+#
+# Activate/inactivate physics processes
+#
+/process/list
+/process/activate emlowenergy
+#/process/inactivate eBrem
+
+#
+/run/beamOn 100
+#
