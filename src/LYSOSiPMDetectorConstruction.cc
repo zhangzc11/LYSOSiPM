@@ -63,7 +63,7 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
     G4NistManager *nist = G4NistManager::Instance();
     G4bool isotopes = false;
 
-    nist->FindOrBuildMaterial("G4_AIR");
+	
 
 	//ALuminium wrap
 	G4double density = 2.700*g/cm3;// a = 26.98*g/mole;
@@ -108,10 +108,22 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 	mpt->AddProperty("FASTCOMPONENT", ene, fast, num);
 	mpt->AddProperty("RINDEX", ene, rLyso , num);
 	mpt->AddProperty("ABSLENGTH", ene, abs, num);
-	mpt->AddConstProperty("SCINTILLATIONYIELD",32/keV);
+	//mpt->AddConstProperty("SCINTILLATIONYIELD",32/keV);
+	mpt->AddConstProperty("SCINTILLATIONYIELD",1/keV);
 	mpt->AddConstProperty("RESOLUTIONSCALE", 1);
 	mpt->AddConstProperty("FASTTIMECONSTANT",41*ns);
 	scintillator->SetMaterialPropertiesTable(mpt);
+
+	//air
+    G4Material* Air  =  nist->FindOrBuildMaterial("G4_AIR");
+	G4double rAir[num] =  {1.00, 1.00, 1.00, 1.00,
+			1.00, 1.00, 1.00, 1.00,
+			1.00, 1.00, 1.00, 1.00,
+			1.00, 1.00, 1.00, 1.00,
+			1.00, 1.00, 1.00, 1.00};
+	G4MaterialPropertiesTable* mptAir = new G4MaterialPropertiesTable();
+	mptAir->AddProperty("RINDEX",ene,rAir,num);
+	Air->SetMaterialPropertiesTable(mptAir);
 
 	//optical grease
 	std::vector<G4int> natoms;
@@ -131,9 +143,15 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 			1.50, 1.50, 1.50, 1.50,
 			1.50, 1.50, 1.50, 1.50,
 			1.50, 1.50, 1.50, 1.50};
+	G4double absGrease[num]   =  {1.00*mm, 1.00*mm, 1.00*mm, 1.00*mm,
+			1.00*mm, 1.00*mm, 1.00*mm, 1.00*mm,
+			1.00*mm, 1.00*mm, 1.00*mm, 1.00*mm,
+			1.00*mm, 1.00*mm, 1.00*mm, 1.00*mm,
+			1.00*mm, 1.00*mm, 1.00*mm, 1.00*mm};
+
 	G4MaterialPropertiesTable* mptSilicone = new G4MaterialPropertiesTable();
 	mptSilicone->AddProperty("RINDEX",ene,rSilicone,num);
-	mptSilicone->AddProperty("ABSLENGTH",ene,abs,num);
+	mptSilicone->AddProperty("ABSLENGTH",ene,absGrease,num);
 	fSilicone->SetMaterialPropertiesTable(mptSilicone);
 
 	//teflon wrap
@@ -282,6 +300,8 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
             fCheckOverlaps);
 	*/
 
+
+	/*
 	//foil
 	G4Box* foilBox = new G4Box("Outerbox", foilOut_dX/2, foilOut_dY/2, foilOut_dZ/2);
     //G4SubtractionSolid* foilS_withgel = new G4SubtractionSolid("Foilwrapping_withgel", foilBox, gapBox);
@@ -323,6 +343,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
             0,
             fCheckOverlaps);
 	
+	*/
 	//
     worldLV->SetVisAttributes(G4VisAttributes::Invisible);
 

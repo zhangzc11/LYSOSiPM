@@ -19,10 +19,10 @@ LYSOSiPMPrimaryGeneratorAction::LYSOSiPMPrimaryGeneratorAction()
   // default particle kinematic
   //
   G4ParticleDefinition* particleDefinition
-          = G4ParticleTable::GetParticleTable()->FindParticle("e-");
+          = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
   fParticleGun->SetParticleDefinition(particleDefinition);
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-  fParticleGun->SetParticleEnergy(10.0*GeV);
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.0));
+  fParticleGun->SetParticleEnergy(100.0*keV);
 }
 
 
