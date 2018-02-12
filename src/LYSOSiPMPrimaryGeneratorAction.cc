@@ -8,7 +8,6 @@
 #include "G4ParticleGun.hh"
 #include "G4SystemOfUnits.hh"
 
-
 LYSOSiPMPrimaryGeneratorAction::LYSOSiPMPrimaryGeneratorAction()
         : G4VUserPrimaryGeneratorAction(),
           fParticleGun(0)
@@ -23,14 +22,13 @@ LYSOSiPMPrimaryGeneratorAction::LYSOSiPMPrimaryGeneratorAction()
   fParticleGun->SetParticleDefinition(particleDefinition);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.0));
   fParticleGun->SetParticleEnergy(100.0*keV);
-  fParticleGun->SetParticlePosition(G4ThreeVector(0.0*mm,0.0*mm,0.0*mm));
+  //fParticleGun->SetParticlePosition(G4ThreeVector(0.0*mm,0.0*mm,0.0*mm)); //this one doesn't work at all
 }
-
 
 
 LYSOSiPMPrimaryGeneratorAction::~LYSOSiPMPrimaryGeneratorAction()
 {
-  delete fParticleGun;
+	delete fParticleGun;
 }
 
 
@@ -61,11 +59,10 @@ void LYSOSiPMPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   }
 
   // Set gun position
-  fParticleGun
-          ->SetParticlePosition(G4ThreeVector(0., 0., -worldZHalfLength));
+  //fParticleGun->SetParticlePosition(G4ThreeVector(2., 0., -worldZHalfLength));
 
   fParticleGun->GeneratePrimaryVertex(anEvent);
-}
 
+ }
 
 

@@ -17,6 +17,7 @@
 # Default kinematics: 
 # electron 50 MeV in direction (0.,0.,1.)
 # 1 event with tracking/verbose
+/gun/position 0.0 0.0 -10.0 mm 
 /tracking/verbose 1
 /run/beamOn 1
 
@@ -28,7 +29,7 @@
 #10GeV electron
 /gun/particle e-
 /gun/energy 1 GeV
-#/gun/position 1.0 0.0 0.0 mm 
+/gun/position 0.0 0.0 -10.0 mm 
 /tracking/verbose 0
 /run/printProgress 5
-/run/beamOn 10000
+/run/beamOn 10

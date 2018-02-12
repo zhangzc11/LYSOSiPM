@@ -26,18 +26,11 @@ LYSOSiPMRunAction::LYSOSiPMRunAction()
 
     // Book histograms, ntuple
 
-    // Creating histograms
-    analysisManager->CreateH1("E", "Energy deposit in LYSO", 200, 0., 10.0*MeV);
-    analysisManager->CreateH1("ScatAngle", "Scattering angle", 4, 0., 360*degree);
-    analysisManager->CreateH1("ScatPhi", "Scattering angle (phi)", 360, 0., 360*degree);
-    analysisManager->CreateH1("DeltaPhi", "Delta phi", 360, 0., 360*degree);
-
     // Creating ntuple
     analysisManager->CreateNtuple("tree", "Edep");
     analysisManager->CreateNtupleDColumn("Eabs");
-    analysisManager->CreateNtupleDColumn("ScatAngle");
-    analysisManager->CreateNtupleDColumn("ScatPhi");
-    analysisManager->CreateNtupleDColumn("DeltaPhi");
+    analysisManager->CreateNtupleDColumn("x");
+    analysisManager->CreateNtupleDColumn("y");
     analysisManager->CreateNtupleDColumn("nPhotons");
     analysisManager->CreateNtupleDColumn("phoTime1");
     analysisManager->CreateNtupleDColumn("phoTime10");
@@ -65,7 +58,7 @@ void LYSOSiPMRunAction::BeginOfRunAction(const G4Run* /*run*/)
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
     // Open an output file
-    G4String fileName = "LYSOSiPM_out_ntuple";
+    G4String fileName = "ntuple";
     analysisManager->OpenFile(fileName);
 }
 

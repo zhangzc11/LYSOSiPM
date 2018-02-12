@@ -1,0 +1,13 @@
+./LYSOSiPM -m run_x0.mac ; mv ntuple.root ntuple_x0.root
+./LYSOSiPM -m run_x1.mac ; mv ntuple.root ntuple_x1.root
+./LYSOSiPM -m run_x2.mac ; mv ntuple.root ntuple_x2.root
+./LYSOSiPM -m run_x3.mac ; mv ntuple.root ntuple_x3.root
+./LYSOSiPM -m run_x4.mac ; mv ntuple.root ntuple_x4.root
+./LYSOSiPM -m run_x5.mac ; mv ntuple.root ntuple_x5.root
+./LYSOSiPM -m run_x6.mac ; mv ntuple.root ntuple_x6.root
+./LYSOSiPM -m run_xm1.mac ; mv ntuple.root ntuple_xm1.root
+./LYSOSiPM -m run_xm2.mac ; mv ntuple.root ntuple_xm2.root
+./LYSOSiPM -m run_xm3.mac ; mv ntuple.root ntuple_xm3.root
+./LYSOSiPM -m run_xm4.mac ; mv ntuple.root ntuple_xm4.root
+./LYSOSiPM -m run_xm5.mac ; mv ntuple.root ntuple_xm5.root
+./LYSOSiPM -m run_xm6.mac ; mv ntuple.root ntuple_xm6.root

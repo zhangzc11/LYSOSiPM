@@ -55,21 +55,16 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 	// get analysis manager
     G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
 
-    // fill histograms
-    if(cEnergyAbs > 0) analysisManager->FillH1(0, cEnergyAbs);
-    if(scattered && recorded) analysisManager->FillH1(1, scatAng);
-    if(scattered) analysisManager->FillH1(2, scatPhi);
-    if(scattered) analysisManager->FillH1(3, deltaPhi);
-
     // fill ntuple
     if(cEnergyAbs > 0) analysisManager->FillNtupleDColumn(0, cEnergyAbs);
-    analysisManager->FillNtupleDColumn(1, scatAng);
-    analysisManager->FillNtupleDColumn(4, allPhoTime->size());
-    analysisManager->FillNtupleDColumn(5, phoTime1);
-    analysisManager->FillNtupleDColumn(6, phoTime10);
-    analysisManager->FillNtupleDColumn(7, phoTime50);
-    analysisManager->FillNtupleDColumn(8, phoTime100);
-    analysisManager->FillNtupleDColumn(9, phoTime1000);
+    analysisManager->FillNtupleDColumn(1, event->GetPrimaryVertex()->GetX0());
+    analysisManager->FillNtupleDColumn(2, event->GetPrimaryVertex()->GetY0());
+    analysisManager->FillNtupleDColumn(3, allPhoTime->size());
+    analysisManager->FillNtupleDColumn(4, phoTime1);
+    analysisManager->FillNtupleDColumn(5, phoTime10);
+    analysisManager->FillNtupleDColumn(6, phoTime50);
+    analysisManager->FillNtupleDColumn(7, phoTime100);
+    analysisManager->FillNtupleDColumn(8, phoTime1000);
     analysisManager->AddNtupleRow();
 
 	allPhoTime->clear();
