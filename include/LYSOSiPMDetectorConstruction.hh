@@ -77,12 +77,9 @@ class LYSOSiPMDetectorConstruction : public G4VUserDetectorConstruction
     //
     static G4ThreadLocal G4GlobalMagFieldMessenger*  fMagFieldMessenger;
                                       // magnetic field messenger
-
     G4VPhysicalVolume*   cAbsorberPV; // the absorber physical volume
-
     G4VPhysicalVolume*   cFoilPV;
-
-    G4VPhysicalVolume*   fGapPV;      // the gap physical volume
+    G4VPhysicalVolume*   gapPV;      // the gap physical volume
 
     G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
 };
@@ -95,7 +92,7 @@ inline const G4VPhysicalVolume* LYSOSiPMDetectorConstruction::GetCAbsorberPV() c
 
 
 inline const G4VPhysicalVolume* LYSOSiPMDetectorConstruction::GetGapPV() const  {
-  return fGapPV;
+  return gapPV;
 }
 
 

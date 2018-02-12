@@ -27,6 +27,8 @@
 #include "G4MultiFunctionalDetector.hh"
 #include "G4PSEnergyDeposit.hh"
 
+#include "G4OpticalSurface.hh"
+#include "G4LogicalBorderSurface.hh"
 
 G4ThreadLocal
 G4GlobalMagFieldMessenger *LYSOSiPMDetectorConstruction::fMagFieldMessenger = 0;
@@ -35,10 +37,8 @@ G4GlobalMagFieldMessenger *LYSOSiPMDetectorConstruction::fMagFieldMessenger = 0;
 LYSOSiPMDetectorConstruction::LYSOSiPMDetectorConstruction()
         : G4VUserDetectorConstruction(),
           cAbsorberPV(0),
-
           cFoilPV(0),
-
-          fGapPV(0),
+		  gapPV(0),
           fCheckOverlaps(true) {
 }
 
@@ -113,6 +113,7 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 	mpt->AddConstProperty("FASTTIMECONSTANT",41*ns);
 	scintillator->SetMaterialPropertiesTable(mpt);
 
+	
 }
 
 
@@ -126,13 +127,41 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
     //Crystal Parameters
     G4double cryst_dX = 12 * mm, cryst_dY = 12 * mm, cryst_dZ = 3 * mm;
     G4double foilThickness = 0.5 * mm;
-    G4double outBox_dX = cryst_dX+foilThickness, outBox_dY = cryst_dY+foilThickness, outBox_dZ = cryst_dZ;
+    G4double gapThickness = 0.1 * mm; //air gap for wrapping
+
+    G4double gapOut_dX = cryst_dX+gapThickness, gapOut_dY = cryst_dY+gapThickness, gapOut_dZ = cryst_dZ+gapThickness;
+
+    G4double foilOut_dX = cryst_dX+foilThickness+gapThickness, foilOut_dY = cryst_dY+gapThickness, foilOut_dZ = cryst_dZ+foilThickness+gapThickness;
 
 
     // Get materials
-    G4Material* defaultMaterial = G4Material::GetMaterial("G4_AIR");
+    G4Material* air_mat = G4Material::GetMaterial("G4_AIR");
     G4Material* cryst_mat = G4Material::GetMaterial("scintillator");
     G4Material* foil_mat = G4Material::GetMaterial("Al");
+
+	G4OpticalSurface* scintWrap = new G4OpticalSurface("ScintWrap");
+
+	scintWrap->SetType(dielectric_metal);
+    scintWrap->SetFinish(polished);
+    scintWrap->SetModel(glisur);
+
+    G4double pp[] = {2.0*eV, 3.5*eV};
+    const G4int num = sizeof(pp)/sizeof(G4double);
+    G4double reflectivity[] = {1., 1.};
+    assert(sizeof(reflectivity) == sizeof(pp));
+    G4double efficiency[] = {0.0, 0.0};
+    assert(sizeof(efficiency) == sizeof(pp));
+
+    G4MaterialPropertiesTable* scintWrapProperty
+      = new G4MaterialPropertiesTable();
+
+    scintWrapProperty->AddProperty("REFLECTIVITY",pp,reflectivity,num);
+    scintWrapProperty->AddProperty("EFFICIENCY",pp,efficiency,num);
+    scintWrap->SetMaterialPropertiesTable(scintWrapProperty);
+
+
+    
+
 
     //
     // World
@@ -144,7 +173,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
     G4LogicalVolume *worldLV
             = new G4LogicalVolume(
                     worldS,           // its solid
-                    defaultMaterial,  // its material
+                    air_mat,  // its material
                     "World");         // its name
 
     G4VPhysicalVolume *worldPV
@@ -158,51 +187,67 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
                     0,                // copy number
                     fCheckOverlaps);  // checking overlaps
 
-    //
-    //Crystals wrapped in foil
-    //
-    G4double gap = 0. * mm;        //a gap for wrapping
-    //Foil wrapping
-    G4Box* outerBox = new G4Box("Outerbox", outBox_dX/2, outBox_dY/2, outBox_dZ/2);
-    G4Box* innerBox = new G4Box("Innerbox", cryst_dX/2, cryst_dY/2, cryst_dZ/2+5*mm);
-
-    G4SubtractionSolid* foilS = new G4SubtractionSolid("Foilwrapping", outerBox, innerBox);
-
+	//crystal
     G4Box* crystalS = new G4Box("crystal", cryst_dX/2, cryst_dY/2, cryst_dZ/2);
-
     G4LogicalVolume* crystalLV
             = new G4LogicalVolume(
                     crystalS,     // its solid
                     cryst_mat,  // its material
-                    "lysoCrystal");   // its name
+                    "Crystal");   // its name
+
+	cAbsorberPV
+            = new G4PVPlacement(
+            0,                // no rotation
+            G4ThreeVector(),  // at (0,0,0)
+            crystalLV,          // its logical volume
+            "Crystal",    // its name
+            worldLV,          // its mother  volume
+            false,            // no boolean operation
+            0,                // copy number
+            fCheckOverlaps);  // checking overlaps
+	//gap
+    G4Box* crystalBox = new G4Box("Innerbox", cryst_dX/2, cryst_dY/2, cryst_dZ/2+5*mm);
+	G4Box* gapBox = new G4Box("Outerbox", gapOut_dX/2, gapOut_dY/2, gapOut_dZ/2);
+    G4SubtractionSolid* gapS = new G4SubtractionSolid("Foilwrapping", gapBox, crystalBox);
+
+	G4LogicalVolume* gapLV
+            = new G4LogicalVolume(
+                    gapS,     // its solid
+                    air_mat,  // its material
+                    "airgap");   // its name
+	gapPV
+            = new G4PVPlacement(
+            0,
+            G4ThreeVector(),
+            gapLV,
+            "airgap",
+            worldLV,
+            false,
+            0,
+            fCheckOverlaps);
+
+
+	//foil
+	G4Box* foilBox = new G4Box("Outerbox", foilOut_dX/2, foilOut_dY/2, foilOut_dZ/2);
+    G4SubtractionSolid* foilS = new G4SubtractionSolid("Foilwrapping", foilBox, gapBox);
 
     G4LogicalVolume* foilLV
             = new G4LogicalVolume(
                     foilS,     // its solid
                     foil_mat,  // its material
                     "foilwrap");   // its name
-
-    cAbsorberPV
-            = new G4PVPlacement(
-            0,                // no rotation
-            G4ThreeVector(),  // at (0,0,0)
-            crystalLV,          // its logical volume
-            "crystalPV",    // its name
-            worldLV,          // its mother  volume
-            false,            // no boolean operation
-            0,                // copy number
-            fCheckOverlaps);  // checking overlaps
-    cFoilPV
+	cFoilPV
             = new G4PVPlacement(
             0,
             G4ThreeVector(),
             foilLV,
-            "foilPV",
+            "foilwrap",
             worldLV,
             false,
             0,
             fCheckOverlaps);
 
+	//
     worldLV->SetVisAttributes(G4VisAttributes::Invisible);
 
     G4VisAttributes *simpleBoxVisAtt = new G4VisAttributes(G4Colour(1.0, 1.0, 1.0));
