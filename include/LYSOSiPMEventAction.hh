@@ -32,7 +32,7 @@ public:
 
     void ScatBool(G4bool scatYN);
     void RecordedBool(G4bool recordYN);
-
+	void AddPhoTime(G4double time);
 
 private:
     G4double cEnergyAbs;
@@ -41,6 +41,7 @@ private:
     G4double deltaPhi;
     G4bool scattered;
     G4bool recorded;
+	std::vector<G4double> * allPhoTime;
 };
 
 // inline functions

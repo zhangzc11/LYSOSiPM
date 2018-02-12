@@ -7,6 +7,8 @@
 #/run/numberOfWorkers 4
 #
 # Initialize kernel
+/run/numberOfThreads 4
+
 /run/initialize
 
 # Magnetic field

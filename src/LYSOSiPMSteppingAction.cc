@@ -5,6 +5,7 @@
 #include "LYSOSiPMDetectorConstruction.hh"
 
 #include "G4Step.hh"
+#include "G4StepPoint.hh"
 #include "G4RunManager.hh"
 
 
@@ -33,6 +34,18 @@ void LYSOSiPMSteppingAction::UserSteppingAction(const G4Step* step)
     //i deleted the touchable handle bit. add back in if issues arise
     G4VPhysicalVolume* volume
             = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
+
+	if (volume == fDetConstruction->GetGelPV())
+	{
+		//photon arrives at the optical grease
+		G4StepPoint* point1 = step->GetPreStepPoint();
+		
+		//just entered the boundary
+		if (point1->GetStepStatus() == fGeomBoundary) 
+		{
+			fEventAction->AddPhoTime(point1->GetLocalTime());
+		}
+	}
 
     // energy deposit
     G4double edep = step->GetTotalEnergyDeposit();

@@ -38,6 +38,12 @@ LYSOSiPMRunAction::LYSOSiPMRunAction()
     analysisManager->CreateNtupleDColumn("ScatAngle");
     analysisManager->CreateNtupleDColumn("ScatPhi");
     analysisManager->CreateNtupleDColumn("DeltaPhi");
+    analysisManager->CreateNtupleDColumn("nPhotons");
+    analysisManager->CreateNtupleDColumn("phoTime1");
+    analysisManager->CreateNtupleDColumn("phoTime10");
+    analysisManager->CreateNtupleDColumn("phoTime50");
+    analysisManager->CreateNtupleDColumn("phoTime100");
+    analysisManager->CreateNtupleDColumn("phoTime1000");
     analysisManager->FinishNtuple();
 }
 

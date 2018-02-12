@@ -66,6 +66,7 @@ class LYSOSiPMDetectorConstruction : public G4VUserDetectorConstruction
     const G4VPhysicalVolume* GetCAbsorberPV() const;
 
     const G4VPhysicalVolume* GetGapPV() const;
+    const G4VPhysicalVolume* GetGelPV() const;
 
   private:
     // methods
@@ -98,6 +99,9 @@ inline const G4VPhysicalVolume* LYSOSiPMDetectorConstruction::GetGapPV() const  
   return gapPV;
 }
 
+inline const G4VPhysicalVolume* LYSOSiPMDetectorConstruction::GetGelPV() const  {
+  return gelPV;
+}
 
 
 #endif
