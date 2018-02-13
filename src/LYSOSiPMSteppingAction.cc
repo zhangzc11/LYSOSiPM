@@ -42,7 +42,7 @@ void LYSOSiPMSteppingAction::UserSteppingAction(const G4Step* step)
 		//just entered the boundary
 		if (point1->GetStepStatus() == fGeomBoundary) 
 		{
-			fEventAction->AddPhoTime(point1->GetGlobalTime());
+			fEventAction->AddPhoton(point1->GetGlobalTime(), point1->GetLocalTime(), step->GetTrack()->GetTrackLength(), step->GetTrack()->GetVertexPosition().x(), step->GetTrack()->GetVertexPosition().y(), step->GetTrack()->GetVertexPosition().z());
 		}
 	}
 

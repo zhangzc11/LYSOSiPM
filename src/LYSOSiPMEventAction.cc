@@ -13,14 +13,24 @@ LYSOSiPMEventAction::LYSOSiPMEventAction()
           //scatPhi(0.),
           deltaPhi(0.),
 		  fTime(kDigi),
-		  fAmp(kDigi)
+		  fAmp(kDigi),
+		  photonIndex(0)
 {}
 
 LYSOSiPMEventAction::~LYSOSiPMEventAction() {}
 
-void LYSOSiPMEventAction::AddPhoTime(G4double time)
+void LYSOSiPMEventAction::AddPhoton(G4double time, G4double time_local, G4double trackLength, G4double trackVertexX, G4double trackVertexY, G4double trackVertexZ)
 {
-	allPhoTime.push_back(time);
+	//allPhoTime.push_back(time);
+	allPhoTimeLocal.push_back(time_local);
+	allPhoTrackLength.push_back(trackLength);
+	allPhoTrackVertexX.push_back(trackVertexX);
+	allPhoTrackVertexY.push_back(trackVertexY);
+	allPhoTrackVertexZ.push_back(trackVertexZ);
+
+	time_index.insert(std::pair<G4double, G4int>(time, photonIndex));
+
+	photonIndex ++;
 }
 
 void LYSOSiPMEventAction::BeginOfEventAction(const G4Event * /*event*/) {
@@ -31,25 +41,36 @@ void LYSOSiPMEventAction::BeginOfEventAction(const G4Event * /*event*/) {
     deltaPhi = 0.;
     scattered = false;
     recorded = false;
+	photonIndex = 0;
 }
 
 
 void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
     // Accumulate statistics
 
-	//sort photon time in grease
-	G4double phoTime1 = 0.0;
-	G4double phoTime10 = 0.0;
-	G4double phoTime50 = 0.0;
-	G4double phoTime100 = 0.0;
-	G4double phoTime1000 = 0.0;
+	//std::sort(allPhoTime.begin(), allPhoTime.end());
+	G4int numSave = 0;
+	for(auto tmp : time_index)
+	{
+		allPhoTime.push_back(tmp.first);
+		if(numSave<NSaveMax)
+		{
+			allPhoTime_save.push_back(tmp.first);
+			allPhoIndex_save.push_back(numSave);
+			allPhoTrackLength_save.push_back(allPhoTrackLength[tmp.second]);
+			allPhoTimeLocal_save.push_back(allPhoTimeLocal[tmp.second]);
+			allPhoTrackVertexX_save.push_back(allPhoTrackVertexX[tmp.second]);
+			allPhoTrackVertexY_save.push_back(allPhoTrackVertexY[tmp.second]);
+			allPhoTrackVertexZ_save.push_back(allPhoTrackVertexZ[tmp.second]);
+			allPhoTrackVertexR_save.push_back(std::sqrt(
+							(allPhoTrackVertexX[tmp.second] - grease_x)*(allPhoTrackVertexX[tmp.second] - grease_x) + 
+							(allPhoTrackVertexY[tmp.second] - grease_y)*(allPhoTrackVertexY[tmp.second] - grease_y)+
+							(allPhoTrackVertexZ[tmp.second] - grease_z)*(allPhoTrackVertexZ[tmp.second] - grease_z)));
+		}
+		numSave++;
+	}
 
-	std::sort(allPhoTime.begin(), allPhoTime.end());
-	if(allPhoTime.size()>=1) phoTime1 = allPhoTime[0];
-	if(allPhoTime.size()>=10) phoTime10 = allPhoTime[10];
-	if(allPhoTime.size()>=50) phoTime50 = allPhoTime[49];
-	if(allPhoTime.size()>=100) phoTime100 = allPhoTime[99];
-	if(allPhoTime.size()>=1000) phoTime1000 = allPhoTime[999];
+
 
 	//sudo-digitization photon current pulse:
 
@@ -77,15 +98,25 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
     if(cEnergyAbs > 0) analysisManager->FillNtupleDColumn(0, cEnergyAbs);
     analysisManager->FillNtupleDColumn(1, event->GetPrimaryVertex()->GetX0());
     analysisManager->FillNtupleDColumn(2, event->GetPrimaryVertex()->GetY0());
-    analysisManager->FillNtupleDColumn(3, allPhoTime.size());
-    analysisManager->FillNtupleDColumn(4, phoTime1);
-    analysisManager->FillNtupleDColumn(5, phoTime10);
-    analysisManager->FillNtupleDColumn(6, phoTime50);
-    analysisManager->FillNtupleDColumn(7, phoTime100);
-    analysisManager->FillNtupleDColumn(8, phoTime1000);
+    analysisManager->FillNtupleIColumn(3, allPhoTime.size());
     analysisManager->AddNtupleRow();
 
 	allPhoTime.clear();
+	allPhoTimeLocal.clear();
+	time_index.clear();
+	allPhoTime_save.clear();
+	allPhoIndex_save.clear();
+	allPhoTimeLocal_save.clear();
+	allPhoTrackLength.clear();
+	allPhoTrackLength_save.clear();
+	allPhoTrackVertexX.clear();
+	allPhoTrackVertexX_save.clear();
+	allPhoTrackVertexY.clear();
+	allPhoTrackVertexY_save.clear();
+	allPhoTrackVertexZ.clear();
+	allPhoTrackVertexZ_save.clear();
+	allPhoTrackVertexR_save.clear();
+
 }
 
 
