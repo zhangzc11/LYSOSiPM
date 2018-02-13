@@ -24,7 +24,8 @@ LYSOSiPMActionInitialization::~LYSOSiPMActionInitialization()
 
 void LYSOSiPMActionInitialization::BuildForMaster() const
 {
-  SetUserAction(new LYSOSiPMRunAction);
+  LYSOSiPMEventAction* eventAction = new LYSOSiPMEventAction;
+  SetUserAction(new LYSOSiPMRunAction(eventAction));
 }
 
 
@@ -32,9 +33,12 @@ void LYSOSiPMActionInitialization::BuildForMaster() const
 void LYSOSiPMActionInitialization::Build() const
 {
   SetUserAction(new LYSOSiPMPrimaryGeneratorAction);
-  SetUserAction(new LYSOSiPMRunAction);
-  LYSOSiPMEventAction* eventAction = new LYSOSiPMEventAction;
+  
+  auto eventAction = new LYSOSiPMEventAction;
   SetUserAction(eventAction);
+
+  SetUserAction(new LYSOSiPMRunAction(eventAction));
+
   SetUserAction(new LYSOSiPMSteppingAction(fDetConstruction,eventAction));
 }  
 

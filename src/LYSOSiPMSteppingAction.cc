@@ -25,7 +25,6 @@ LYSOSiPMSteppingAction::~LYSOSiPMSteppingAction()
 }
 
 
-
 void LYSOSiPMSteppingAction::UserSteppingAction(const G4Step* step)
 {
 // Collect energy and track length step by step
@@ -43,7 +42,7 @@ void LYSOSiPMSteppingAction::UserSteppingAction(const G4Step* step)
 		//just entered the boundary
 		if (point1->GetStepStatus() == fGeomBoundary) 
 		{
-			fEventAction->AddPhoTime(point1->GetLocalTime());
+			fEventAction->AddPhoTime(point1->GetGlobalTime());
 		}
 	}
 

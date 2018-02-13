@@ -2,6 +2,7 @@
 
 #include "LYSOSiPMRunAction.hh"
 #include "LYSOSiPMAnalysis.hh"
+#include "LYSOSiPMEventAction.hh"
 
 #include "G4Run.hh"
 #include "G4RunManager.hh"
@@ -9,8 +10,9 @@
 
 
 
-LYSOSiPMRunAction::LYSOSiPMRunAction()
-        : G4UserRunAction()
+LYSOSiPMRunAction::LYSOSiPMRunAction(LYSOSiPMEventAction* eventAction)
+        : G4UserRunAction(),
+		fEventAction(eventAction)
 {
     // set printing event number per each event
     G4RunManager::GetRunManager()->SetPrintProgress(1);
@@ -27,17 +29,22 @@ LYSOSiPMRunAction::LYSOSiPMRunAction()
     // Book histograms, ntuple
 
     // Creating ntuple
+	if( fEventAction)
+	{
     analysisManager->CreateNtuple("tree", "Edep");
-    analysisManager->CreateNtupleDColumn("Eabs");
-    analysisManager->CreateNtupleDColumn("x");
-    analysisManager->CreateNtupleDColumn("y");
-    analysisManager->CreateNtupleDColumn("nPhotons");
-    analysisManager->CreateNtupleDColumn("phoTime1");
-    analysisManager->CreateNtupleDColumn("phoTime10");
-    analysisManager->CreateNtupleDColumn("phoTime50");
-    analysisManager->CreateNtupleDColumn("phoTime100");
-    analysisManager->CreateNtupleDColumn("phoTime1000");
+    analysisManager->CreateNtupleDColumn("Eabs");//0
+    analysisManager->CreateNtupleDColumn("x");//1
+    analysisManager->CreateNtupleDColumn("y");//2
+    analysisManager->CreateNtupleDColumn("nPhotons");//3
+    analysisManager->CreateNtupleDColumn("phoTime1");//4
+    analysisManager->CreateNtupleDColumn("phoTime10");//5
+    analysisManager->CreateNtupleDColumn("phoTime50");//6
+    analysisManager->CreateNtupleDColumn("phoTime100");//7
+    analysisManager->CreateNtupleDColumn("phoTime1000");//8
+    analysisManager->CreateNtupleDColumn("time", fEventAction->GetTimeArray());//9
+    analysisManager->CreateNtupleDColumn("amp", fEventAction->GetAmpArray());//10
     analysisManager->FinishNtuple();
+	}
 }
 
 

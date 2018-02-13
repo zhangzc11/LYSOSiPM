@@ -6,6 +6,7 @@
 #include "G4UserEventAction.hh"
 #include "globals.hh"
 
+#include <vector>
 /// Event action class
 ///
 /// It defines data members to hold the energy deposit and track lengths
@@ -13,6 +14,10 @@
 /// - fEnergyAbs, fEnergyGap, fTrackLAbs, fTrackLGap
 /// which are collected step by step via the functions
 /// - AddAbs(), AddGap()
+
+//constants
+const G4int kDigi = 100;//10ps per sample, 1ns in total
+const G4int kDet = 1;
 
 class LYSOSiPMEventAction : public G4UserEventAction {
 public:
@@ -33,6 +38,8 @@ public:
     void ScatBool(G4bool scatYN);
     void RecordedBool(G4bool recordYN);
 	void AddPhoTime(G4double time);
+	std::vector<G4double> & GetTimeArray(){ return fTime;}
+	std::vector<G4double> & GetAmpArray(){ return fAmp;}
 
 private:
     G4double cEnergyAbs;
@@ -41,7 +48,10 @@ private:
     G4double deltaPhi;
     G4bool scattered;
     G4bool recorded;
-	std::vector<G4double> * allPhoTime;
+	
+	std::vector<G4double> allPhoTime;
+	std::vector<G4double> fTime;
+	std::vector<G4double> fAmp;
 };
 
 // inline functions
