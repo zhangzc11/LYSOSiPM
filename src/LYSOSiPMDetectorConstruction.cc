@@ -143,11 +143,11 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 			1.50, 1.50, 1.50, 1.50,
 			1.50, 1.50, 1.50, 1.50,
 			1.50, 1.50, 1.50, 1.50};
-	G4double absGrease[num]   =  {1.00*mm, 1.00*mm, 1.00*mm, 1.00*mm,
-			1.00*mm, 1.00*mm, 1.00*mm, 1.00*mm,
-			1.00*mm, 1.00*mm, 1.00*mm, 1.00*mm,
-			1.00*mm, 1.00*mm, 1.00*mm, 1.00*mm,
-			1.00*mm, 1.00*mm, 1.00*mm, 1.00*mm};
+	G4double absGrease[num]   =  {0.10*mm, 0.10*mm, 0.10*mm, 0.10*mm,
+			0.10*mm, 0.10*mm, 0.10*mm, 0.10*mm,
+			0.10*mm, 0.10*mm, 0.10*mm, 0.10*mm,
+			0.10*mm, 0.10*mm, 0.10*mm, 0.10*mm,
+			0.10*mm, 0.10*mm, 0.10*mm, 0.10*mm};
 
 	G4MaterialPropertiesTable* mptSilicone = new G4MaterialPropertiesTable();
 	mptSilicone->AddProperty("RINDEX",ene,rSilicone,num);
