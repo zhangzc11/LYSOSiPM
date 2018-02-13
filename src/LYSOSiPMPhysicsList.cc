@@ -64,6 +64,8 @@
 #include "G4UserSpecialCuts.hh"
 
 #include "G4Scintillation.hh"
+#include "G4Cerenkov.hh"
+
 #include "G4OpBoundaryProcess.hh"
 #include "G4OpAbsorption.hh"
 #include "G4OpRayleigh.hh"
@@ -168,6 +170,7 @@ void LYSOSiPMPhysicsList::ConstructProcess()
   ConstructEM();
   ConstructOp();
   ConstructScintillation();
+  ConstructCerenkov();
 
   ConstructGeneral();
   AddStepMax();
@@ -323,5 +326,23 @@ void LYSOSiPMPhysicsList::ConstructScintillation()
 
   }
 
+}
+
+void LYSOSiPMPhysicsList::ConstructCerenkov()
+{
+  G4Cerenkov*   theCerenkovProcess = new G4Cerenkov("Cerenkov");
+  G4int MaxNumPhotons = 300;
+  theCerenkovProcess->SetTrackSecondariesFirst(true);
+  theCerenkovProcess->SetMaxNumPhotonsPerStep(MaxNumPhotons);
+
+
+  G4PhysicsListHelper *helper = G4PhysicsListHelper::GetPhysicsListHelper();
+  auto theParticleIterator=GetParticleIterator();
+  theParticleIterator->reset();
+  while( (*theParticleIterator)() ){
+    G4ParticleDefinition *particle = theParticleIterator->value();
+    if ( theCerenkovProcess->IsApplicable(*particle)) helper->RegisterProcess(theCerenkovProcess, particle);
+
+}
 }
 

@@ -63,6 +63,7 @@ class LYSOSiPMPhysicsList: public G4VUserPhysicsList
     void ConstructGeneral();
     void ConstructEM();
 	void ConstructOp();
+	void ConstructCerenkov();
 	void ConstructScintillation();
     void AddStepMax();
 };
