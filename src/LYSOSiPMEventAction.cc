@@ -12,8 +12,10 @@ LYSOSiPMEventAction::LYSOSiPMEventAction()
           //scatAng(0.),
           //scatPhi(0.),
           deltaPhi(0.),
-		  fTime(kDigi),
-		  fAmp(kDigi),
+		  fTime1(kDigi),
+		  fTime2(kDigi),
+		  fAmp1(kDigi),
+		  fAmp2(kDigi),
 		  photonIndex(0)
 {}
 
@@ -74,21 +76,34 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 
 	//sudo-digitization photon current pulse:
 
-	G4int kPhotonIndex = 0;
-	G4int kPhotonIndex_pre = 0;
+	G4int kPhotonIndex1 = 0;
+	G4int kPhotonIndex2 = 0;
+	G4int kPhotonIndex_pre1 = 0;
+	G4int kPhotonIndex_pre2 = 0;
 	for(G4int iS = 0; iS<kDigi; iS++)
 	{
-		//10ps per sample
-		G4double time_this = iS*digi_step; //ns
-		for(G4int kp = kPhotonIndex_pre; kp<allPhoTime.size();kp++)
+		G4double time_this1 = iS*digi_step1; //ns
+		G4double time_this2 = iS*digi_step2; //ns
+		for(G4int kp = kPhotonIndex_pre1; kp<allPhoTime.size(); kp++)
 		{
-			if(allPhoTime[kp]>time_this) break;
-			kPhotonIndex ++;
+			if(allPhoTime[kp]>time_this1) break;
+			kPhotonIndex1 ++;
+		}
+
+		for(G4int kp = kPhotonIndex_pre2; kp<allPhoTime.size(); kp++)
+		{
+			if(allPhoTime[kp]>time_this2) break;
+			kPhotonIndex2 ++;
 		}
 		
-		fTime[iS] = time_this;
-		fAmp[iS] = 1.0*(kPhotonIndex-kPhotonIndex_pre)/digi_step;
-		kPhotonIndex_pre = kPhotonIndex;
+		fTime1[iS] = time_this1;
+		fTime2[iS] = time_this2;
+
+		fAmp1[iS] = 1.0*(kPhotonIndex1-kPhotonIndex_pre1)/digi_step1;
+		fAmp2[iS] = 1.0*(kPhotonIndex2-kPhotonIndex_pre2)/digi_step2;
+
+		kPhotonIndex_pre1 = kPhotonIndex1;
+		kPhotonIndex_pre2 = kPhotonIndex2;
 	}
 
 	// get analysis manager

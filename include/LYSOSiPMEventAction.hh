@@ -18,7 +18,8 @@
 
 //constants
 const G4int kDigi = 1024;//number of samples
-const G4double digi_step = 0.01;//in ns
+const G4double digi_step1 = 0.1;//100 ns window
+const G4double digi_step2 = 0.003;//3 ns window
 const G4int kDet = 1;
 const G4int NSaveMax = 9999;
 const G4double grease_x = 0.0;
@@ -44,8 +45,10 @@ public:
     void ScatBool(G4bool scatYN);
     void RecordedBool(G4bool recordYN);
 	void AddPhoton(G4double time, G4double time_local, G4double trackLength, G4double trackVertexX, G4double trackVertexY, G4double trackVertexZ);
-	std::vector<G4double> & GetTimeArray(){ return fTime;}
-	std::vector<G4double> & GetAmpArray(){ return fAmp;}
+	std::vector<G4double> & GetTime1Array(){ return fTime1;}
+	std::vector<G4double> & GetTime2Array(){ return fTime2;}
+	std::vector<G4double> & GetAmp1Array(){ return fAmp1;}
+	std::vector<G4double> & GetAmp2Array(){ return fAmp2;}
 	
 	std::vector<G4double> & GetPhoTimeArray(){ return allPhoTime_save;}
 	std::vector<G4int> & GetPhoIndexArray(){ return allPhoIndex_save;}
@@ -79,8 +82,10 @@ private:
 	std::vector<G4double> allPhoTrackVertexZ;
 	std::vector<G4double> allPhoTrackVertexZ_save;
 	std::vector<G4double> allPhoTrackVertexR_save;
-	std::vector<G4double> fTime;
-	std::vector<G4double> fAmp;
+	std::vector<G4double> fTime1;
+	std::vector<G4double> fTime2;
+	std::vector<G4double> fAmp1;
+	std::vector<G4double> fAmp2;
 
 	G4int photonIndex;
 };

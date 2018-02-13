@@ -8,8 +8,6 @@
 #include "G4StepPoint.hh"
 #include "G4RunManager.hh"
 
-#include "G4DNAGenericIonsManager.hh"
-
 
 LYSOSiPMSteppingAction::LYSOSiPMSteppingAction(
         const LYSOSiPMDetectorConstruction* detectorConstruction,
@@ -37,11 +35,8 @@ void LYSOSiPMSteppingAction::UserSteppingAction(const G4Step* step)
 
 	if (volume == fDetConstruction->GetGelPV())
 	{
-		G4DNAGenericIonsManager* genericIonsManager;
-		genericIonsManager=G4DNAGenericIonsManager::Instance();
-		
 		bool isOpticalPhoton = false;
-		if(step->GetTrack()->GetParticleDefinition() == genericIonsManager->GetIon("opticalphoton")) isOpticalPhoton = true;
+		if(step->GetTrack()->GetParticleDefinition()->GetParticleType() == "opticalphoton") isOpticalPhoton = true;
 		//photon arrives at the optical grease
 		G4StepPoint* point1 = step->GetPreStepPoint();
 		
