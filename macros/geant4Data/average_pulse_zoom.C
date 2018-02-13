@@ -1,5 +1,5 @@
 
-void average_pulse()
+void average_pulse_zoom()
 {
 	const double normNphoton0 = 81270.0;
 	const double normNphoton2 = 68900.0;
@@ -18,16 +18,16 @@ void average_pulse()
 	std::vector<double> * amp1 = 0;
 	Int_t nPhotons;
 	tree0->SetBranchAddress("nPhotons", &nPhotons);
-	tree0->SetBranchAddress("time1", &time1);
-	tree0->SetBranchAddress("amp1", &amp1);
+	tree0->SetBranchAddress("time2", &time1);
+	tree0->SetBranchAddress("amp2", &amp1);
 
 	tree2->SetBranchAddress("nPhotons", &nPhotons);
-	tree2->SetBranchAddress("time1", &time1);
-	tree2->SetBranchAddress("amp1", &amp1);
+	tree2->SetBranchAddress("time2", &time1);
+	tree2->SetBranchAddress("amp2", &amp1);
 
 	tree4->SetBranchAddress("nPhotons", &nPhotons);
-	tree4->SetBranchAddress("time1", &time1);
-	tree4->SetBranchAddress("amp1", &amp1);
+	tree4->SetBranchAddress("time2", &time1);
+	tree4->SetBranchAddress("amp2", &amp1);
 
 	int NEntries0 = tree0->GetEntries();
 	int NEntries2 = tree2->GetEntries();
@@ -168,8 +168,8 @@ void average_pulse()
     leg->AddEntry(gr4, "x = 4mm", "l");
     leg->Draw();
 
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/average_pulses.pdf");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/average_pulses.png");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/average_pulses.C");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/average_pulses_zoom.pdf");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/average_pulses_zoom.png");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/average_pulses_zoom.C");
 
 	}
