@@ -16,7 +16,8 @@
 /// - AddAbs(), AddGap()
 
 //constants
-const G4int kDigi = 100;//10ps per sample, 1ns in total
+const G4int kDigi = 1024;//number of samples
+const G4double digi_step = 0.01;//in ns
 const G4int kDet = 1;
 
 class LYSOSiPMEventAction : public G4UserEventAction {

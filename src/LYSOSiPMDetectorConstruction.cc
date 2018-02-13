@@ -108,11 +108,10 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 	mpt->AddProperty("FASTCOMPONENT", ene, fast, num);
 	mpt->AddProperty("RINDEX", ene, rLyso , num);
 	mpt->AddProperty("ABSLENGTH", ene, abs, num);
-	//mpt->AddConstProperty("SCINTILLATIONYIELD",32/keV);
-	mpt->AddConstProperty("SCINTILLATIONYIELD",4/keV);//mimic SiPM pde
+	mpt->AddConstProperty("SCINTILLATIONYIELD",32/keV);
+	//mpt->AddConstProperty("SCINTILLATIONYIELD",4/keV);//mimic SiPM pde
 	mpt->AddConstProperty("RESOLUTIONSCALE", 1);
-	mpt->AddConstProperty("SLOWTIMECONSTANT",41.0*ns);
-	mpt->AddConstProperty("FASTTIMECONSTANT",0.09*ns);
+	mpt->AddConstProperty("FASTTIMECONSTANT",41.0*ns);
 	scintillator->SetMaterialPropertiesTable(mpt);
 
 	//air

@@ -54,18 +54,20 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 	//sudo-digitization photon current pulse:
 
 	G4int kPhotonIndex = 0;
+	G4int kPhotonIndex_pre = 0;
 	for(G4int iS = 0; iS<kDigi; iS++)
 	{
 		//10ps per sample
-		G4double time_this = iS*0.01; //ns
-		G4int kPhotonIndex_pre = kPhotonIndex;
+		G4double time_this = iS*digi_step; //ns
 		for(G4int kp = kPhotonIndex_pre; kp<allPhoTime.size();kp++)
 		{
 			if(allPhoTime[kp]>time_this) break;
 			kPhotonIndex ++;
 		}
+		
 		fTime[iS] = time_this;
-		fAmp[iS] = 1.0*kPhotonIndex;
+		fAmp[iS] = 1.0*(kPhotonIndex-kPhotonIndex_pre)/digi_step;
+		kPhotonIndex_pre = kPhotonIndex;
 	}
 
 	// get analysis manager
