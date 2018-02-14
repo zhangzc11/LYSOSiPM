@@ -255,11 +255,19 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
             0,                // copy number
             fCheckOverlaps);  // checking overlaps
 
-	G4Box* gelBox = new G4Box("opticalGel", gel_dX/2, gel_dY/2, gel_dZ/2 + cryst_dZ/2);
-    G4Box* crystalBox = new G4Box("Innerbox", cryst_dX/2, cryst_dY/2, cryst_dZ/2);
+	//surface between crystal and air
+	G4OpticalSurface* OpLYSOSurface = new G4OpticalSurface("LYSOSurface");
+	OpLYSOSurface->SetModel(glisur);
+	OpLYSOSurface->SetType(dielectric_dielectric);
+	OpLYSOSurface->SetFinish(ground);
+	OpLYSOSurface->SetPolish(0.0);
+	G4LogicalBorderSurface* LYSOSurface = new G4LogicalBorderSurface("LYSOSurface", cAbsorberPV, worldPV, OpLYSOSurface);
 
 	/*
 	//gap
+	G4Box* gelBox = new G4Box("opticalGel", gel_dX/2, gel_dY/2, gel_dZ/2 + cryst_dZ/2);
+    G4Box* crystalBox = new G4Box("Innerbox", cryst_dX/2, cryst_dY/2, cryst_dZ/2);
+
 	G4Box* gapBox = new G4Box("Outerbox", gapOut_dX/2, gapOut_dY/2, gapOut_dZ/2);
 
     G4SubtractionSolid* gapS_withGel = new G4SubtractionSolid("Foilwrapping_withGel", gapBox, crystalBox);
