@@ -1,0 +1,3 @@
+[submodule "external/g4sipm"]
+	path = external/g4sipm
+	url = https://github.com/ntim/g4sipm
