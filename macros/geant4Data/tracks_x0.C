@@ -1,9 +1,9 @@
 
-void tracks()
+void tracks_x0()
 {
 
-	TString x_s = "5";
-	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x5.root");
+	TString x_s = "0";
+	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x0.root");
 	TTree *tree = (TTree*)f->Get("tree");
 
 
@@ -22,7 +22,7 @@ void tracks()
 	myC->SetFrameBorderMode(0);
 	myC->SetFrameBorderMode(0);
 
-	TH2F * h2_allPhoTrackVertexR_vs_phoIndex = new TH2F("h2_allPhoTrackVertexR_vs_phoIndex","h2_allPhoTrackVertexR_vs_phoIndex", 200, 0, 200, 100, 4.0, 10.0);
+	TH2F * h2_allPhoTrackVertexR_vs_phoIndex = new TH2F("h2_allPhoTrackVertexR_vs_phoIndex","h2_allPhoTrackVertexR_vs_phoIndex", 200, 0, 200, 100, 0.0, 6.0);
 	tree->Draw("allPhoTrackVertexR:allPhoIndex>>h2_allPhoTrackVertexR_vs_phoIndex");
 	h2_allPhoTrackVertexR_vs_phoIndex->SetTitle("");
 	h2_allPhoTrackVertexR_vs_phoIndex->GetXaxis()->SetTitle("photon index");
@@ -38,7 +38,7 @@ void tracks()
 	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/tracks_allPhoTrackVertexR_vs_phoIndex_x"+x_s+".C");
 
 
-	TH2F * h2_allPhoTrackLength_vs_phoIndex = new TH2F("h2_allPhoTrackLength_vs_phoIndex","h2_allPhoTrackLength_vs_phoIndex", 200, 0, 200, 100, 0, 100.0);
+	TH2F * h2_allPhoTrackLength_vs_phoIndex = new TH2F("h2_allPhoTrackLength_vs_phoIndex","h2_allPhoTrackLength_vs_phoIndex", 200, 0, 200, 100, 0, 50.0);
 	tree->Draw("allPhoTrackLength:allPhoIndex>>h2_allPhoTrackLength_vs_phoIndex");
 	h2_allPhoTrackLength_vs_phoIndex->SetTitle("");
 	h2_allPhoTrackLength_vs_phoIndex->GetXaxis()->SetTitle("photon index");
