@@ -39,11 +39,13 @@ void LYSOSiPMSteppingAction::UserSteppingAction(const G4Step* step)
 		if(step->GetTrack()->GetParticleDefinition()->GetParticleType() == "opticalphoton") isOpticalPhoton = true;
 		//photon arrives at the optical grease
 		G4StepPoint* point1 = step->GetPreStepPoint();
-		
+
 		//just entered the boundary
 		if (point1->GetStepStatus() == fGeomBoundary && isOpticalPhoton) 
 		{
-			fEventAction->AddPhoton(point1->GetGlobalTime(), point1->GetLocalTime(), step->GetTrack()->GetTrackLength(), step->GetTrack()->GetVertexPosition().x(), step->GetTrack()->GetVertexPosition().y(), step->GetTrack()->GetVertexPosition().z());
+			G4int isCerenkovLight = 0;
+			if(step->GetTrack()->GetCreatorProcess()->GetProcessName() == "Cerenkov") isCerenkovLight = 1;
+			fEventAction->AddPhoton(point1->GetGlobalTime(), point1->GetLocalTime(), step->GetTrack()->GetTrackLength(), step->GetTrack()->GetVertexPosition().x(), step->GetTrack()->GetVertexPosition().y(), step->GetTrack()->GetVertexPosition().z(), step->GetTrack()->GetTotalEnergy(), isCerenkovLight);
 		}
 	}
 

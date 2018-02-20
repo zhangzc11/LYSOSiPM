@@ -21,14 +21,16 @@ LYSOSiPMEventAction::LYSOSiPMEventAction()
 
 LYSOSiPMEventAction::~LYSOSiPMEventAction() {}
 
-void LYSOSiPMEventAction::AddPhoton(G4double time, G4double time_local, G4double trackLength, G4double trackVertexX, G4double trackVertexY, G4double trackVertexZ)
+void LYSOSiPMEventAction::AddPhoton(G4double time, G4double time_local, G4double trackLength, G4double trackVertexX, G4double trackVertexY, G4double trackVertexZ, G4double trackTotalEnergy, G4int isCerenkov)
 {
 	//allPhoTime.push_back(time);
 	allPhoTimeLocal.push_back(time_local);
 	allPhoTrackLength.push_back(trackLength);
+	allPhoWaveLength.push_back(0.001241/trackTotalEnergy);//1eV = 1241nm, 1MeV = 0.001241nm
 	allPhoTrackVertexX.push_back(trackVertexX);
 	allPhoTrackVertexY.push_back(trackVertexY);
 	allPhoTrackVertexZ.push_back(trackVertexZ);
+	allPhoIsCerenkov.push_back(isCerenkov);
 
 	time_index.insert(std::pair<G4double, G4int>(time, photonIndex));
 
@@ -60,10 +62,12 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 			allPhoTime_save.push_back(tmp.first);
 			allPhoIndex_save.push_back(numSave);
 			allPhoTrackLength_save.push_back(allPhoTrackLength[tmp.second]);
+			allPhoWaveLength_save.push_back(allPhoWaveLength[tmp.second]);
 			allPhoTimeLocal_save.push_back(allPhoTimeLocal[tmp.second]);
 			allPhoTrackVertexX_save.push_back(allPhoTrackVertexX[tmp.second]);
 			allPhoTrackVertexY_save.push_back(allPhoTrackVertexY[tmp.second]);
 			allPhoTrackVertexZ_save.push_back(allPhoTrackVertexZ[tmp.second]);
+			allPhoIsCerenkov_save.push_back(allPhoIsCerenkov[tmp.second]);
 			allPhoTrackVertexR_save.push_back(std::sqrt(
 							(allPhoTrackVertexX[tmp.second] - grease_x)*(allPhoTrackVertexX[tmp.second] - grease_x) + 
 							(allPhoTrackVertexY[tmp.second] - grease_y)*(allPhoTrackVertexY[tmp.second] - grease_y)+
@@ -122,6 +126,8 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 	allPhoTime_save.clear();
 	allPhoIndex_save.clear();
 	allPhoTimeLocal_save.clear();
+	allPhoWaveLength.clear();
+	allPhoWaveLength_save.clear();
 	allPhoTrackLength.clear();
 	allPhoTrackLength_save.clear();
 	allPhoTrackVertexX.clear();
@@ -131,6 +137,8 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 	allPhoTrackVertexZ.clear();
 	allPhoTrackVertexZ_save.clear();
 	allPhoTrackVertexR_save.clear();
+	allPhoIsCerenkov.clear();
+	allPhoIsCerenkov_save.clear();
 
 }
 

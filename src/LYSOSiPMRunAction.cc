@@ -39,15 +39,17 @@ LYSOSiPMRunAction::LYSOSiPMRunAction(LYSOSiPMEventAction* eventAction)
     analysisManager->CreateNtupleIColumn("allPhoIndex", fEventAction->GetPhoIndexArray());//4
     analysisManager->CreateNtupleDColumn("allPhoTime", fEventAction->GetPhoTimeArray());//5
     analysisManager->CreateNtupleDColumn("allPhoTimeLocal", fEventAction->GetPhoTimeLocalArray());//6
-    analysisManager->CreateNtupleDColumn("allPhoTrackLength", fEventAction->GetPhoTrackLengthArray());//7
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexX", fEventAction->GetPhoTrackVertexXArray());//8
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexY", fEventAction->GetPhoTrackVertexYArray());//9
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexZ", fEventAction->GetPhoTrackVertexZArray());//10
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexR", fEventAction->GetPhoTrackVertexRArray());//11
-    analysisManager->CreateNtupleDColumn("time1", fEventAction->GetTime1Array());//12
-    analysisManager->CreateNtupleDColumn("time2", fEventAction->GetTime2Array());//13
-    analysisManager->CreateNtupleDColumn("amp1", fEventAction->GetAmp1Array());//14
-    analysisManager->CreateNtupleDColumn("amp2", fEventAction->GetAmp2Array());//15
+    analysisManager->CreateNtupleDColumn("allPhoWaveLength", fEventAction->GetPhoWaveLengthArray());//7
+    analysisManager->CreateNtupleDColumn("allPhoTrackLength", fEventAction->GetPhoTrackLengthArray());//8
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexX", fEventAction->GetPhoTrackVertexXArray());//9
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexY", fEventAction->GetPhoTrackVertexYArray());//10
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexZ", fEventAction->GetPhoTrackVertexZArray());//11
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexR", fEventAction->GetPhoTrackVertexRArray());//12
+    analysisManager->CreateNtupleIColumn("allPhoIsCerenkov", fEventAction->GetPhoIsCerenkovArray());//13
+    analysisManager->CreateNtupleDColumn("time1", fEventAction->GetTime1Array());//14
+    analysisManager->CreateNtupleDColumn("time2", fEventAction->GetTime2Array());//15
+    analysisManager->CreateNtupleDColumn("amp1", fEventAction->GetAmp1Array());//16
+    analysisManager->CreateNtupleDColumn("amp2", fEventAction->GetAmp2Array());//16
     analysisManager->FinishNtuple();
 	}
 }
