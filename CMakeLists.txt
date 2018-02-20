@@ -52,6 +52,10 @@ set(LYSOSiPM_SCRIPTS
   init_vis.mac
   run1.mac
   run2.mac
+  run_x0.mac
+  run_x2.mac
+  run_x4.mac
+  run_x5.mac
   vis.mac
   )
 
