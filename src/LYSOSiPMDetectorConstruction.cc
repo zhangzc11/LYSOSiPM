@@ -1,12 +1,15 @@
 
 
-#include <G4SubtractionSolid.hh>
 #include "LYSOSiPMDetectorConstruction.hh"
 
 #include "G4Material.hh"
 #include "G4NistManager.hh"
 
 #include "G4Box.hh"
+#include "G4Paraboloid.hh"
+#include "G4RotationMatrix.hh"
+#include "G4UnionSolid.hh"
+#include <G4SubtractionSolid.hh>
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4PVReplica.hh"
@@ -220,7 +223,15 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
                     fCheckOverlaps);  // checking overlaps
 
 	//crystal
-    G4Box* crystalS = new G4Box("crystalBox", cryst_dX/2, cryst_dY/2, cryst_dZ/2);
+	//1. parabola part
+	G4Paraboloid * crystalS_p1 = new G4Paraboloid("crystalS_p1", 0.9*mm, 0.0*mm, 6.0*mm);
+	G4Box* crystalS_p2 = new G4Box("crystalS_p2", cryst_dX/2, cryst_dY/2, cryst_dZ/2);
+	G4RotationMatrix rotm  = G4RotationMatrix();
+	G4ThreeVector  translation(0, 0, -2.4*mm);
+
+	G4UnionSolid* crystalS = new G4UnionSolid("crystalBox", crystalS_p2, crystalS_p1, &rotm, translation);
+
+    //G4Box* crystalS = new G4Box("crystalBox", cryst_dX/2, cryst_dY/2, cryst_dZ/2);
     G4LogicalVolume* crystalLV
             = new G4LogicalVolume(
                     crystalS,     // its solid
