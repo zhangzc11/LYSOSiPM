@@ -3,7 +3,7 @@ void wavelength()
 {
 
 	TString x_s = "5";
-	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x"+x_s+"_ps_withWL.root");
+	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x"+x_s+"_4mm_ps_withWL.root");
 	TTree *tree = (TTree*)f->Get("tree");
 
 
@@ -27,6 +27,9 @@ void wavelength()
 	tree->Draw("allPhoWaveLength>>h1_wavelength_cerenkov","allPhoIsCerenkov==1");
 	tree->Draw("allPhoWaveLength>>h1_wavelength_NOcerenkov","allPhoIsCerenkov==0");
 
+	std::cout<<"Average total number of Cerenkov photons: "<<h1_wavelength_cerenkov->Integral()/(1.0*tree->GetEntries())<<std::endl;
+	std::cout<<"Average total number of scintillation photons: "<<h1_wavelength_NOcerenkov->Integral()/(1.0*tree->GetEntries())<<std::endl;
+	std::cout<<"Cerenkov/Scintillation ratio = "<<h1_wavelength_cerenkov->Integral()/(1.0*h1_wavelength_NOcerenkov->Integral())<<std::endl;
 	h1_wavelength_cerenkov->Scale(1.0/h1_wavelength_cerenkov->Integral());
 	h1_wavelength_NOcerenkov->Scale(1.0/h1_wavelength_NOcerenkov->Integral());
 

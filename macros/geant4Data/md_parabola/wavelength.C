@@ -3,7 +3,7 @@ void wavelength()
 {
 
 	TString x_s = "5";
-	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x"+x_s+"_os_withWL.root");
+	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x"+x_s+"_4mm_md_ps_parabola_withWL.root");
 	TTree *tree = (TTree*)f->Get("tree");
 
 
@@ -65,9 +65,9 @@ void wavelength()
 	leg->AddEntry(h1_wavelength_cerenkov,"Cherenkov light","l");
 	leg->Draw();
 
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/photonWaveLength_x"+x_s+"_os.pdf");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/photonWaveLength_x"+x_s+"_os.png");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/photonWaveLength_x"+x_s+"_os.C");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_photonWaveLength_x"+x_s+".pdf");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_photonWaveLength_x"+x_s+".png");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_photonWaveLength_x"+x_s+".C");
 
 }
 

@@ -1,17 +1,19 @@
 
 void average_pulse_zoom_fold()
 {
-    const double normNphoton0 = 35920.0;
-    const double normNphoton2 = 12530.0;
-    const double normNphoton5 = 9767.0;
-    
+    const double normNphoton0 = 31890.0;
+    const double normNphoton2 = 68900.0;
+    const double normNphoton5 = 5571.0;
+
+   
 	const int nDigi = 1024;
 	const int nDigi_new = 50;
 	const int nFold = 20;
 
-    TFile *f0 = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x0_4mm_os_withWL.root");
+
+    TFile *f0 = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x0_4mm_md_ps_parabola_withWL.root");
     TFile *f2 = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x2.root");
-    TFile *f5 = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x5_4mm_os_withWL.root");
+    TFile *f5 = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x5_4mm_md_ps_parabola_withWL.root");
 
 
 	TTree *tree0 = (TTree*)f0->Get("tree");
@@ -159,7 +161,7 @@ void average_pulse_zoom_fold()
 	gPad->Update();
 
 
-    TLegend * leg = new TLegend(0.5,0.7,0.6,0.9);
+    TLegend * leg = new TLegend(0.5,0.5,0.6,0.7);
     leg->SetBorderSize(0);
     leg->SetTextSize(0.03);
     leg->SetLineColor(1);
@@ -173,8 +175,8 @@ void average_pulse_zoom_fold()
     leg->AddEntry(gr5, "x = 5mm", "l");
     leg->Draw();
 
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/os_average_pulses_zoom_fold.pdf");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/os_average_pulses_zoom_fold.png");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/os_average_pulses_zoom_fold.C");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_average_pulses_zoom_fold.pdf");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_average_pulses_zoom_fold.png");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_average_pulses_zoom_fold.C");
 
 	}

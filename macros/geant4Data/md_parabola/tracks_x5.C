@@ -1,9 +1,9 @@
 
-void tracks_x0()
+void tracks_x5()
 {
 
-	TString x_s = "0";
-	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x0_4mm_ps_withWL.root");
+	TString x_s = "5";
+	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x5_4mm_md_ps_parabola_withWL.root");
 	TTree *tree = (TTree*)f->Get("tree");
 
 
@@ -22,7 +22,7 @@ void tracks_x0()
 	myC->SetFrameBorderMode(0);
 	myC->SetFrameBorderMode(0);
 
-	TH2F * h2_allPhoTrackVertexR_vs_phoIndex = new TH2F("h2_allPhoTrackVertexR_vs_phoIndex","h2_allPhoTrackVertexR_vs_phoIndex", 200, 0, 200, 100, 0.0, 6.0);
+	TH2F * h2_allPhoTrackVertexR_vs_phoIndex = new TH2F("h2_allPhoTrackVertexR_vs_phoIndex","h2_allPhoTrackVertexR_vs_phoIndex", 200, 0, 200, 100, 4.0, 10.0);
 	tree->Draw("allPhoTrackVertexR:allPhoIndex>>h2_allPhoTrackVertexR_vs_phoIndex");
 	h2_allPhoTrackVertexR_vs_phoIndex->SetTitle("");
 	h2_allPhoTrackVertexR_vs_phoIndex->GetXaxis()->SetTitle("photon index");
@@ -33,12 +33,12 @@ void tracks_x0()
     h2_allPhoTrackVertexR_vs_phoIndex->GetYaxis()->SetTitleOffset(1.0);
 	h2_allPhoTrackVertexR_vs_phoIndex->SetMarkerStyle(6);
 	h2_allPhoTrackVertexR_vs_phoIndex->SetMarkerColor(kRed);
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/tracks_allPhoTrackVertexR_vs_phoIndex_x"+x_s+".pdf");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/tracks_allPhoTrackVertexR_vs_phoIndex_x"+x_s+".png");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/tracks_allPhoTrackVertexR_vs_phoIndex_x"+x_s+".C");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_tracks_allPhoTrackVertexR_vs_phoIndex_x"+x_s+".pdf");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_tracks_allPhoTrackVertexR_vs_phoIndex_x"+x_s+".png");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_tracks_allPhoTrackVertexR_vs_phoIndex_x"+x_s+".C");
 
 
-	TH2F * h2_allPhoTrackLength_vs_phoIndex = new TH2F("h2_allPhoTrackLength_vs_phoIndex","h2_allPhoTrackLength_vs_phoIndex", 200, 0, 200, 100, 0, 50.0);
+	TH2F * h2_allPhoTrackLength_vs_phoIndex = new TH2F("h2_allPhoTrackLength_vs_phoIndex","h2_allPhoTrackLength_vs_phoIndex", 200, 0, 200, 100, 0, 100.0);
 	tree->Draw("allPhoTrackLength:allPhoIndex>>h2_allPhoTrackLength_vs_phoIndex");
 	h2_allPhoTrackLength_vs_phoIndex->SetTitle("");
 	h2_allPhoTrackLength_vs_phoIndex->GetXaxis()->SetTitle("photon index");
@@ -49,9 +49,9 @@ void tracks_x0()
     h2_allPhoTrackLength_vs_phoIndex->GetYaxis()->SetTitleOffset(1.0);
 	h2_allPhoTrackLength_vs_phoIndex->SetMarkerStyle(6);
 	h2_allPhoTrackLength_vs_phoIndex->SetMarkerColor(kRed);
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/tracks_allPhoTrackLength_vs_phoIndex_x"+x_s+".pdf");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/tracks_allPhoTrackLength_vs_phoIndex_x"+x_s+".png");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/tracks_allPhoTrackLength_vs_phoIndex_x"+x_s+".C");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_tracks_allPhoTrackLength_vs_phoIndex_x"+x_s+".pdf");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_tracks_allPhoTrackLength_vs_phoIndex_x"+x_s+".png");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_tracks_allPhoTrackLength_vs_phoIndex_x"+x_s+".C");
 
 	TH2F * h2_allPhoTime_vs_phoIndex = new TH2F("h2_allPhoTime_vs_phoIndex","h2_allPhoTime_vs_phoIndex", 200, 0, 200, 100, 0, 0.4);
 	tree->Draw("allPhoTime:allPhoIndex>>h2_allPhoTime_vs_phoIndex");
@@ -64,8 +64,8 @@ void tracks_x0()
     h2_allPhoTime_vs_phoIndex->GetYaxis()->SetTitleOffset(1.0);
 	h2_allPhoTime_vs_phoIndex->SetMarkerStyle(6);
 	h2_allPhoTime_vs_phoIndex->SetMarkerColor(kRed);
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/tracks_allPhoTime_vs_phoIndex_x"+x_s+".pdf");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/tracks_allPhoTime_vs_phoIndex_x"+x_s+".png");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/tracks_allPhoTime_vs_phoIndex_x"+x_s+".C");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_tracks_allPhoTime_vs_phoIndex_x"+x_s+".pdf");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_tracks_allPhoTime_vs_phoIndex_x"+x_s+".png");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_parabola_tracks_allPhoTime_vs_phoIndex_x"+x_s+".C");
 
 	}

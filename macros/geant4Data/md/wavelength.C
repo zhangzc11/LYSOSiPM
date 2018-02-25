@@ -3,7 +3,7 @@ void wavelength()
 {
 
 	TString x_s = "5";
-	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x"+x_s+"_os_withWL.root");
+	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x"+x_s+"_4mm_md_ps_withWL.root");
 	TTree *tree = (TTree*)f->Get("tree");
 
 
@@ -26,6 +26,7 @@ void wavelength()
 	TH1F *h1_wavelength_NOcerenkov = new TH1F("h1_wavelength_NOcerenkov","h1_wavelength_cerenkov", 400, 300, 700);
 	tree->Draw("allPhoWaveLength>>h1_wavelength_cerenkov","allPhoIsCerenkov==1");
 	tree->Draw("allPhoWaveLength>>h1_wavelength_NOcerenkov","allPhoIsCerenkov==0");
+
 
 	std::cout<<"Average total number of Cerenkov photons: "<<h1_wavelength_cerenkov->Integral()/(1.0*tree->GetEntries())<<std::endl;
     std::cout<<"Average total number of scintillation photons: "<<h1_wavelength_NOcerenkov->Integral()/(1.0*tree->GetEntries())<<std::endl;
@@ -65,9 +66,9 @@ void wavelength()
 	leg->AddEntry(h1_wavelength_cerenkov,"Cherenkov light","l");
 	leg->Draw();
 
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/photonWaveLength_x"+x_s+"_os.pdf");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/photonWaveLength_x"+x_s+"_os.png");
-	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/photonWaveLength_x"+x_s+"_os.C");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_photonWaveLength_x"+x_s+".pdf");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_photonWaveLength_x"+x_s+".png");
+	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/md_photonWaveLength_x"+x_s+".C");
 
 }
 

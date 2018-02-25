@@ -3,7 +3,7 @@ void tracks_x5()
 {
 
 	TString x_s = "5";
-	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x5.root");
+	TFile *f = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/ntuple_x5_4mm_ps_withWL.root");
 	TTree *tree = (TTree*)f->Get("tree");
 
 

@@ -1,0 +1,10 @@
+x=0
+Processing wavelength.C...
+Average total number of Cerenkov photons: 497.84
+Average total number of scintillation photons: 4496.95
+Cerenkov/Scintillation ratio = 0.110706
+x=5
+Processing wavelength.C...
+Average total number of Cerenkov photons: 552.5
+Average total number of scintillation photons: 4441.34
+Cerenkov/Scintillation ratio = 0.124399
