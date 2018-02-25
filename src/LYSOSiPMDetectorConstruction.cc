@@ -229,9 +229,9 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
 	G4RotationMatrix rotm  = G4RotationMatrix();
 	G4ThreeVector  translation(0, 0, -2.4*mm);
 
-	G4UnionSolid* crystalS = new G4UnionSolid("crystalBox", crystalS_p2, crystalS_p1, &rotm, translation);
+	//G4UnionSolid* crystalS = new G4UnionSolid("crystalBox", crystalS_p2, crystalS_p1, &rotm, translation);
 
-    //G4Box* crystalS = new G4Box("crystalBox", cryst_dX/2, cryst_dY/2, cryst_dZ/2);
+    G4Box* crystalS = new G4Box("crystalBox", cryst_dX/2, cryst_dY/2, cryst_dZ/2);
     G4LogicalVolume* crystalLV
             = new G4LogicalVolume(
                     crystalS,     // its solid
@@ -271,7 +271,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
 	OpLYSOSurface->SetModel(glisur);
 	OpLYSOSurface->SetType(dielectric_dielectric);
 	OpLYSOSurface->SetFinish(ground);
-	OpLYSOSurface->SetPolish(1.0);
+	OpLYSOSurface->SetPolish(0.5);
 	//G4LogicalBorderSurface* LYSOSurface = new G4LogicalBorderSurface("LYSOSurface", cAbsorberPV, worldPV, OpLYSOSurface);
 
 	/*
