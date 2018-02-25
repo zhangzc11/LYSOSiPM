@@ -111,7 +111,7 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 	mpt->AddProperty("FASTCOMPONENT", ene, fast, num);
 	mpt->AddProperty("RINDEX", ene, rLyso , num);
 	mpt->AddProperty("ABSLENGTH", ene, abs, num);
-	mpt->AddConstProperty("SCINTILLATIONYIELD",32/keV);
+	mpt->AddConstProperty("SCINTILLATIONYIELD",32.0/keV);
 	//mpt->AddConstProperty("SCINTILLATIONYIELD",4/keV);//mimic SiPM pde
 	mpt->AddConstProperty("RESOLUTIONSCALE", 1);
 	mpt->AddConstProperty("FASTTIMECONSTANT",41.0*ns);
@@ -182,7 +182,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
 
     //Crystal Parameters
     G4double cryst_dX = 12 * mm, cryst_dY = 12 * mm, cryst_dZ = 3 * mm;
-	G4double gel_dX = 4 * mm, gel_dY = 4 * mm, gel_dZ = 1 * mm;
+	G4double gel_dX = 3 * mm, gel_dY = 3 * mm, gel_dZ = 1 * mm;
 
     G4double foilThickness = 0.5 * mm;
     G4double gapThickness = 0.0 * mm; //air gap for wrapping
@@ -271,7 +271,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
 	OpLYSOSurface->SetModel(glisur);
 	OpLYSOSurface->SetType(dielectric_dielectric);
 	OpLYSOSurface->SetFinish(ground);
-	OpLYSOSurface->SetPolish(0.5);
+	OpLYSOSurface->SetPolish(1.0);
 	//G4LogicalBorderSurface* LYSOSurface = new G4LogicalBorderSurface("LYSOSurface", cAbsorberPV, worldPV, OpLYSOSurface);
 
 	/*
