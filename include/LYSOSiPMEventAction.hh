@@ -94,6 +94,7 @@ private:
 	std::vector<G4double> fAmp2;
 
 	G4int photonIndex;
+	G4int nPhotons_Cerenkov;
 };
 
 // inline functions

@@ -16,7 +16,8 @@ LYSOSiPMEventAction::LYSOSiPMEventAction()
 		  fTime2(kDigi),
 		  fAmp1(kDigi),
 		  fAmp2(kDigi),
-		  photonIndex(0)
+		  photonIndex(0),
+		  nPhotons_Cerenkov(0)
 {}
 
 LYSOSiPMEventAction::~LYSOSiPMEventAction() {}
@@ -31,6 +32,7 @@ void LYSOSiPMEventAction::AddPhoton(G4double time, G4double time_local, G4double
 	allPhoTrackVertexY.push_back(trackVertexY);
 	allPhoTrackVertexZ.push_back(trackVertexZ);
 	allPhoIsCerenkov.push_back(isCerenkov);
+	if(isCerenkov) nPhotons_Cerenkov++;
 
 	time_index.insert(std::pair<G4double, G4int>(time, photonIndex));
 
@@ -46,6 +48,7 @@ void LYSOSiPMEventAction::BeginOfEventAction(const G4Event * /*event*/) {
     scattered = false;
     recorded = false;
 	photonIndex = 0;
+	nPhotons_Cerenkov = 0;
 }
 
 
@@ -118,6 +121,7 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
     analysisManager->FillNtupleDColumn(1, event->GetPrimaryVertex()->GetX0());
     analysisManager->FillNtupleDColumn(2, event->GetPrimaryVertex()->GetY0());
     analysisManager->FillNtupleIColumn(3, allPhoTime.size());
+    analysisManager->FillNtupleIColumn(4, nPhotons_Cerenkov);
     analysisManager->AddNtupleRow();
 
 	allPhoTime.clear();
