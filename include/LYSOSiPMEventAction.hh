@@ -25,6 +25,7 @@ const G4int NSaveMax = 5000;
 const G4double grease_x = 0.0;
 const G4double grease_y = 0.0;
 const G4double grease_z = 1.5;//mm
+const G4double SPTR = 66.0;//ps
 
 class LYSOSiPMEventAction : public G4UserEventAction {
 public:
@@ -45,11 +46,11 @@ public:
     void ScatBool(G4bool scatYN);
     void RecordedBool(G4bool recordYN);
 	void AddPhoton(G4double time, G4double time_local, G4double trackLength, G4double trackVertexX, G4double trackVertexY, G4double trackVertexZ, G4double trackTotalEnergy, G4int isCerenkov);
+
 	std::vector<G4double> & GetTime1Array(){ return fTime1;}
 	std::vector<G4double> & GetTime2Array(){ return fTime2;}
 	std::vector<G4double> & GetAmp1Array(){ return fAmp1;}
 	std::vector<G4double> & GetAmp2Array(){ return fAmp2;}
-	
 	std::vector<G4double> & GetPhoTimeArray(){ return allPhoTime_save;}
 	std::vector<G4int> & GetPhoIndexArray(){ return allPhoIndex_save;}
 	std::vector<G4double> & GetPhoTimeLocalArray(){ return allPhoTimeLocal_save;}
@@ -61,6 +62,18 @@ public:
 	std::vector<G4double> & GetPhoTrackVertexRArray(){ return allPhoTrackVertexR_save;}
 	std::vector<G4int> & GetPhoIsCerenkovArray(){ return allPhoIsCerenkov_save;}
 
+	std::vector<G4double> & GetAmp1Array_sptr(){ return fAmp1_sptr;}
+	std::vector<G4double> & GetAmp2Array_sptr(){ return fAmp2_sptr;}
+	std::vector<G4double> & GetPhoTimeArray_sptr(){ return allPhoTime_save_sptr;}
+	std::vector<G4int> & GetPhoIndexArray_sptr(){ return allPhoIndex_save_sptr;}
+	std::vector<G4double> & GetPhoTrackLengthArray_sptr(){ return allPhoTrackLength_save_sptr;}
+	std::vector<G4double> & GetPhoWaveLengthArray_sptr(){ return allPhoWaveLength_save_sptr;}
+	std::vector<G4double> & GetPhoTrackVertexXArray_sptr(){ return allPhoTrackVertexX_save_sptr;}
+	std::vector<G4double> & GetPhoTrackVertexYArray_sptr(){ return allPhoTrackVertexY_save_sptr;}
+	std::vector<G4double> & GetPhoTrackVertexZArray_sptr(){ return allPhoTrackVertexZ_save_sptr;}
+	std::vector<G4double> & GetPhoTrackVertexRArray_sptr(){ return allPhoTrackVertexR_save_sptr;}
+	std::vector<G4int> & GetPhoIsCerenkovArray_sptr(){ return allPhoIsCerenkov_save_sptr;}
+
 private:
     G4double cEnergyAbs;
     G4double scatAng;
@@ -69,6 +82,7 @@ private:
     G4bool scattered;
     G4bool recorded;
 	
+	G4int photonIndex;
 	std::vector<G4double> allPhoTime;
 	std::vector<G4double> allPhoTimeLocal;
 	std::map<G4double, G4int> time_index;
@@ -93,7 +107,21 @@ private:
 	std::vector<G4double> fAmp1;
 	std::vector<G4double> fAmp2;
 
-	G4int photonIndex;
+
+	std::vector<G4double> allPhoTime_sptr;
+	std::map<G4double, G4int> time_index_sptr;
+	std::vector<G4double> allPhoTime_save_sptr;
+	std::vector<G4int> allPhoIndex_save_sptr;
+	std::vector<G4double> allPhoWaveLength_save_sptr;
+	std::vector<G4double> allPhoTrackLength_save_sptr;
+	std::vector<G4double> allPhoTrackVertexX_save_sptr;
+	std::vector<G4double> allPhoTrackVertexY_save_sptr;
+	std::vector<G4double> allPhoTrackVertexZ_save_sptr;
+	std::vector<G4int> allPhoIsCerenkov_save_sptr;
+	std::vector<G4double> fAmp1_sptr;
+	std::vector<G4double> fAmp2_sptr;
+
+
 	G4int nPhotons_Cerenkov;
 };
 

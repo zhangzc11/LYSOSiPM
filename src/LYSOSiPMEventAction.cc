@@ -17,6 +17,9 @@ LYSOSiPMEventAction::LYSOSiPMEventAction()
 		  fAmp1(kDigi),
 		  fAmp2(kDigi),
 		  photonIndex(0),
+		  fAmp1_sptr(kDigi),
+		  fAmp2_sptr(kDigi),
+		  photonIndex_sptr(0),
 		  nPhotons_Cerenkov(0)
 {}
 
@@ -26,6 +29,7 @@ void LYSOSiPMEventAction::AddPhoton(G4double time, G4double time_local, G4double
 {
 	//allPhoTime.push_back(time);
 	allPhoTimeLocal.push_back(time_local);
+
 	allPhoTrackLength.push_back(trackLength);
 	allPhoWaveLength.push_back(0.001241/trackTotalEnergy);//1eV = 1241nm, 1MeV = 0.001241nm
 	allPhoTrackVertexX.push_back(trackVertexX);
@@ -34,7 +38,12 @@ void LYSOSiPMEventAction::AddPhoton(G4double time, G4double time_local, G4double
 	allPhoIsCerenkov.push_back(isCerenkov);
 	if(isCerenkov) nPhotons_Cerenkov++;
 
+	std::random_device rd;
+    std::mt19937 e2(rd());
+	std::normal_distribution<> dist(time, SPTR);
+	G4double time_sptr = dist(e2); 
 	time_index.insert(std::pair<G4double, G4int>(time, photonIndex));
+	time_index_sptr.insert(std::pair<G4double, G4int>(time_sptr, photonIndex));
 
 	photonIndex ++;
 }
@@ -56,6 +65,7 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
     // Accumulate statistics
 
 	//std::sort(allPhoTime.begin(), allPhoTime.end());
+	//no sptr
 	G4int numSave = 0;
 	for(auto tmp : time_index)
 	{
@@ -79,9 +89,34 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 		numSave++;
 	}
 
+	//with sptr
+	G4int numSave_sptr = 0;
+	for(auto tmp : time_index_sptr)
+	{
+		allPhoTime_sptr.push_back(tmp.first);
+		if(numSave_sptr<NSaveMax)
+		{
+			allPhoTime_save_sptr.push_back(tmp.first);
+			allPhoIndex_save_sptr.push_back(numSave_sptr);
+			allPhoTrackLength_save_sptr.push_back(allPhoTrackLength[tmp.second]);
+			allPhoWaveLength_save_sptr.push_back(allPhoWaveLength[tmp.second]);
+			allPhoTimeLocal_save_sptr.push_back(allPhoTimeLocal[tmp.second]);
+			allPhoTrackVertexX_save_sptr.push_back(allPhoTrackVertexX[tmp.second]);
+			allPhoTrackVertexY_save_sptr.push_back(allPhoTrackVertexY[tmp.second]);
+			allPhoTrackVertexZ_save_sptr.push_back(allPhoTrackVertexZ[tmp.second]);
+			allPhoIsCerenkov_save_sptr.push_back(allPhoIsCerenkov[tmp.second]);
+			allPhoTrackVertexR_save_sptr.push_back(std::sqrt(
+							(allPhoTrackVertexX[tmp.second] - grease_x)*(allPhoTrackVertexX[tmp.second] - grease_x) + 
+							(allPhoTrackVertexY[tmp.second] - grease_y)*(allPhoTrackVertexY[tmp.second] - grease_y)+
+							(allPhoTrackVertexZ[tmp.second] - grease_z)*(allPhoTrackVertexZ[tmp.second] - grease_z)));
+		}
+		numSave_sptr++;
+	}
 
 
-	//sudo-digitization photon current pulse:
+
+
+	//sudo-digitization photon current pulse - no sptr:
 
 	G4int kPhotonIndex1 = 0;
 	G4int kPhotonIndex2 = 0;
@@ -113,6 +148,36 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 		kPhotonIndex_pre2 = kPhotonIndex2;
 	}
 
+	//sudo-digitization photon current pulse - with sptr:
+
+	G4int kPhotonIndex1_sptr = 0;
+	G4int kPhotonIndex2_sptr = 0;
+	G4int kPhotonIndex_pre1_sptr = 0;
+	G4int kPhotonIndex_pre2_sptr = 0;
+	for(G4int iS = 0; iS<kDigi; iS++)
+	{
+		G4double time_this1 = iS*digi_step1; //ns
+		G4double time_this2 = iS*digi_step2; //ns
+		for(G4int kp = kPhotonIndex_pre1_sptr; kp<allPhoTime_sptr.size(); kp++)
+		{
+			if(allPhoTime_sptr[kp]>time_this1) break;
+			kPhotonIndex1_sptr ++;
+		}
+
+		for(G4int kp = kPhotonIndex_pre2_sptr; kp<allPhoTime_sptr.size(); kp++)
+		{
+			if(allPhoTime_sptr[kp]>time_this2) break;
+			kPhotonIndex2_sptr ++;
+		}
+		
+		fAmp1[iS] = 1.0*(kPhotonIndex1_sptr-kPhotonIndex_pre1_sptr)/digi_step1;
+		fAmp2[iS] = 1.0*(kPhotonIndex2_sptr-kPhotonIndex_pre2_sptr)/digi_step2;
+
+		kPhotonIndex_pre1_sptr = kPhotonIndex1_sptr;
+		kPhotonIndex_pre2_sptr = kPhotonIndex2_sptr;
+	}
+
+
 	// get analysis manager
     G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
 
@@ -125,7 +190,6 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
     analysisManager->AddNtupleRow();
 
 	allPhoTime.clear();
-	allPhoTimeLocal.clear();
 	time_index.clear();
 	allPhoTime_save.clear();
 	allPhoIndex_save.clear();
@@ -143,6 +207,21 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 	allPhoTrackVertexR_save.clear();
 	allPhoIsCerenkov.clear();
 	allPhoIsCerenkov_save.clear();
+
+
+	allPhoTime_sptr.clear();
+	time_index_sptr.clear();
+	allPhoTime_save_sptr.clear();
+	allPhoIndex_save_sptr.clear();
+	allPhoTimeLocal_save_sptr.clear();
+	allPhoWaveLength_save_sptr.clear();
+	allPhoTrackLength_save_sptr.clear();
+	allPhoTrackVertexX_save_sptr.clear();
+	allPhoTrackVertexY_save_sptr.clear();
+	allPhoTrackVertexZ_save_sptr.clear();
+	allPhoTrackVertexR_save_sptr.clear();
+	allPhoIsCerenkov_save_sptr.clear();
+
 
 }
 

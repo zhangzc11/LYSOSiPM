@@ -110,12 +110,40 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 
 	mpt->AddProperty("FASTCOMPONENT", ene, fast, num);
 	mpt->AddProperty("RINDEX", ene, rLyso , num);
-	mpt->AddProperty("ABSLENGTH", ene, abs, num);
+	//mpt->AddProperty("ABSLENGTH", ene, abs, num);
 	mpt->AddConstProperty("SCINTILLATIONYIELD",32.0/keV);
 	//mpt->AddConstProperty("SCINTILLATIONYIELD",4/keV);//mimic SiPM pde
 	mpt->AddConstProperty("RESOLUTIONSCALE", 1);
 	mpt->AddConstProperty("FASTTIMECONSTANT",41.0*ns);
 	scintillator->SetMaterialPropertiesTable(mpt);
+
+	//use Marco's absorption length: https://github.com/marco-toli/TB_timing/blob/3f99f77d68aa1c1d395b388e4e509dac17de7211/src/MyMaterials.cc#L2041
+	const G4int nEntries_ABS = 85;
+	G4double PhotonEnergy_ABS[nEntries_ABS] =
+    { 4.42857*eV, 4.35088*eV, 4.27586*eV, 4.20339*eV, 4.13333*eV, 4.06557*eV, 4*eV, 3.93651*eV, 3.875*eV, 3.81538*eV,
+      3.75758*eV, 3.70149*eV, 3.64706*eV, 3.5942*eV, 3.54286*eV, 3.49296*eV, 3.44444*eV, 3.39726*eV, 3.35135*eV,
+      3.30667*eV, 3.26316*eV, 3.22078*eV, 3.17949*eV, 3.13924*eV, 3.1*eV, 3.06173*eV, 3.02439*eV, 2.98795*eV,
+      2.95238*eV, 2.91765*eV, 2.88372*eV, 2.85057*eV, 2.81818*eV, 2.78652*eV, 2.75556*eV, 2.72527*eV, 2.69565*eV,
+      2.66667*eV, 2.6383*eV, 2.61053*eV, 2.58333*eV, 2.5567*eV, 2.53061*eV, 2.50505*eV, 2.48*eV, 2.45545*eV,
+      2.43137*eV, 2.40777*eV, 2.38462*eV, 2.3619*eV, 2.33962*eV, 2.31776*eV, 2.2963*eV, 2.27523*eV, 2.25455*eV,
+      2.23423*eV, 2.21429*eV, 2.19469*eV, 2.17544*eV, 2.15652*eV, 2.13793*eV, 2.11966*eV, 2.10169*eV, 2.08403*eV,
+      2.06667*eV, 2.04959*eV, 2.03279*eV, 2.01626*eV, 2*eV, 1.984*eV, 1.96825*eV, 1.95276*eV, 1.9375*eV, 1.92248*eV,
+      1.90769*eV, 1.89313*eV, 1.87879*eV, 1.86466*eV, 1.85075*eV, 1.83704*eV, 1.82353*eV, 1.81022*eV, 1.7971*eV, 1.78417*eV, 1.0*eV
+    };
+
+	G4double Absorption[nEntries_ABS] =
+    { 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm,
+      0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm,
+      0.5*mm, 0.93828*mm, 1.92292*mm, 3.19852*mm, 7.84337*mm, 19.4627*mm, 43.2508*mm, 90.9185*mm, 161.725*mm,
+      267.35*mm, 325.724*mm, 369.759*mm, 527.641*mm, 433.773*mm, 451.487*mm, 510.549*mm, 352.191*mm, 432.319*mm,
+      499.728*mm, 416.34*mm, 433.836*mm, 580.102*mm, 434.027*mm, 469.628*mm, 458.186*mm, 500.534*mm, 487.4*mm,
+      426.389*mm, 486.997*mm, 451.24*mm, 500.008*mm, 500.425*mm, 500.712*mm, 470.476*mm, 475.17*mm, 500.267*mm,
+      493.917*mm, 500.192*mm, 507.001*mm, 544.182*mm, 500.366*mm, 500.553*mm, 500.793*mm, 500.08*mm, 500.38*mm,
+      451.895*mm, 500.089*mm, 500.602*mm, 500.547*mm, 500.33*mm, 500.171*mm, 500.461*mm, 500.85*mm, 500.493*mm,
+      500.18*mm, 500.011*mm, 500.956*mm, 500.05*mm, 500.495*mm, 500.982*mm, 500.846*mm, 500.64*mm, 500.212*mm,
+      500.801*mm, 500.457*mm, 500.729*mm, 500.8*mm
+	};
+	mpt->AddProperty("ABSLENGTH", PhotonEnergy_ABS, Absorption, nEntries_ABS);
 
 	//air
     G4Material* Air  =  nist->FindOrBuildMaterial("G4_AIR");
