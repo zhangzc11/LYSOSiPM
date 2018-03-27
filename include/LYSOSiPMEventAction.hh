@@ -108,6 +108,7 @@ private:
 	std::vector<G4double> fAmp2;
 
 
+	G4int photonIndex_sptr;
 	std::vector<G4double> allPhoTime_sptr;
 	std::map<G4double, G4int> time_index_sptr;
 	std::vector<G4double> allPhoTime_save_sptr;
@@ -117,6 +118,7 @@ private:
 	std::vector<G4double> allPhoTrackVertexX_save_sptr;
 	std::vector<G4double> allPhoTrackVertexY_save_sptr;
 	std::vector<G4double> allPhoTrackVertexZ_save_sptr;
+	std::vector<G4double> allPhoTrackVertexR_save_sptr;
 	std::vector<G4int> allPhoIsCerenkov_save_sptr;
 	std::vector<G4double> fAmp1_sptr;
 	std::vector<G4double> fAmp2_sptr;

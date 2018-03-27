@@ -1,4 +1,4 @@
-
+#include <random>
 
 #include "LYSOSiPMEventAction.hh"
 #include "LYSOSiPMAnalysis.hh"
@@ -100,7 +100,6 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 			allPhoIndex_save_sptr.push_back(numSave_sptr);
 			allPhoTrackLength_save_sptr.push_back(allPhoTrackLength[tmp.second]);
 			allPhoWaveLength_save_sptr.push_back(allPhoWaveLength[tmp.second]);
-			allPhoTimeLocal_save_sptr.push_back(allPhoTimeLocal[tmp.second]);
 			allPhoTrackVertexX_save_sptr.push_back(allPhoTrackVertexX[tmp.second]);
 			allPhoTrackVertexY_save_sptr.push_back(allPhoTrackVertexY[tmp.second]);
 			allPhoTrackVertexZ_save_sptr.push_back(allPhoTrackVertexZ[tmp.second]);
@@ -213,7 +212,6 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 	time_index_sptr.clear();
 	allPhoTime_save_sptr.clear();
 	allPhoIndex_save_sptr.clear();
-	allPhoTimeLocal_save_sptr.clear();
 	allPhoWaveLength_save_sptr.clear();
 	allPhoTrackLength_save_sptr.clear();
 	allPhoTrackVertexX_save_sptr.clear();
