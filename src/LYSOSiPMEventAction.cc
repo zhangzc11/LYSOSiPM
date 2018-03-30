@@ -169,8 +169,8 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 			kPhotonIndex2_sptr ++;
 		}
 		
-		fAmp1[iS] = 1.0*(kPhotonIndex1_sptr-kPhotonIndex_pre1_sptr)/digi_step1;
-		fAmp2[iS] = 1.0*(kPhotonIndex2_sptr-kPhotonIndex_pre2_sptr)/digi_step2;
+		fAmp1_sptr[iS] = 1.0*(kPhotonIndex1_sptr-kPhotonIndex_pre1_sptr)/digi_step1;
+		fAmp2_sptr[iS] = 1.0*(kPhotonIndex2_sptr-kPhotonIndex_pre2_sptr)/digi_step2;
 
 		kPhotonIndex_pre1_sptr = kPhotonIndex1_sptr;
 		kPhotonIndex_pre2_sptr = kPhotonIndex2_sptr;
