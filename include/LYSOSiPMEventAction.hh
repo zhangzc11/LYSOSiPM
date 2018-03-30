@@ -25,7 +25,7 @@ const G4int NSaveMax = 5000;
 const G4double grease_x = 0.0;
 const G4double grease_y = 0.0;
 const G4double grease_z = 1.5;//mm
-const G4double SPTR = 66.0;//ps
+const G4double SPTR = 0.066;//ns
 
 class LYSOSiPMEventAction : public G4UserEventAction {
 public:
