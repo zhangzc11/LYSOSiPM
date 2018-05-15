@@ -409,7 +409,8 @@ void goodplot(std::string inFileName)
 	std::string inFileName5 = inFileName.replace(inFileName.find("x0"), 2, "x5");
 	std::string inFileName05 = inFileName.replace(inFileName.find("_x5"), 3, "");
 
-	string plotDir = "/afs/cern.ch/user/z/zhicaiz/www/sharebox/TestBeam/geant4/"+inFileName05+"/";
+	//string plotDir = "/afs/cern.ch/user/z/zhicaiz/www/sharebox/TestBeam/geant4/"+inFileName05+"/";
+	string plotDir = "/afs/cern.ch/user/z/zhicaiz/www/sharebox/TestBeam/geant4/";
 
 	mkdir(plotDir.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
 
