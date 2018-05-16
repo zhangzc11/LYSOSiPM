@@ -15,7 +15,7 @@
 #include "TPad.h"
 #include "TProfile.h"
 
-void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", float amp_low = 200.0, float amp_high = 850.0, float x_tile_low = 20.0, float x_tile_high = 30.0, float y_tile_low = 5.0, float y_tile_high = 12.0, float x_sipm_low = 23.0, float x_sipm_high = 27.0, float y_sipm_low = 7.0, float y_sipm_high = 10.0)
+void goodplot_V4_3mm(const std::string& inFileName, const std::string& ch1  = "16", float amp_low = 200.0, float amp_high = 850.0, float x_tile_low = 20.0, float x_tile_high = 30.0, float y_tile_low = 5.0, float y_tile_high = 12.0, float x_sipm_low = 23.0, float x_sipm_high = 27.0, float y_sipm_low = 7.0, float y_sipm_high = 10.0)
 {
 	//string ch1 = "15";
 	string ch2 = "9";
@@ -31,8 +31,8 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 	float amp_low_fit = amp_low;
 	float amp_high_fit = amp_high;
 
-	float amp_low_ch2 = 40.0;
-	float amp_high_ch2 = 150.0;
+	float amp_low_ch2 = 100.0;
+	float amp_high_ch2 = 250.0;
 
 	//float x_center = 2.0*((int(0.5*(x_sipm_low+x_sipm_high)))/2)+1.0;
 	float x_center = 2.0*((int(0.5*(x_tile_low+x_tile_high)))/2)+1.0;
@@ -73,10 +73,10 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 
 
 	string inputDir = "/eos/cms/store/group/phys_susy/razor/Timing/Mar2018FNAL/OTSDAQ/CMSTiming/RECO/V3/combine";
-	string plotDir = "plots_V3/";
-	string plotDir_XYbins = "plots_V3/XYbins/";
-	string plotDir_ampbins = "plots_V3/ampbins/";
-	string plotDir_effampbins = "plots_V3/effampbins/";
+	string plotDir = "plots_V4/";
+	string plotDir_XYbins = "plots_V4/XYbins/";
+	string plotDir_ampbins = "plots_V4/ampbins/";
+	string plotDir_effampbins = "plots_V4/effampbins/";
 
 	mkdir(plotDir.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
 	mkdir(plotDir_XYbins.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
@@ -197,6 +197,8 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 	myC->SetGridx(0);
 
 	TH2F * h2_reso_vs_xy =  new TH2F("h2_reso_vs_xy","h2_reso_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
+	float sum_reso_vs_xy = 0.0;
+	int num_reso_vs_xy = 0;
 	TH2F * h2_meanAmp_vs_xy =  new TH2F("h2_meanAmp_vs_xy","h2_meanAmp_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
 	TH2F * h2_meanRisetime_vs_xy =  new TH2F("h2_meanRisetime_vs_xy","h2_meanRisetime_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
 	TH2F * h2_meanT_vs_xy =  new TH2F("h2_meanT_vs_xy","h2_meanT_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
@@ -265,6 +267,9 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 
 			h2_reso_vs_xy->SetBinContent(ix,iy,1000.0*sigmaT);
 			h2_reso_vs_xy->SetBinError(ix,iy,1000.0*sigmaTerror);
+			
+			num_reso_vs_xy ++;
+			sum_reso_vs_xy += 1000.0*sigmaT;
 
 			h2_meanT_vs_xy->SetBinContent(ix,iy,1000.0*meanT);
 			h2_meanT_vs_xy->SetBinError(ix,iy,1000.0*meanTerror);
@@ -283,9 +288,9 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 			gPad->Modified();
 			gPad->Update();
 
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+".pdf").c_str());
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+".png").c_str());
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+".C").c_str());
+			myC->SaveAs((plotDir_XYbins+"/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+".pdf").c_str());
+			myC->SaveAs((plotDir_XYbins+"/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+".png").c_str());
+			myC->SaveAs((plotDir_XYbins+"/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+".C").c_str());
 			
 		}
 	}	
@@ -349,7 +354,7 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 	h2_meanAmp_vs_xy->GetXaxis()->SetTitle("beam position X [mm]");
 	h2_meanAmp_vs_xy->GetYaxis()->SetTitle("beam position Y [mm]");
 	h2_meanAmp_vs_xy->GetZaxis()->SetTitle("amplitude [mV]");
-	h2_meanAmp_vs_xy->GetZaxis()->SetRangeUser(amp_low+50.0,amp_high-50.0);
+	h2_meanAmp_vs_xy->GetZaxis()->SetRangeUser(amp_low,amp_high);
 	h2_meanAmp_vs_xy->SetTitle("");
 	h2_meanAmp_vs_xy->GetXaxis()->SetTitleSize( axisTitleSizeX );
 	h2_meanAmp_vs_xy->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
@@ -438,9 +443,9 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 		gPad->Modified();
 		gPad->Update();
 
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_ampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".pdf").c_str());
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_ampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".png").c_str());
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_ampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".C").c_str());
+		myC->SaveAs((plotDir_ampbins+"/Run"+inFileName+"_ampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".pdf").c_str());
+		myC->SaveAs((plotDir_ampbins+"/Run"+inFileName+"_ampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".png").c_str());
+		myC->SaveAs((plotDir_ampbins+"/Run"+inFileName+"_ampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".C").c_str());
 		
 	}	
 
@@ -517,9 +522,9 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 		gPad->Modified();
 		gPad->Update();
 
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_effampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".pdf").c_str());
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_effampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".png").c_str());
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_effampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".C").c_str());
+		myC->SaveAs((plotDir_effampbins+"/Run"+inFileName+"_effampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".pdf").c_str());
+		myC->SaveAs((plotDir_effampbins+"/Run"+inFileName+"_effampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".png").c_str());
+		myC->SaveAs((plotDir_effampbins+"/Run"+inFileName+"_effampbins"+std::to_string(thisAmp_low)+"_deltaT_ch"+ch1+".C").c_str());
 		
 	}	
 
@@ -3518,6 +3523,9 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 	myC->SetGridx(0);
 
 	TH2F * h2_reso_vs_xy_afterTW =  new TH2F("h2_reso_vs_xy_afterTW","h2_reso_vs_xy_afterTW", 9, x_low, x_high, 9, y_low, y_high);
+	float sum_reso_vs_xy_afterTW = 0.0;
+	int num_reso_vs_xy_afterTW = 0;
+
 	TH2F * h2_meanT_vs_xy_afterTW =  new TH2F("h2_meanT_vs_xy_afterTW","h2_meanT_vs_xy_afterTW", 9, x_low, x_high, 9, y_low, y_high);
 	
 	float maxY_t_2D_mean_afterTW = -9999.9;//50.0+h2_meanT_vs_xy_afterTW->GetMaximum(); 
@@ -3576,12 +3584,16 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 			{
 			h2_reso_vs_xy_afterTW->SetBinContent(ix,iy,1000.0*sigmaT);
 			h2_reso_vs_xy_afterTW->SetBinError(ix,iy,1000.0*sigmaTerror);
+			sum_reso_vs_xy_afterTW += 1000.0*sigmaT;
+
 			}
 			else
 			{
 			h2_reso_vs_xy_afterTW->SetBinContent(ix,iy,h2_reso_vs_xy->GetBinContent(ix,iy));
 			h2_reso_vs_xy_afterTW->SetBinError(ix,iy,h2_reso_vs_xy->GetBinError(ix,iy));
+			sum_reso_vs_xy_afterTW += h2_reso_vs_xy->GetBinContent(ix,iy);
 			}
+			num_reso_vs_xy_afterTW ++;
 
 			h2_meanT_vs_xy_afterTW->SetBinContent(ix,iy,1000.0*meanT);
 			h2_meanT_vs_xy_afterTW->SetBinError(ix,iy,1000.0*meanTerror);
@@ -3592,9 +3604,9 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 			gPad->Modified();
 			gPad->Update();
 
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+".pdf").c_str());
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+".png").c_str());
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+".C").c_str());
+			myC->SaveAs((plotDir_XYbins+"/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+".pdf").c_str());
+			myC->SaveAs((plotDir_XYbins+"/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+".png").c_str());
+			myC->SaveAs((plotDir_XYbins+"/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+".C").c_str());
 			
 		}
 	}	
@@ -3724,9 +3736,9 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 		gPad->Modified();
 		gPad->Update();
 
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_ampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".pdf").c_str());
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_ampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".png").c_str());
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_ampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".C").c_str());
+		myC->SaveAs((plotDir_ampbins+"/Run"+inFileName+"_ampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".pdf").c_str());
+		myC->SaveAs((plotDir_ampbins+"/Run"+inFileName+"_ampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".png").c_str());
+		myC->SaveAs((plotDir_ampbins+"/Run"+inFileName+"_ampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".C").c_str());
 		
 	}	
 
@@ -3818,9 +3830,9 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 		gPad->Modified();
 		gPad->Update();
 
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_effampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".pdf").c_str());
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_effampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".png").c_str());
-		myC->SaveAs((plotDir+"/Run"+inFileName+"_effampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".C").c_str());
+		myC->SaveAs((plotDir_effampbins+"/Run"+inFileName+"_effampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".pdf").c_str());
+		myC->SaveAs((plotDir_effampbins+"/Run"+inFileName+"_effampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".png").c_str());
+		myC->SaveAs((plotDir_effampbins+"/Run"+inFileName+"_effampbins_afterXY"+std::to_string(thisAmp_low)+"_deltaT_corr_ch"+ch1+".C").c_str());
 		
 	}	
 
@@ -3851,7 +3863,7 @@ void goodplot_V3(const std::string& inFileName, const std::string& ch1  = "16", 
 	cout<<"[tot]:  [offsetXT_noCor=] "<<offsetXT_noCor<<"   [offsetYT_noCor=] "<<offsetYT_noCor<<"   [offsetXT_TWCor=] "<<offsetXT_TWCor<<"   [offsetYT_TWCor] "<<offsetYT_TWCor<<endl;
 	
 	
-	cout<<inFileName<<" totTable  "<<offsetXT_noCor<<" "<<offsetXT_TWCor<<" "<<offsetYT_noCor<<" "<<offsetYT_TWCor<<" "<<sigmaT_noCor<<" "<<sigmaT_TWCor<<" "<<sigmaT_XYCor<<" "<<sigmaT_TWXYCor<<" "<<sigmaT_XYTWCor<<" "<<sigmaT_noCor_sipm<<" "<<sigmaT_TWCor_sipm<<" "<<sigmaT_XYCor_sipm<<" "<<sigmaT_TWXYCor_sipm<<" "<<sigmaT_XYTWCor_sipm<<" "<<sigmaT_best<<" "<<sigmaT_best_sipm<<endl;
+	cout<<inFileName<<" totTable  "<<offsetXT_noCor<<" "<<offsetXT_TWCor<<" "<<offsetYT_noCor<<" "<<offsetYT_TWCor<<" "<<sigmaT_noCor<<" "<<sigmaT_TWCor<<" "<<sigmaT_XYCor<<" "<<sigmaT_TWXYCor<<" "<<sigmaT_XYTWCor<<" "<<sigmaT_noCor_sipm<<" "<<sigmaT_TWCor_sipm<<" "<<sigmaT_XYCor_sipm<<" "<<sigmaT_TWXYCor_sipm<<" "<<sigmaT_XYTWCor_sipm<<" "<<sigmaT_best<<" "<<sigmaT_best_sipm<<" "<<sum_reso_vs_xy/num_reso_vs_xy<<" "<<sum_reso_vs_xy_afterTW/num_reso_vs_xy_afterTW<<endl;
 	cout<<inFileName<<" totError "<<offsetXT_noCor<<" "<<offsetXT_TWCor<<" "<<offsetYT_noCor<<" "<<offsetYT_TWCor<<" "<<sigmaT_noCor<<" \\pm "<<sigmaTerr_noCor<<" "<<sigmaT_TWCor<<" \\pm "<<sigmaTerr_TWCor<<" "<<sigmaT_XYCor<<" \\pm "<<sigmaTerr_XYCor<<" "<<sigmaT_TWXYCor<<" \\pm "<<sigmaTerr_TWXYCor<<" "<<sigmaT_XYTWCor<<" \\pm "<<sigmaTerr_XYTWCor<<" "<<sigmaT_noCor_sipm<<" "<<sigmaT_TWCor_sipm<<" "<<sigmaT_XYCor_sipm<<" "<<sigmaT_TWXYCor_sipm<<" "<<sigmaT_XYTWCor_sipm<<" "<<sigmaT_best<<" "<<sigmaT_best_sipm<<endl;
 	//cout<<"[tot]:  [offsetXT_noCor_sipm=] "<<offsetXT_noCor_sipm<<"   [offsetYT_noCor_sipm=] "<<offsetYT_noCor_sipm<<"   [offsetXT_TWCor_sipm=] "<<offsetXT_TWCor_sipm<<"   [offsetYT_TWCor_sipm] "<<offsetYT_TWCor_sipm<<endl;
 

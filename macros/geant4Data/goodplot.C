@@ -111,7 +111,7 @@ void drawTracks(TTree * tree, std::string& inFileName, std::string& plotDir)
 }
 
 
-void drawT100(TTree * tree0, TTree * tree5, std::string& inFileName, std::string& plotDir)
+float drawT100(TTree * tree0, TTree * tree5, std::string& inFileName, std::string& plotDir)
 {
         TCanvas *myC = new TCanvas( "myC", "myC", 200, 10, 800, 600 );
         myC->SetHighLightColor(2);
@@ -183,7 +183,8 @@ void drawT100(TTree * tree0, TTree * tree5, std::string& inFileName, std::string
         leg->AddEntry(h100_x5, "edge (x = 5mm)", "l");
         leg->Draw();		
 	
-	int deltaT = int(1000.0*(h100_x5->GetBinCenter(h100_x5->GetMaximumBin()) - h100_x0->GetBinCenter(h100_x0->GetMaximumBin())));
+	float deltaT_f = 1000.0*(h100_x5->GetBinCenter(h100_x5->GetMaximumBin()) - h100_x0->GetBinCenter(h100_x0->GetMaximumBin()));
+	int deltaT = int(deltaT_f);
 
 	       	
 	TLatex *tlatex =  new TLatex();
@@ -205,6 +206,8 @@ void drawT100(TTree * tree0, TTree * tree5, std::string& inFileName, std::string
 	delete h100_x5;
 	delete leg;
 	delete tlatex;
+		
+	return deltaT_f;
 
 }
 
@@ -350,7 +353,7 @@ void draw_average_pulse(TTree * tree0, TTree * tree5, std::string& inFileName, s
 	delete time1;
 }
 
-float draw_nPhotons(TTree * tree, std::string& inFileName, std::string& plotDir)
+float draw_nPhotons(TTree * tree, std::string& inFileName, std::string& plotDir, std::string varName, float maxValue)
 {
         TCanvas *myC = new TCanvas( "myC", "myC", 200, 10, 800, 600 );
         myC->SetHighLightColor(2);
@@ -365,10 +368,10 @@ float draw_nPhotons(TTree * tree, std::string& inFileName, std::string& plotDir)
         myC->SetFrameBorderMode(0);
 
 
-	TH1F * h1_np = new TH1F("h1_np","h1_np", 400, 0, 600000.0);
-	tree->Draw("nPhotons>>h1_np");
-	TF1 * f1_landau = new TF1("flandau","[0]*TMath::Landau(x,[1],[2])", 0, 600000.0);	
-	f1_landau->SetParameters(h1_np->GetMaximum(), h1_np->GetBinCenter(h1_np->GetMaximumBin()), 1000.0);
+	TH1F * h1_np = new TH1F("h1_np","h1_np", 200, 0, maxValue);
+	tree->Draw((varName+">>h1_np").c_str());
+	TF1 * f1_landau = new TF1("flandau","[0]*TMath::Landau(x,[1],[2])", 0, maxValue);	
+	f1_landau->SetParameters(h1_np->GetMaximum(), h1_np->GetBinCenter(h1_np->GetMaximumBin()), 10.0);
 
 	h1_np->SetMarkerStyle( 20 );
         h1_np->SetMarkerColor( kBlack );
@@ -382,16 +385,16 @@ float draw_nPhotons(TTree * tree, std::string& inFileName, std::string& plotDir)
         h1_np->GetYaxis()->SetTitleSize( axisTitleSizeY );
         h1_np->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
         h1_np->Draw("E");
-	h1_np->Fit("flandau", "", "", 0, 600000.0);
+	h1_np->Fit("flandau", "Q", "", 0, maxValue);
 	float nphotons_this = f1_landau->GetParameter(1);
 	
 	gPad->Modified();
         gPad->Update();
 	
 	
-	myC->SaveAs((plotDir+inFileName+"_nphotons.pdf").c_str());	
-	myC->SaveAs((plotDir+inFileName+"_nphotons.png").c_str());	
-	myC->SaveAs((plotDir+inFileName+"_nphotons.C").c_str());	
+	myC->SaveAs((plotDir+inFileName+"_nphotons_"+varName+".pdf").c_str());	
+	myC->SaveAs((plotDir+inFileName+"_nphotons_"+varName+".png").c_str());	
+	myC->SaveAs((plotDir+inFileName+"_nphotons_"+varName+".C").c_str());	
 	
 	delete myC;
 	delete h1_np;
@@ -400,6 +403,63 @@ float draw_nPhotons(TTree * tree, std::string& inFileName, std::string& plotDir)
 	return nphotons_this;
 	
 }
+
+
+float drawRisetime(TTree * tree, std::string& inFileName, std::string& plotDir)
+{
+        TCanvas *myC = new TCanvas( "myC", "myC", 200, 10, 800, 600 );
+        myC->SetHighLightColor(2);
+        myC->SetFillColor(0);
+        myC->SetBorderMode(0);
+        myC->SetBorderSize(2);
+        myC->SetLeftMargin( leftMargin );
+        myC->SetRightMargin( rightMargin );
+        myC->SetTopMargin( topMargin );
+        myC->SetBottomMargin( bottomMargin );
+        myC->SetFrameBorderMode(0);
+        myC->SetFrameBorderMode(0);
+
+	TH1F * h_Risetime = new TH1F("h_Risetime","h_Risetime", 50, 0.0, 6.0);
+	tree->Draw("frac_70-photon100_time>>h_Risetime");
+	h_Risetime->SetTitle("");
+        float maxY_Risetime = 1.2*h_Risetime->GetMaximum();
+
+        float maxX_ch1Risetime = h_Risetime->GetBinCenter(h_Risetime->GetMaximumBin());
+        float highch1Risetime=h_Risetime->GetBinCenter(h_Risetime->FindLastBinAbove(int(0.1*h_Risetime->GetMaximum())));
+        float max_ch1Risetime = std::max(2.0*maxX_ch1Risetime, highch1Risetime+1.0);
+
+
+        h_Risetime->SetMarkerStyle( 20 );
+        h_Risetime->SetMarkerColor( kBlack );
+        h_Risetime->SetLineColor( kBlack );
+        h_Risetime->GetXaxis()->SetTitle("risetime [ns]");
+        h_Risetime->GetYaxis()->SetTitle("Events");
+        h_Risetime->SetTitle("");
+	h_Risetime->GetXaxis()->SetTitleSize( axisTitleSizeX );
+        h_Risetime->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
+        h_Risetime->GetYaxis()->SetTitleSize( axisTitleSizeY );
+        h_Risetime->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
+        h_Risetime->GetYaxis()->SetRangeUser(0.0,maxY_Risetime);
+        h_Risetime->GetXaxis()->SetRangeUser(0.0,6.0);//max_ch1Risetime );
+        h_Risetime->Draw("E");
+
+	TF1 * tf1_gaus = new TF1("tf1_gaus","gaus",0,6.0);
+	tf1_gaus->SetParameter(1,h_Risetime->GetMean());
+	h_Risetime->Fit("tf1_gaus","Q","",0.0,6.0);
+
+	gPad->Modified();
+        gPad->Update();
+	
+        myC->SaveAs((plotDir+inFileName+"_risetime.pdf").c_str());
+        myC->SaveAs((plotDir+inFileName+"_risetime.png").c_str());
+        myC->SaveAs((plotDir+inFileName+"_risetime.C").c_str());
+	
+	delete myC; 
+	
+	return tf1_gaus->GetParameter(1);
+}
+
+
 
 void goodplot(std::string inFileName)
 {
@@ -414,20 +474,33 @@ void goodplot(std::string inFileName)
 
 	mkdir(plotDir.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
 
-	TFile *f0 = new TFile(("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName0+".root").c_str(), "READ");
+	TFile *f0 = new TFile(("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName0+"_rereco.root").c_str(), "READ");
 	TTree *tree0 = (TTree*)f0->Get("tree");
-	TFile *f5 = new TFile(("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName5+".root").c_str(), "READ");
+	TFile *f5 = new TFile(("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName5+"_rereco.root").c_str(), "READ");
 	TTree *tree5 = (TTree*)f5->Get("tree");
 
 	gStyle->SetOptStat(0);
 	gStyle->SetOptFit(111);
 
-	drawTracks(tree0, inFileName0, plotDir);
-	drawTracks(tree5, inFileName5, plotDir);
-	drawT100(tree0, tree5, inFileName05, plotDir);
-	nPhotons_x0 = draw_nPhotons(tree0, inFileName0, plotDir);
-	nPhotons_x5 = draw_nPhotons(tree5, inFileName5, plotDir);
-	draw_average_pulse(tree0, tree5, inFileName05, plotDir, "1");		
-	draw_average_pulse(tree0, tree5, inFileName05, plotDir, "2");		
+	//drawTracks(tree0, inFileName0, plotDir);
+	//drawTracks(tree5, inFileName5, plotDir);
+	float risetime_x0 = drawRisetime(tree0, inFileName0, plotDir);
+	float risetime_x5 = drawRisetime(tree5, inFileName5, plotDir);
+
+	float deltaT_x05 = drawT100(tree0, tree5, inFileName05, plotDir);
+	nPhotons_x0 = draw_nPhotons(tree0, inFileName0, plotDir, "nPhotons", 600000.0);
+	nPhotons_x5 = draw_nPhotons(tree5, inFileName5, plotDir, "nPhotons", 600000.0);
+	float nPhotons_peak_x0 = draw_nPhotons(tree0, inFileName0, plotDir, "int_peak", 100000.0);
+	float nPhotons_peak_x5 = draw_nPhotons(tree5, inFileName5, plotDir, "int_peak", 100000.0);
+	float nPhotons_amp_x0 = draw_nPhotons(tree0, inFileName0, plotDir, "amp", 15000.0);
+	float nPhotons_amp_x5 = draw_nPhotons(tree5, inFileName5, plotDir, "amp", 15000.0);
+	float nPhotons_firstbin_x0 = draw_nPhotons(tree0, inFileName0, plotDir, "int_firstbin", 100.0);
+	float nPhotons_firstbin_x5 = draw_nPhotons(tree5, inFileName5, plotDir, "int_firstbin", 100.0);
+	//draw_average_pulse(tree0, tree5, inFileName05, plotDir, "1");		
+	//draw_average_pulse(tree0, tree5, inFileName05, plotDir, "2");		
+	
+	cout<<inFileName<<" deltaT_x05= "<<deltaT_x05<<" risetime_x0= "<<risetime_x0<<" risetime_x5= "<<risetime_x5<<" nPhotons_amp_x0= "<<nPhotons_amp_x0<<" nPhotons_amp_x5= "<<nPhotons_amp_x5<<" nPhotons_amp_x5= "<<" nPhotons_x0= "<<nPhotons_x0<<" nPhotons_x5= "<<nPhotons_x5<<" nPhotons_peak_x0= "<<nPhotons_peak_x0<<" nPhotons_peak_x5= "<<nPhotons_peak_x5<<" nPhotons_firstbin_x0= "<<nPhotons_firstbin_x0<<" nPhotons_firstbin_x5= "<<nPhotons_firstbin_x5<<endl;
+	cout<<"totTable_"<<inFileName<<" "<<deltaT_x05<<" "<<risetime_x0<<" "<<risetime_x5<<" "<<nPhotons_amp_x0<<" "<<nPhotons_amp_x5<<" "<<nPhotons_x0<<" "<<nPhotons_x5<<" "<<nPhotons_peak_x0<<" "<<nPhotons_peak_x5<<" "<<nPhotons_firstbin_x0<<" "<<nPhotons_firstbin_x5<<endl;
+
 	
 }
