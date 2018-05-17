@@ -20,10 +20,23 @@ LYSOSiPMEventAction::LYSOSiPMEventAction()
 		  fAmp1_sptr(kDigi),
 		  fAmp2_sptr(kDigi),
 		  photonIndex_sptr(0),
-		  nPhotons_Cerenkov(0)
+		  nPhotons_Cerenkov(0),
+		  nPhotons_Cerenkov_Gen(0),
+		  nPhotons_Scintillation_Gen(0)
 {}
 
 LYSOSiPMEventAction::~LYSOSiPMEventAction() {}
+
+void LYSOSiPMEventAction::CountScintillationPhotonGen()
+{
+	nPhotons_Scintillation_Gen ++ ;
+}
+
+void LYSOSiPMEventAction::CountCerenkovPhotonGen()
+{
+	nPhotons_Cerenkov_Gen ++ ;
+}
+
 
 void LYSOSiPMEventAction::AddPhoton(G4double time, G4double time_local, G4double trackLength, G4double trackVertexX, G4double trackVertexY, G4double trackVertexZ, G4double trackTotalEnergy, G4int isCerenkov)
 {
@@ -58,6 +71,9 @@ void LYSOSiPMEventAction::BeginOfEventAction(const G4Event * /*event*/) {
     recorded = false;
 	photonIndex = 0;
 	nPhotons_Cerenkov = 0;
+	nPhotons_Cerenkov_Gen = 0;
+	nPhotons_Scintillation_Gen = 0;
+
 }
 
 
@@ -186,6 +202,8 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
     analysisManager->FillNtupleDColumn(2, event->GetPrimaryVertex()->GetY0());
     analysisManager->FillNtupleIColumn(3, allPhoTime.size());
     analysisManager->FillNtupleIColumn(4, nPhotons_Cerenkov);
+    analysisManager->FillNtupleIColumn(5, nPhotons_Cerenkov_Gen);
+    analysisManager->FillNtupleIColumn(6, nPhotons_Scintillation_Gen);
     analysisManager->AddNtupleRow();
 
 	allPhoTime.clear();

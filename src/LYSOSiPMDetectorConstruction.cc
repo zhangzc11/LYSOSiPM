@@ -174,11 +174,12 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 			1.50, 1.50, 1.50, 1.50,
 			1.50, 1.50, 1.50, 1.50,
 			1.50, 1.50, 1.50, 1.50};
-	G4double absGrease[num]   =  {0.10*mm, 0.10*mm, 0.10*mm, 0.10*mm,
-			0.10*mm, 0.10*mm, 0.10*mm, 0.10*mm,
-			0.10*mm, 0.10*mm, 0.10*mm, 0.10*mm,
-			0.10*mm, 0.10*mm, 0.10*mm, 0.10*mm,
-			0.10*mm, 0.10*mm, 0.10*mm, 0.10*mm};
+
+	G4double absGrease[num]   =  {0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
+			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
+			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
+			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
+			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm};
 
 	G4MaterialPropertiesTable* mptSilicone = new G4MaterialPropertiesTable();
 	mptSilicone->AddProperty("RINDEX",ene,rSilicone,num);
@@ -209,8 +210,8 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
     G4double worldSizeZ = 4. * cm;
 
     //Crystal Parameters
-    G4double cryst_dX = 12 * mm, cryst_dY = 12 * mm, cryst_dZ = 3 * mm;
-	G4double gel_dX = 4 * mm, gel_dY = 4 * mm, gel_dZ = 1 * mm;
+    G4double cryst_dX = 12 * mm, cryst_dY = 12 * mm, cryst_dZ = 4 * mm;
+	G4double gel_dX = 10 * mm, gel_dY = 10 * mm, gel_dZ = 1 * mm;
 
     G4double foilThickness = 0.5 * mm;
     G4double gapThickness = 0.0 * mm; //air gap for wrapping

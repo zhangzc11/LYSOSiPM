@@ -37,32 +37,34 @@ LYSOSiPMRunAction::LYSOSiPMRunAction(LYSOSiPMEventAction* eventAction)
     analysisManager->CreateNtupleDColumn("y");//2
     analysisManager->CreateNtupleIColumn("nPhotons");//3
     analysisManager->CreateNtupleIColumn("nPhotons_Cherenkov");//4
-    analysisManager->CreateNtupleIColumn("allPhoIndex", fEventAction->GetPhoIndexArray());//5
-    analysisManager->CreateNtupleDColumn("allPhoTime", fEventAction->GetPhoTimeArray());//6
-    analysisManager->CreateNtupleDColumn("allPhoTimeLocal", fEventAction->GetPhoTimeLocalArray());//7
-    analysisManager->CreateNtupleDColumn("allPhoWaveLength", fEventAction->GetPhoWaveLengthArray());//8
-    analysisManager->CreateNtupleDColumn("allPhoTrackLength", fEventAction->GetPhoTrackLengthArray());//9
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexX", fEventAction->GetPhoTrackVertexXArray());//10
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexY", fEventAction->GetPhoTrackVertexYArray());//11
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexZ", fEventAction->GetPhoTrackVertexZArray());//12
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexR", fEventAction->GetPhoTrackVertexRArray());//13
-    analysisManager->CreateNtupleIColumn("allPhoIsCerenkov", fEventAction->GetPhoIsCerenkovArray());//14
-    analysisManager->CreateNtupleDColumn("time1", fEventAction->GetTime1Array());//15
-    analysisManager->CreateNtupleDColumn("time2", fEventAction->GetTime2Array());//16
-    analysisManager->CreateNtupleDColumn("amp1", fEventAction->GetAmp1Array());//17
-    analysisManager->CreateNtupleDColumn("amp2", fEventAction->GetAmp2Array());//18
+    analysisManager->CreateNtupleIColumn("nPhotons_Cherenkov_Gen");//4
+    analysisManager->CreateNtupleIColumn("nPhotons_Scintillation_Gen");//4
+    analysisManager->CreateNtupleIColumn("allPhoIndex", fEventAction->GetPhoIndexArray());//7
+    analysisManager->CreateNtupleDColumn("allPhoTime", fEventAction->GetPhoTimeArray());//8
+    analysisManager->CreateNtupleDColumn("allPhoTimeLocal", fEventAction->GetPhoTimeLocalArray());//9
+    analysisManager->CreateNtupleDColumn("allPhoWaveLength", fEventAction->GetPhoWaveLengthArray());//10
+    analysisManager->CreateNtupleDColumn("allPhoTrackLength", fEventAction->GetPhoTrackLengthArray());//11
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexX", fEventAction->GetPhoTrackVertexXArray());//12
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexY", fEventAction->GetPhoTrackVertexYArray());//13
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexZ", fEventAction->GetPhoTrackVertexZArray());//14
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexR", fEventAction->GetPhoTrackVertexRArray());//15
+    analysisManager->CreateNtupleIColumn("allPhoIsCerenkov", fEventAction->GetPhoIsCerenkovArray());//16
+    analysisManager->CreateNtupleDColumn("time1", fEventAction->GetTime1Array());//17
+    analysisManager->CreateNtupleDColumn("time2", fEventAction->GetTime2Array());//18
+    analysisManager->CreateNtupleDColumn("amp1", fEventAction->GetAmp1Array());//19
+    analysisManager->CreateNtupleDColumn("amp2", fEventAction->GetAmp2Array());//20
 
-    analysisManager->CreateNtupleIColumn("allPhoIndex_sptr", fEventAction->GetPhoIndexArray_sptr());//5
-    analysisManager->CreateNtupleDColumn("allPhoTime_sptr", fEventAction->GetPhoTimeArray_sptr());//6
-    analysisManager->CreateNtupleDColumn("allPhoWaveLength_sptr", fEventAction->GetPhoWaveLengthArray_sptr());//8
-    analysisManager->CreateNtupleDColumn("allPhoTrackLength_sptr", fEventAction->GetPhoTrackLengthArray_sptr());//9
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexX_sptr", fEventAction->GetPhoTrackVertexXArray_sptr());//10
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexY_sptr", fEventAction->GetPhoTrackVertexYArray_sptr());//11
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexZ_sptr", fEventAction->GetPhoTrackVertexZArray_sptr());//12
-    analysisManager->CreateNtupleDColumn("allPhoTrackVertexR_sptr", fEventAction->GetPhoTrackVertexRArray_sptr());//13
-    analysisManager->CreateNtupleIColumn("allPhoIsCerenkov_sptr", fEventAction->GetPhoIsCerenkovArray_sptr());//14
-    analysisManager->CreateNtupleDColumn("amp1_sptr", fEventAction->GetAmp1Array_sptr());//17
-    analysisManager->CreateNtupleDColumn("amp2_sptr", fEventAction->GetAmp2Array_sptr());//18
+    analysisManager->CreateNtupleIColumn("allPhoIndex_sptr", fEventAction->GetPhoIndexArray_sptr());//21
+    analysisManager->CreateNtupleDColumn("allPhoTime_sptr", fEventAction->GetPhoTimeArray_sptr());//22
+    analysisManager->CreateNtupleDColumn("allPhoWaveLength_sptr", fEventAction->GetPhoWaveLengthArray_sptr());//23
+    analysisManager->CreateNtupleDColumn("allPhoTrackLength_sptr", fEventAction->GetPhoTrackLengthArray_sptr());//24
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexX_sptr", fEventAction->GetPhoTrackVertexXArray_sptr());//25
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexY_sptr", fEventAction->GetPhoTrackVertexYArray_sptr());//26
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexZ_sptr", fEventAction->GetPhoTrackVertexZArray_sptr());//27
+    analysisManager->CreateNtupleDColumn("allPhoTrackVertexR_sptr", fEventAction->GetPhoTrackVertexRArray_sptr());//28
+    analysisManager->CreateNtupleIColumn("allPhoIsCerenkov_sptr", fEventAction->GetPhoIsCerenkovArray_sptr());//29
+    analysisManager->CreateNtupleDColumn("amp1_sptr", fEventAction->GetAmp1Array_sptr());//30
+    analysisManager->CreateNtupleDColumn("amp2_sptr", fEventAction->GetAmp2Array_sptr());//31
 
     analysisManager->FinishNtuple();
 	}

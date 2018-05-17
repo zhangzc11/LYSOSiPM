@@ -46,6 +46,8 @@ public:
     void ScatBool(G4bool scatYN);
     void RecordedBool(G4bool recordYN);
 	void AddPhoton(G4double time, G4double time_local, G4double trackLength, G4double trackVertexX, G4double trackVertexY, G4double trackVertexZ, G4double trackTotalEnergy, G4int isCerenkov);
+	void CountScintillationPhotonGen();
+	void CountCerenkovPhotonGen();
 
 	std::vector<G4double> & GetTime1Array(){ return fTime1;}
 	std::vector<G4double> & GetTime2Array(){ return fTime2;}
@@ -125,6 +127,8 @@ private:
 
 
 	G4int nPhotons_Cerenkov;
+	G4int nPhotons_Cerenkov_Gen;
+	G4int nPhotons_Scintillation_Gen;
 };
 
 // inline functions

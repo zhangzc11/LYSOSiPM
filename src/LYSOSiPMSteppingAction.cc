@@ -5,6 +5,8 @@
 #include "LYSOSiPMDetectorConstruction.hh"
 
 #include "G4Step.hh"
+#include "G4Track.hh"
+#include "G4SteppingManager.hh"
 #include "G4StepPoint.hh"
 #include "G4RunManager.hh"
 
@@ -26,26 +28,51 @@ LYSOSiPMSteppingAction::~LYSOSiPMSteppingAction()
 
 void LYSOSiPMSteppingAction::UserSteppingAction(const G4Step* step)
 {
-// Collect energy and track length step by step
+	// Collect energy and track length step by step
+	
+	//the track of the step	
+	G4Track* theTrack = step->GetTrack () ;
 
     // get volume of the current step
-    //i deleted the touchable handle bit. add back in if issues arise
-    G4VPhysicalVolume* volume
-            = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
+	G4StepPoint * thePrePoint  = step->GetPreStepPoint () ;
+	G4StepPoint * thePostPoint = step->GetPostStepPoint () ;
+	G4VPhysicalVolume * thePrePV  = thePrePoint->GetPhysicalVolume () ;
+	G4VPhysicalVolume * thePostPV = thePostPoint->GetPhysicalVolume () ;
+	G4String thePrePVName  = "" ; if ( thePrePV )  thePrePVName  = thePrePV  -> GetName () ;
+	G4String thePostPVName = "" ; if ( thePostPV ) thePostPVName = thePostPV -> GetName () ;
+	
+	//what kind of particle the step is
+	bool isOpticalPhoton = false;
+	if(step->GetTrack()->GetParticleDefinition()->GetParticleType() == "opticalphoton") isOpticalPhoton = true;
 
-	if (volume == fDetConstruction->GetGelPV())
+	if(isOpticalPhoton)
 	{
-		bool isOpticalPhoton = false;
-		if(step->GetTrack()->GetParticleDefinition()->GetParticleType() == "opticalphoton") isOpticalPhoton = true;
-		//photon arrives at the optical grease
-		G4StepPoint* point1 = step->GetPreStepPoint();
+		G4int isCerenkovLight = 0;
+		if(step->GetTrack()->GetCreatorProcess()->GetProcessName() == "Cerenkov") isCerenkovLight = 1;
+		G4int isScintillation = 0;
+		if(step->GetTrack()->GetCreatorProcess()->GetProcessName() == "Scincilattion") isScintillation = 1;
 
-		//just entered the boundary
-		if (point1->GetStepStatus() == fGeomBoundary && isOpticalPhoton) 
+		//get the current step number
+		G4int nStep = theTrack -> GetCurrentStepNumber();
+		
+		//count the number of generated Scintillaiton photons
+		
+		if(theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal" && nStep == 1 && isScintillation == 1 && thePrePVName == "Crystal")
 		{
-			G4int isCerenkovLight = 0;
-			if(step->GetTrack()->GetCreatorProcess()->GetProcessName() == "Cerenkov") isCerenkovLight = 1;
-			fEventAction->AddPhoton(point1->GetGlobalTime(), point1->GetLocalTime(), step->GetTrack()->GetTrackLength(), step->GetTrack()->GetVertexPosition().x(), step->GetTrack()->GetVertexPosition().y(), step->GetTrack()->GetVertexPosition().z(), step->GetTrack()->GetTotalEnergy(), isCerenkovLight);
+			fEventAction->CountScintillationPhotonGen();
+		}
+
+		if(theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal" && nStep == 1 && isCerenkovLight == 1 && thePrePVName == "Crystal")
+		{
+			fEventAction->CountCerenkovPhotonGen();
+		}
+		
+		//save the photons that enters the grease
+		//if (thePostPVName == "opticalGel" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal" && thePrePVName == "Crystal" && (theTrack->GetTrackStatus() != fAlive))
+		//if (thePostPVName == "opticalGel" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal"  && (theTrack->GetTrackStatus() != fAlive))
+		if (thePostPVName == "opticalGel" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal"  && (thePostPoint->GetProcessDefinedStep()->GetProcessName() == "OpAbsorption"))
+		{
+		fEventAction->AddPhoton(thePrePoint->GetGlobalTime(), thePrePoint->GetLocalTime(), step->GetTrack()->GetTrackLength(), step->GetTrack()->GetVertexPosition().x(), step->GetTrack()->GetVertexPosition().y(), step->GetTrack()->GetVertexPosition().z(), step->GetTrack()->GetTotalEnergy(), isCerenkovLight);
 		}
 	}
 
@@ -55,12 +82,8 @@ void LYSOSiPMSteppingAction::UserSteppingAction(const G4Step* step)
 
     fEventAction->AddDeltaPhi(delPhi);
 
-    isScattered = false;
-    alreadyRecorded = false;
-
-    if ( volume == fDetConstruction->GetCAbsorberPV() ) {
+    if ( thePrePVName == "Crystal" ){
         fEventAction->AddAbsC(edep);
-
     }
 
    }
