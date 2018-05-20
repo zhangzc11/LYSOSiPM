@@ -331,9 +331,9 @@ void LYSOSiPMPhysicsList::ConstructScintillation()
 void LYSOSiPMPhysicsList::ConstructCerenkov()
 {
   G4Cerenkov*   theCerenkovProcess = new G4Cerenkov("Cerenkov");
-  G4int MaxNumPhotons = 300;
+  //G4int MaxNumPhotons = 300;
   theCerenkovProcess->SetTrackSecondariesFirst(true);
-  theCerenkovProcess->SetMaxNumPhotonsPerStep(MaxNumPhotons);
+  //theCerenkovProcess->SetMaxNumPhotonsPerStep(MaxNumPhotons);
 
 
   G4PhysicsListHelper *helper = G4PhysicsListHelper::GetPhysicsListHelper();

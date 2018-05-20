@@ -67,6 +67,7 @@ class LYSOSiPMDetectorConstruction : public G4VUserDetectorConstruction
 
     const G4VPhysicalVolume* GetGapPV() const;
     const G4VPhysicalVolume* GetGelPV() const;
+    const G4VPhysicalVolume* GetResinPV() const;
 
   private:
     // methods
@@ -79,7 +80,8 @@ class LYSOSiPMDetectorConstruction : public G4VUserDetectorConstruction
     static G4ThreadLocal G4GlobalMagFieldMessenger*  fMagFieldMessenger;
                                       // magnetic field messenger
     G4VPhysicalVolume*   cAbsorberPV; // the absorber physical volume
-	G4VPhysicalVolume*	 gelPV;
+    G4VPhysicalVolume*	 gelPV;
+    G4VPhysicalVolume*	 resinPV;
     G4VPhysicalVolume*   cFoilPV;
     G4VPhysicalVolume*   cFoil2PV;
     G4VPhysicalVolume*   gapPV;      // the gap physical volume
@@ -101,6 +103,10 @@ inline const G4VPhysicalVolume* LYSOSiPMDetectorConstruction::GetGapPV() const  
 
 inline const G4VPhysicalVolume* LYSOSiPMDetectorConstruction::GetGelPV() const  {
   return gelPV;
+}
+
+inline const G4VPhysicalVolume* LYSOSiPMDetectorConstruction::GetResinPV() const  {
+  return resinPV;
 }
 
 

@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <time.h>
 
 #include <G4SIunits.hh>
 #include "LYSOSiPMSteppingAction.hh"
@@ -18,6 +20,7 @@ LYSOSiPMSteppingAction::LYSOSiPMSteppingAction(
           fDetConstruction(detectorConstruction),
           fEventAction(eventAction)
 {
+	srand (time(NULL));
 }
 
 
@@ -68,9 +71,14 @@ void LYSOSiPMSteppingAction::UserSteppingAction(const G4Step* step)
 		}
 		
 		//save the photons that enters the grease
-		//if (thePostPVName == "opticalGel" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal" && thePrePVName == "Crystal" && (theTrack->GetTrackStatus() != fAlive))
-		//if (thePostPVName == "opticalGel" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal"  && (theTrack->GetTrackStatus() != fAlive))
-		if (thePostPVName == "opticalGel" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal"  && (thePostPoint->GetProcessDefinedStep()->GetProcessName() == "OpAbsorption"))
+		//
+		//PDE: 20%
+		float rd_01 = (rand()*0.001)/(0.001*RAND_MAX);
+		
+		
+		//if (thePostPVName == "resinSiPM" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal" && thePrePVName == "opticalGel" && (theTrack->GetTrackStatus() != fAlive))
+		//if (thePostPVName == "resinSiPM" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal"  && (theTrack->GetTrackStatus() != fAlive))
+		if (thePostPVName == "resinSiPM" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal"  && (thePostPoint->GetProcessDefinedStep()->GetProcessName() == "OpAbsorption") && rd_01<0.2)
 		{
 		fEventAction->AddPhoton(thePrePoint->GetGlobalTime(), thePrePoint->GetLocalTime(), step->GetTrack()->GetTrackLength(), step->GetTrack()->GetVertexPosition().x(), step->GetTrack()->GetVertexPosition().y(), step->GetTrack()->GetVertexPosition().z(), step->GetTrack()->GetTotalEnergy(), isCerenkovLight);
 		}

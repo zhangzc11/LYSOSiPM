@@ -40,7 +40,8 @@ G4GlobalMagFieldMessenger *LYSOSiPMDetectorConstruction::fMagFieldMessenger = 0;
 LYSOSiPMDetectorConstruction::LYSOSiPMDetectorConstruction()
         : G4VUserDetectorConstruction(),
           cAbsorberPV(0),
-		  gelPV(0),
+	  gelPV(0),
+	  resinPV(0),
           cFoilPV(0),
           cFoil2PV(0),
           fCheckOverlaps(true) {
@@ -146,7 +147,7 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 	mpt->AddProperty("ABSLENGTH", PhotonEnergy_ABS, Absorption, nEntries_ABS);
 
 	//air
-    G4Material* Air  =  nist->FindOrBuildMaterial("G4_AIR");
+    	G4Material* Air  =  nist->FindOrBuildMaterial("G4_AIR");
 	G4double rAir[num] =  {1.00, 1.00, 1.00, 1.00,
 			1.00, 1.00, 1.00, 1.00,
 			1.00, 1.00, 1.00, 1.00,
@@ -175,16 +176,47 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 			1.50, 1.50, 1.50, 1.50,
 			1.50, 1.50, 1.50, 1.50};
 
+	/*
+	G4double absGrease[num]   =  {0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
+			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
+			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
+			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
+			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm};
+	*/
+	
+	G4MaterialPropertiesTable* mptSilicone = new G4MaterialPropertiesTable();
+	mptSilicone->AddProperty("RINDEX",ene,rSilicone,num);
+	//mptSilicone->AddProperty("ABSLENGTH",ene,absGrease,num);
+	fSilicone->SetMaterialPropertiesTable(mptSilicone);
+
+	//resin, https://pubchem.ncbi.nlm.nih.gov/compound/169944#section=Top
+	elements.push_back("C");     natoms.push_back(21);
+	elements.push_back("H");     natoms.push_back(25);
+	elements.push_back("Cl");    natoms.push_back(1);
+	elements.push_back("O");     natoms.push_back(5);
+
+	G4double Resin_density = 1.1*g/cm3;
+	G4Material* fResin = nist->ConstructNewMaterial("Resin", elements, natoms, Resin_density);
+	elements.clear();
+	natoms.clear();
+
+	G4double rResin[num] =  {1.50, 1.50, 1.50, 1.50,
+			1.50, 1.50, 1.50, 1.50,
+			1.50, 1.50, 1.50, 1.50,
+			1.50, 1.50, 1.50, 1.50,
+			1.50, 1.50, 1.50, 1.50};
+
 	G4double absGrease[num]   =  {0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
 			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
 			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
 			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm,
 			0.01*mm, 0.01*mm, 0.01*mm, 0.01*mm};
 
-	G4MaterialPropertiesTable* mptSilicone = new G4MaterialPropertiesTable();
-	mptSilicone->AddProperty("RINDEX",ene,rSilicone,num);
-	mptSilicone->AddProperty("ABSLENGTH",ene,absGrease,num);
-	fSilicone->SetMaterialPropertiesTable(mptSilicone);
+	G4MaterialPropertiesTable* mptResin = new G4MaterialPropertiesTable();
+	mptResin->AddProperty("RINDEX",ene,rResin,num);
+	mptResin->AddProperty("ABSLENGTH",ene,absGrease,num);
+	fResin->SetMaterialPropertiesTable(mptResin);
+
 
 	//teflon wrap
 	elements.push_back("C");     natoms.push_back(2);
@@ -211,7 +243,8 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
 
     //Crystal Parameters
     G4double cryst_dX = 12 * mm, cryst_dY = 12 * mm, cryst_dZ = 4 * mm;
-	G4double gel_dX = 10 * mm, gel_dY = 10 * mm, gel_dZ = 1 * mm;
+    G4double gel_dX = 4 * mm, gel_dY = 4 * mm, gel_dZ = 0.1 * mm;
+    G4double resin_dX = 4 * mm, resin_dY = 4 * mm, resin_dZ = 1 * mm;
 
     G4double foilThickness = 0.5 * mm;
     G4double gapThickness = 0.0 * mm; //air gap for wrapping
@@ -225,6 +258,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
     G4Material* air_mat = G4Material::GetMaterial("G4_AIR");
     G4Material* cryst_mat = G4Material::GetMaterial("scintillator");
     G4Material* gel_mat = G4Material::GetMaterial("Silicone");
+    G4Material* resin_mat = G4Material::GetMaterial("Resin");
     G4Material* foil_mat = G4Material::GetMaterial("teflon");
 
     //
@@ -290,6 +324,24 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
             G4ThreeVector(0, 0, cryst_dZ/2 + gel_dZ/2),  // its position
             gelLV,          // its logical volume
             "opticalGel",    // its name
+            worldLV,          // its mother  volume
+            false,            // no boolean operation
+            0,                // copy number
+            fCheckOverlaps);  // checking overlaps
+
+	//silicon resin for the couple between crystal and SiPM
+	G4Box* resinS = new G4Box("resinSiPM", resin_dX/2, resin_dY/2, resin_dZ/2);
+	G4LogicalVolume* resinLV
+			= new G4LogicalVolume(
+                     resinS,     // its solid
+                     resin_mat,  // its material
+                     "resinSiPM");   // its name
+	resinPV
+            = new G4PVPlacement(
+            0,                // no rotation
+            G4ThreeVector(0, 0, cryst_dZ/2 + gel_dZ + resin_dZ/2),  // its position
+            resinLV,          // its logical volume
+            "resinSiPM",    // its name
             worldLV,          // its mother  volume
             false,            // no boolean operation
             0,                // copy number

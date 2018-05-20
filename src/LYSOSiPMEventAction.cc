@@ -52,7 +52,7 @@ void LYSOSiPMEventAction::AddPhoton(G4double time, G4double time_local, G4double
 	if(isCerenkov) nPhotons_Cerenkov++;
 
 	std::random_device rd;
-    std::mt19937 e2(rd());
+    	std::mt19937 e2(rd());
 	std::normal_distribution<> dist(time, SPTR);
 	G4double time_sptr = dist(e2); 
 	time_index.insert(std::pair<G4double, G4int>(time, photonIndex));
@@ -187,6 +187,12 @@ void LYSOSiPMEventAction::EndOfEventAction(const G4Event *event) {
 		
 		fAmp1_sptr[iS] = 1.0*(kPhotonIndex1_sptr-kPhotonIndex_pre1_sptr)/digi_step1;
 		fAmp2_sptr[iS] = 1.0*(kPhotonIndex2_sptr-kPhotonIndex_pre2_sptr)/digi_step2;
+	
+		if(iS == 0 )
+		{
+			fAmp1_sptr[iS] = 1.0*(kPhotonIndex1_sptr-kPhotonIndex_pre1_sptr)/(0.0 - allPhoTime_sptr[0]);
+			fAmp2_sptr[iS] = 1.0*(kPhotonIndex2_sptr-kPhotonIndex_pre2_sptr)/(0.0 - allPhoTime_sptr[0]);
+		}
 
 		kPhotonIndex_pre1_sptr = kPhotonIndex1_sptr;
 		kPhotonIndex_pre2_sptr = kPhotonIndex2_sptr;
