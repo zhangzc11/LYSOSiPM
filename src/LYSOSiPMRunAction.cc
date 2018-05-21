@@ -37,8 +37,10 @@ LYSOSiPMRunAction::LYSOSiPMRunAction(LYSOSiPMEventAction* eventAction)
     analysisManager->CreateNtupleDColumn("y");//2
     analysisManager->CreateNtupleIColumn("nPhotons");//3
     analysisManager->CreateNtupleIColumn("nPhotons_Cherenkov");//4
-    analysisManager->CreateNtupleIColumn("nPhotons_Cherenkov_Gen");//4
-    analysisManager->CreateNtupleIColumn("nPhotons_Scintillation_Gen");//4
+    analysisManager->CreateNtupleIColumn("nPhotons_Cherenkov_Gen");//5
+    analysisManager->CreateNtupleIColumn("nPhotons_Scintillation_Gen");//6
+    analysisManager->CreateNtupleIColumn("nPhotons_Cherenkov_Collect");//7
+    analysisManager->CreateNtupleIColumn("nPhotons_Scintillation_Collect");//8
     analysisManager->CreateNtupleIColumn("allPhoIndex", fEventAction->GetPhoIndexArray());//7
     analysisManager->CreateNtupleDColumn("allPhoTime", fEventAction->GetPhoTimeArray());//8
     analysisManager->CreateNtupleDColumn("allPhoTimeLocal", fEventAction->GetPhoTimeLocalArray());//9

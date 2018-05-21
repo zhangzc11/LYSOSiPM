@@ -70,11 +70,19 @@ void LYSOSiPMSteppingAction::UserSteppingAction(const G4Step* step)
 			fEventAction->CountCerenkovPhotonGen();
 		}
 		
-		//save the photons that enters the grease
-		//
+		//count the photons that enters the SiPM
+		if (thePostPVName == "resinSiPM" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal"  && (thePostPoint->GetProcessDefinedStep()->GetProcessName() == "OpAbsorption") && isScintillation == 1)
+		{
+			fEventAction->CountScintillationPhotonCollect();
+		}
+		if (thePostPVName == "resinSiPM" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal"  && (thePostPoint->GetProcessDefinedStep()->GetProcessName() == "OpAbsorption") && isCerenkovLight == 1)
+		{
+			fEventAction->CountCerenkovPhotonCollect();
+		}
+
+		//photoelectrons in SiPM
 		//PDE: 20%
 		float rd_01 = (rand()*0.001)/(0.001*RAND_MAX);
-		
 		
 		//if (thePostPVName == "resinSiPM" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal" && thePrePVName == "opticalGel" && (theTrack->GetTrackStatus() != fAlive))
 		//if (thePostPVName == "resinSiPM" && theTrack->GetLogicalVolumeAtVertex()->GetName() == "Crystal"  && (theTrack->GetTrackStatus() != fAlive))
