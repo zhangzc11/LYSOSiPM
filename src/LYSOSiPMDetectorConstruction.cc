@@ -242,9 +242,9 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
     G4double worldSizeZ = 4. * cm;
 
     //Crystal Parameters
-    G4double cryst_dX = 12 * mm, cryst_dY = 12 * mm, cryst_dZ = 4 * mm;
-    G4double gel_dX = 4 * mm, gel_dY = 4 * mm, gel_dZ = 0.1 * mm;
-    G4double resin_dX = 4 * mm, resin_dY = 4 * mm, resin_dZ = 1 * mm;
+    G4double cryst_dX = 12 * mm, cryst_dY = 12 * mm, cryst_dZ = crystal_thick * mm;
+    G4double gel_dX = SiPM_size * mm, gel_dY = SiPM_size * mm, gel_dZ = 0.1 * mm;
+    G4double resin_dX = SiPM_size * mm, resin_dY = SiPM_size * mm, resin_dZ = 1 * mm;
 
     G4double foilThickness = 0.5 * mm;
     G4double gapThickness = 0.0 * mm; //air gap for wrapping

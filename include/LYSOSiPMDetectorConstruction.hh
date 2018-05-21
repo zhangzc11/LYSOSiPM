@@ -34,8 +34,16 @@
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
 
+//#include "G4SystemOfUnits.hh"
+
 class G4VPhysicalVolume;
 class G4GlobalMagFieldMessenger;
+
+//constants 
+
+const G4double crystal_thick = 4.0 ;
+const G4double SiPM_size = 4.0;
+
 
 /// Detector construction class to define materials and geometry.
 /// The calorimeter is a box made of a given number of layers. A layer consists
