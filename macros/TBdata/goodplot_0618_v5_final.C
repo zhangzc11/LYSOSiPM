@@ -18,7 +18,7 @@
 #include "TLatex.h"
 
 
-void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch2  = "0", const std::string& ch1  = "16", const std::string& ch1_tl  = "16", const std::string& time_ch1  = "LP2_10", float amp_low = 200.0, float amp_high = 850.0, float x_tile_low = 20.0, float x_tile_high = 30.0, float y_tile_low = 5.0, float y_tile_high = 12.0, float x_sipm_low = 23.0, float x_sipm_high = 27.0, float y_sipm_low = 7.0, float y_sipm_high = 10.0, const std::string& analysis_tag="")
+void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch2  = "0", const std::string& ch1  = "16", const std::string& ch1_tl  = "16", const std::string& time_ch1  = "LP2_10", float amp_low_ch2 = 20.0, float amp_high_ch2 = 300.0, float amp_low = 200.0, float amp_high = 850.0, float x_tile_low = 20.0, float x_tile_high = 30.0, float y_tile_low = 5.0, float y_tile_high = 12.0, float x_sipm_low = 23.0, float x_sipm_high = 27.0, float y_sipm_low = 7.0, float y_sipm_high = 10.0, const std::string& analysis_tag="")
 {
 	//string ch1 = "15";
 	//string ch2 = "9";
@@ -34,8 +34,8 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	float amp_low_fit = amp_low;
 	float amp_high_fit = amp_high;
 
-	float amp_low_ch2 = 20.0;
-	float amp_high_ch2 = 300.0;
+	//float amp_low_ch2 = 20.0;
+	//float amp_high_ch2 = 300.0;
 
 	//float x_center = 2.0*((int(0.5*(x_sipm_low+x_sipm_high)))/2)+1.0;
 	float x_center = 2.0*((int(0.5*(x_tile_low+x_tile_high)))/2)+1.0;
@@ -911,7 +911,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h_ch2E->Scale(1.0/h_ch2E->GetMaximum());
 
 	h_ch1E->SetTitle("");
-	float maxY_E = 1.2*std::max(h_ch1E->GetMaximum(), h_ch2E->GetMaximum());
+	float maxY_E = 1.5*std::max(h_ch1E->GetMaximum(), h_ch2E->GetMaximum());
 
 
 	h_ch1E->SetMarkerStyle( 20 );
@@ -955,7 +955,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	//float peak_amp_ch2 = flandau_ch2E->GetParameter(1);	
 	float peak_amp_ch2 = fgaus_ch2E->GetParameter(1);	
 	
-	TLegend * leg_E  = new TLegend (0.4,0.6,0.85,0.9);
+	TLegend * leg_E  = new TLegend (0.4,0.7,0.85,0.9);
 	leg_E->SetBorderSize(0);
 	leg_E->SetTextSize(0.06);
 	leg_E->SetLineColor(1);
