@@ -18,7 +18,7 @@
 #include "TLatex.h"
 
 
-void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch2  = "0", const std::string& ch1  = "16", const std::string& ch1_tl  = "16", const std::string& time_ch1  = "LP2_10", float amp_low_ch2 = 20.0, float amp_high_ch2 = 300.0, float amp_low = 200.0, float amp_high = 850.0, float x_tile_low = 20.0, float x_tile_high = 30.0, float y_tile_low = 5.0, float y_tile_high = 12.0, float x_sipm_low = 23.0, float x_sipm_high = 27.0, float y_sipm_low = 7.0, float y_sipm_high = 10.0, const std::string& analysis_tag="")
+void goodplot_0618_v5(const std::string& inFileName, const std::string& ch2  = "0", const std::string& ch1  = "16", const std::string& ch1_tl  = "16", const std::string& time_ch1  = "LP2_10", float amp_low = 200.0, float amp_high = 850.0, float x_tile_low = 20.0, float x_tile_high = 30.0, float y_tile_low = 5.0, float y_tile_high = 12.0, float x_sipm_low = 23.0, float x_sipm_high = 27.0, float y_sipm_low = 7.0, float y_sipm_high = 10.0, const std::string& analysis_tag="")
 {
 	//string ch1 = "15";
 	//string ch2 = "9";
@@ -34,8 +34,8 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	float amp_low_fit = amp_low;
 	float amp_high_fit = amp_high;
 
-	//float amp_low_ch2 = 20.0;
-	//float amp_high_ch2 = 300.0;
+	float amp_low_ch2 = 20.0;
+	float amp_high_ch2 = 300.0;
 
 	//float x_center = 2.0*((int(0.5*(x_sipm_low+x_sipm_high)))/2)+1.0;
 	float x_center = 2.0*((int(0.5*(x_tile_low+x_tile_high)))/2)+1.0;
@@ -82,18 +82,11 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 
 	//string inputDir = "/eos/cms/store/group/phys_susy/razor/Timing/Mar2018FNAL/OTSDAQ/CMSTiming/RECO/V3/combine";
 	//string inputDir = "/eos/cms/store/group/phys_susy/razor/Timing/2018_06/data/VME/RECO/v3/combine/";
-	//string inputDir = "/eos/uscms/store/user/cmstestbeam/BTL_ETL/2018_06/data/VME/RECO/v5_noMeas/";
-	string inputDir = "/eos/cms/store/group/phys_susy/razor/Timing/2018_06/data/VME/RECO/v5_combine/";
-	string plotDir = "plots_0618_v5_final/";
+	string inputDir = "/eos/uscms/store/user/cmstestbeam/BTL_ETL/2018_06/data/VME/RECO/v5_noMeas/";
+	string plotDir = "plots_0618_v5/";
 	//string plotDir = "/afs/cern.ch/user/z/zhicaiz/www/sharebox/TestBeam/FNAL_June2018/";
 
 	mkdir(plotDir.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
-
-
-	float sigmaT_XYaverage_noCorr = 0.0;
-	float e_sigmaT_XYaverage_noCorr = 0.0;
-        float sigmaT_XYaverage_afterTW = 0.0;
-        float e_sigmaT_XYaverage_afterTW = 0.0;
 
 	
 	float sigmaT_best = 9999.9;
@@ -156,8 +149,8 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	cout<<"cut_sample --->  "<<cut_sample<<endl;
 	cout<<"cut_sipm --->  "<<cut_sipm<<endl;
 	//ch1 and ch2 very basic cut
-	string cut1 = "amp["+ch1+"]>10  && amp["+ch1+"] <900 && ntracks == 1 && chi2 > -0.1 && chi2 < 50.0 ";
-	string cut2 = "amp["+ch2+"]>10  && amp["+ch2+"] <900 && ntracks == 1 && chi2 > -0.1 && chi2 < 50.0 ";
+	string cut1 = "amp["+ch1+"]>10  && ntracks == 1 && chi2 > -0.1 && chi2 < 50.0 ";
+	string cut2 = "amp["+ch2+"]>10  && ntracks == 1 && chi2 > -0.1 && chi2 < 50.0 ";
 	string cut_shower = "amp["+ch1+"]>10 && amp["+ch1+"]<"+std::to_string(amp_high)+" && amp["+ch2+"]>10 && amp["+ch2+"]<250  && ntracks == 1 && chi2 > -0.1 && chi2 < 50.0";
  	
 	gStyle->SetOptStat(0);
@@ -247,14 +240,11 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 
 	TH2F * h2_reso_vs_xy =  new TH2F("h2_reso_vs_xy","h2_reso_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
 	TH2F * h2_meanAmp_vs_xy =  new TH2F("h2_meanAmp_vs_xy","h2_meanAmp_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
-	TH2F * h2_meanAmp_fit_vs_xy =  new TH2F("h2_meanAmp_fit_vs_xy","h2_meanAmp_fit_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
 	TH2F * h2_meanRisetime_vs_xy =  new TH2F("h2_meanRisetime_vs_xy","h2_meanRisetime_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
 	TH2F * h2_meanT_vs_xy =  new TH2F("h2_meanT_vs_xy","h2_meanT_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
 	
 	float maxY_t_2D_mean = -9999.9;//50.0+h2_meanT_vs_xy->GetMaximum(); 
 	float minY_t_2D_mean = 9999.9;//h2_meanT_vs_xy->GetMinimum()-50.0; 
-	
-	int N_usefulbins_XY_noCorr = 0;
 
 	for(int ix = 1; ix<=9; ix++)
 	{
@@ -266,7 +256,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 			float thisY_high = y_low + 2.0*iy;
 			
 			TH1F * h_deltaT = new TH1F(("h_deltaT_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),("h_deltaT_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),100000, -1000.0, 1000.0);
-			TH1F * h_meanAmp = new TH1F(("h_meanAmp_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),("h_meanAmp_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),400, amp_low-100.0, amp_high+200.0);
+			TH1F * h_meanAmp = new TH1F(("h_meanAmp_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),("h_meanAmp_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),1000, 0.0, 1000.0);
 			TH1F * h_meanRisetime = new TH1F(("h_meanRisetime_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),("h_meanRisetime_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),100, 1.0, 3.0);
 			tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]>>h_deltaT_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),(cut_noPos+" && x_dut[0]>"+std::to_string(thisX_low)+" && x_dut[0]<"+std::to_string(thisX_high) +" && y_dut[0]>"+std::to_string(thisY_low)+" && y_dut[0]<"+std::to_string(thisY_high)).c_str());
 
@@ -278,7 +268,6 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 			{
 				h2_reso_vs_xy->SetBinContent(ix,iy,-999.9);
 				h2_meanAmp_vs_xy->SetBinContent(ix,iy,-999.9);
-				h2_meanAmp_fit_vs_xy->SetBinContent(ix,iy,-999.9);
 				h2_meanRisetime_vs_xy->SetBinContent(ix,iy,-999.9);
 				h2_meanT_vs_xy->SetBinContent(ix,iy,-99999.9);
 				continue;	
@@ -306,24 +295,12 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 			TF1 * tf1_gaus = new TF1("tf1_gaus","gaus", maxX_t - 1.0, maxX_t + 1.0);
 			tf1_gaus->SetParameter(1, h_deltaT->GetMean());
 			h_deltaT->Fit("tf1_gaus","","",lowDeltaT, highDeltaT);
-	
-			//amplitude, landau fit
-			float low40ch1E=h_meanAmp->GetBinCenter(h_meanAmp->FindFirstBinAbove(int(0.4*h_meanAmp->GetMaximum())));
-			TF1 * flandau_amp_temp = new TF1("flandau_amp_temp","[0]*TMath::Landau(x,[1],[2])", low40ch1E, amp_high+200.0);
-			flandau_amp_temp->SetParameters(h_meanAmp->GetMaximum(), h_meanAmp->GetBinCenter(h_meanAmp->GetMaximumBin()), 10.0);
-			h_meanAmp->Fit("flandau_amp_temp","Q","",low40ch1E,amp_high+200.0);
-			float meanAmp_fit = flandau_amp_temp->GetParameter(1);
-			float meanAmperror_fit = flandau_amp_temp->GetParError(1);
-				
-			N_usefulbins_XY_noCorr ++;
 			
 			float sigmaT = tf1_gaus->GetParameter(2);	
 			float meanT = tf1_gaus->GetParameter(1);	
-			sigmaT_XYaverage_noCorr += 1000.0*sigmaT;
 			float meanAmp = h_meanAmp->GetMean();
 			float meanRisetime = h_meanRisetime->GetMean();
 			float sigmaTerror = tf1_gaus->GetParError(2);	
-			e_sigmaT_XYaverage_noCorr += 1000.0*sigmaTerror*1000.0*sigmaTerror;
 			float meanTerror = tf1_gaus->GetParError(1);	
 			float meanAmperror = h_meanAmp->GetMeanError();
 			float meanRisetimeerror = h_meanRisetime->GetMeanError();
@@ -335,9 +312,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 			h2_meanT_vs_xy->SetBinError(ix,iy,1000.0*meanTerror);
 
 			h2_meanAmp_vs_xy->SetBinContent(ix,iy,meanAmp);
-			h2_meanAmp_fit_vs_xy->SetBinContent(ix,iy,meanAmp_fit);
 			h2_meanAmp_vs_xy->SetBinError(ix,iy,meanAmperror);
-			h2_meanAmp_fit_vs_xy->SetBinError(ix,iy,meanAmperror_fit);
 
 			h2_meanRisetime_vs_xy->SetBinContent(ix,iy,meanRisetime);
 			h2_meanRisetime_vs_xy->SetBinError(ix,iy,meanRisetimeerror);
@@ -363,11 +338,6 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 			h2_meanT_vs_xy->SetBinContent(ix,iy,h2_meanT_vs_xy->GetBinContent(ix,iy)-minY_t_2D_mean + 0.01);
 		}
 	}
-	
-	sigmaT_XYaverage_noCorr = sigmaT_XYaverage_noCorr/(1.0*N_usefulbins_XY_noCorr);
-	e_sigmaT_XYaverage_noCorr = sqrt(e_sigmaT_XYaverage_noCorr)/(1.0*N_usefulbins_XY_noCorr);
-
-	
 	myC->SetGridy(1);
 	myC->SetGridx(1);
 
@@ -379,7 +349,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h2_reso_vs_xy->GetYaxis()->SetTitle("beam position Y [mm]");
 	h2_reso_vs_xy->GetZaxis()->SetTitle("time resolution [ps]");
 	float maxY_t_2D = std::min(200.0, 5.0+h2_reso_vs_xy->GetMaximum()); 
-	h2_reso_vs_xy->GetZaxis()->SetRangeUser(20.0,80.0);//maxY_t_2D);
+	h2_reso_vs_xy->GetZaxis()->SetRangeUser(30.0,80.0);//maxY_t_2D);
 	h2_reso_vs_xy->SetTitle("");
 	h2_reso_vs_xy->GetXaxis()->SetTitleSize( axisTitleSizeX );
 	h2_reso_vs_xy->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
@@ -388,15 +358,6 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h2_reso_vs_xy->GetXaxis()->SetRangeUser(x_low+2.0, x_high-2.0);
 	h2_reso_vs_xy->GetYaxis()->SetRangeUser(y_low+2.0, y_high-2.0);
 	h2_reso_vs_xy->SetMarkerSize(2);
-	
-	TLatex *tlatex_xybins_noCorr =  new TLatex();
-        tlatex_xybins_noCorr->SetNDC();
-        tlatex_xybins_noCorr->SetTextAngle(0);
-        tlatex_xybins_noCorr->SetTextColor(kBlack);
-        tlatex_xybins_noCorr->SetTextFont(63);
-        tlatex_xybins_noCorr->SetTextAlign(11);
-        tlatex_xybins_noCorr->SetTextSize(30);
-        tlatex_xybins_noCorr->DrawLatex(0.3, 0.95, ("average #sigma = "+std::to_string(int(ceil(sigmaT_XYaverage_noCorr))) +"#pm "+std::to_string(int(ceil(e_sigmaT_XYaverage_noCorr))) + " ps").c_str());
 
  
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2Dtimereso_ch"+ch1+analysis_tag+".pdf").c_str());
@@ -445,27 +406,6 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DmeanAmp_ch"+ch1+analysis_tag+".png").c_str());
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DmeanAmp_ch"+ch1+analysis_tag+".C").c_str());
 
-
-	h2_meanAmp_fit_vs_xy->Draw("COLZ,TEXT,ERROR");
-	h2_meanAmp_fit_vs_xy->GetXaxis()->SetTitle("beam position X [mm]");
-	h2_meanAmp_fit_vs_xy->GetYaxis()->SetTitle("beam position Y [mm]");
-	h2_meanAmp_fit_vs_xy->GetZaxis()->SetTitle("amplitude [mV]");
-	h2_meanAmp_fit_vs_xy->GetZaxis()->SetRangeUser(amp_low,amp_high);
-	h2_meanAmp_fit_vs_xy->SetTitle("");
-	h2_meanAmp_fit_vs_xy->GetXaxis()->SetTitleSize( axisTitleSizeX );
-	h2_meanAmp_fit_vs_xy->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
-	h2_meanAmp_fit_vs_xy->GetYaxis()->SetTitleSize( axisTitleSizeY );
-	h2_meanAmp_fit_vs_xy->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-	h2_meanAmp_fit_vs_xy->GetZaxis()->SetTitleOffset( 1.2 );
-	h2_meanAmp_fit_vs_xy->GetXaxis()->SetRangeUser(x_low+2.0, x_high-2.0);
-	h2_meanAmp_fit_vs_xy->GetYaxis()->SetRangeUser(y_low+2.0, y_high-2.0);
-	h2_meanAmp_fit_vs_xy->SetMarkerSize(2);
- 
-	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DmeanAmp_Landau_fit_ch"+ch1+analysis_tag+".pdf").c_str());
-	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DmeanAmp_Landau_fit_ch"+ch1+analysis_tag+".png").c_str());
-	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DmeanAmp_Landau_fit_ch"+ch1+analysis_tag+".C").c_str());
-
-
 	gStyle->SetPaintTextFormat( "4.2f" );	
 	h2_meanRisetime_vs_xy->Draw("COLZ,TEXT,ERROR");
 	h2_meanRisetime_vs_xy->GetXaxis()->SetTitle("beam position X [mm]");
@@ -501,7 +441,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 		float thisAmp_high = amp_low + iamp*(amp_high-amp_low)/10;
 		
 		TH1F * h_deltaT = new TH1F(("h_deltaT_amp"+std::to_string(iamp)).c_str(),("h_deltaT_amp"+std::to_string(iamp)).c_str(),100000, -1000.0, 1000.0);
-		tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]>>h_deltaT_amp"+std::to_string(iamp)).c_str(),(cut_sipm+" && amp["+ch1+"]>"+std::to_string(thisAmp_low)+" && amp["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
+		tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]>>h_deltaT_amp"+std::to_string(iamp)).c_str(),(cut_sample+" && amp["+ch1+"]>"+std::to_string(thisAmp_low)+" && amp["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
 
 		if(h_deltaT->Integral() < 100.0) 
 		{
@@ -582,7 +522,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 		float thisAmp_high = effamp_low + ieffamp*(effamp_high-effamp_low)/10.0;
 		
 		TH1F * h_deltaT = new TH1F(("h_deltaT_effamp"+std::to_string(ieffamp)).c_str(),("h_deltaT_effamp"+std::to_string(ieffamp)).c_str(),100000, -1000.0, 1000.0);
-		tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]>>h_deltaT_effamp"+std::to_string(ieffamp)).c_str(),(cut_sipm+" && amp["+ch1+"]/baseline_RMS["+ch1+"]>"+std::to_string(thisAmp_low)+" && amp["+ch1+"]/baseline_RMS["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
+		tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]>>h_deltaT_effamp"+std::to_string(ieffamp)).c_str(),(cut_sample+" && amp["+ch1+"]/baseline_RMS["+ch1+"]>"+std::to_string(thisAmp_low)+" && amp["+ch1+"]/baseline_RMS["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
 
 		if(h_deltaT->Integral() < 100.0) 
 		{
@@ -885,35 +825,26 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 
 	myC->SetGridy(0);
 	myC->SetGridx(0);
-	TH1F * h_ch1E = new TH1F("h_ch1E","h_ch1E",200,30, 900.0);
-	TH1F * h_ch2E = new TH1F("h_ch2E","h_ch2E",200,30, 900.0);
+	TH1F * h_ch1E = new TH1F("h_ch1E","h_ch1E",400,30, 2000.0);
+	TH1F * h_ch2E = new TH1F("h_ch2E","h_ch2E",400,30,2000.0);
 
 	tree->Draw(("amp["+ch1+"]>>h_ch1E").c_str(), cut1.c_str());	
 	tree->Draw(("amp["+ch2+"]>>h_ch2E").c_str(), cut2.c_str());	
 	
+	h_ch1E->SetTitle("");
+	float maxY_E = 1.2*std::max(h_ch1E->GetMaximum(), h_ch2E->GetMaximum());
 
 	float maxX_ch1E = h_ch1E->GetBinCenter(h_ch1E->GetMaximumBin());
 	float highch1E=h_ch1E->GetBinCenter(h_ch1E->FindLastBinAbove(int(0.1*h_ch1E->GetMaximum())));
-	float low40ch1E=h_ch1E->GetBinCenter(h_ch1E->FindFirstBinAbove(int(0.4*h_ch1E->GetMaximum())));
 	//float maxX_ch1 = std::max(2.0*maxX_ch1E, highch1E+200.0);
 	float maxX_ch1 = std::max(amp_high+200.0, highch1E+200.0);
 
 	float maxX_ch2E = h_ch2E->GetBinCenter(h_ch2E->GetMaximumBin());
 	float highch2E=h_ch2E->GetBinCenter(h_ch2E->FindLastBinAbove(int(0.1*h_ch2E->GetMaximum())));
-	float low40ch2E=h_ch2E->GetBinCenter(h_ch2E->FindFirstBinAbove(int(0.4*h_ch2E->GetMaximum())));
-	float high40ch2E = maxX_ch2E+(maxX_ch2E-low40ch2E);
+	float lowch2E=h_ch2E->GetBinCenter(h_ch2E->FindFirstBinAbove(int(0.3*h_ch2E->GetMaximum())));
 	float maxX_ch2 = std::max(2.0*maxX_ch2E, highch2E+200.0);
 
 	float maxX_E = std::max(maxX_ch1, maxX_ch2);
-
-
-	//scale
-	h_ch1E->Scale(1.0/h_ch1E->GetMaximum());
-	h_ch2E->Scale(1.0/h_ch2E->GetMaximum());
-
-	h_ch1E->SetTitle("");
-	float maxY_E = 1.5*std::max(h_ch1E->GetMaximum(), h_ch2E->GetMaximum());
-
 
 	h_ch1E->SetMarkerStyle( 20 );
 	h_ch1E->SetMarkerColor( 2 );
@@ -934,29 +865,24 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	
 	h_ch2E->Draw("sameE");
 
-	TF1 * flandau_ch1E = new TF1("flandau_ch1E","[0]*TMath::Landau(x,[1],[2])", low40ch1E, amp_high);
-	//TF1 * flandau_ch2E = new TF1("flandau_ch2E","[0]*TMath::Landau(x,[1],[2])", low40ch2E, amp_high_ch2);
-	TF1 * fgaus_ch2E = new TF1("fgaus_ch2E","gaus",low40ch2E , high40ch2E);
-	flandau_ch1E->SetParameters(h_ch1E->GetMaximum(), maxX_ch1E, 1.0);
-	//flandau_ch2E->SetParameters(h_ch2E->GetMaximum(), maxX_ch2E, 1.0);
-	fgaus_ch2E->SetParameter(1, maxX_ch2E);
+	TF1 * flandau_ch1E = new TF1("flandau_ch1E","[0]*TMath::Landau(x,[1],[2])", amp_low, amp_high);
+	TF1 * flandau_ch2E = new TF1("flandau_ch2E","[0]*TMath::Landau(x,[1],[2])", lowch2E, amp_high_ch2);
+	flandau_ch1E->SetParameters(h_ch1E->GetMaximum(), maxX_ch1E, 10.0);
+	flandau_ch2E->SetParameters(h_ch2E->GetMaximum(), maxX_ch2E, 10.0);
 	
 	flandau_ch1E->SetLineColor(1);
-	//flandau_ch2E->SetLineColor(1);
-	fgaus_ch2E->SetLineColor(1);
+	flandau_ch2E->SetLineColor(1);
 
-	h_ch1E->Fit("flandau_ch1E", "Q", "", low40ch1E, amp_high);	
-	//h_ch2E->Fit("flandau_ch2E", "Q", "", lowch2E, amp_high_ch2);	
-	h_ch2E->Fit("fgaus_ch2E", "Q", "", low40ch2E, high40ch2E);
+	h_ch1E->Fit("flandau_ch1E", "Q", "", amp_low, amp_high);	
+	h_ch2E->Fit("flandau_ch2E", "Q", "", lowch2E, amp_high_ch2);	
 
 	gPad->Modified();
         gPad->Update();
 	
 	float peak_amp_ch1 = flandau_ch1E->GetParameter(1);	
-	//float peak_amp_ch2 = flandau_ch2E->GetParameter(1);	
-	float peak_amp_ch2 = fgaus_ch2E->GetParameter(1);	
+	float peak_amp_ch2 = flandau_ch2E->GetParameter(1);	
 	
-	TLegend * leg_E  = new TLegend (0.4,0.7,0.85,0.9);
+	TLegend * leg_E  = new TLegend (0.4,0.6,0.85,0.9);
 	leg_E->SetBorderSize(0);
 	leg_E->SetTextSize(0.06);
 	leg_E->SetLineColor(1);
@@ -2545,9 +2471,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	
 	float maxY_t_2D_mean_afterTW = -9999.9;//50.0+h2_meanT_vs_xy_afterTW->GetMaximum(); 
 	float minY_t_2D_mean_afterTW = 9999.9;//h2_meanT_vs_xy_afterTW->GetMinimum()-50.0; 
-	
-	int N_usefulbins_XY_afterTW = 0;	
-	
+
 	for(int ix = 1; ix<=9; ix++)
 	{
 		for(int iy=1;iy<=9;iy++)
@@ -2592,26 +2516,20 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 			TF1 * tf1_gaus = new TF1("tf1_gaus","gaus", maxX_t - 1.0, maxX_t + 1.0);
 			tf1_gaus->SetParameter(1, h_deltaT_corr->GetMean());
 			h_deltaT_corr->Fit("tf1_gaus","","",lowDeltaT, highDeltaT);
-	
-			N_usefulbins_XY_afterTW ++;		
+			
 			float sigmaT = tf1_gaus->GetParameter(2);	
 			float meanT = tf1_gaus->GetParameter(1);	
 			float sigmaTerror = tf1_gaus->GetParError(2);	
 			float meanTerror = tf1_gaus->GetParError(1);	
-
 			if(1000.0*sigmaT < h2_reso_vs_xy->GetBinContent(ix,iy))
 			{
 			h2_reso_vs_xy_afterTW->SetBinContent(ix,iy,1000.0*sigmaT);
 			h2_reso_vs_xy_afterTW->SetBinError(ix,iy,1000.0*sigmaTerror);
-			sigmaT_XYaverage_afterTW += 1000.0*sigmaT;
-			e_sigmaT_XYaverage_afterTW += 1000.0*sigmaTerror*1000.0*sigmaTerror;
 			}
 			else
 			{
 			h2_reso_vs_xy_afterTW->SetBinContent(ix,iy,h2_reso_vs_xy->GetBinContent(ix,iy));
 			h2_reso_vs_xy_afterTW->SetBinError(ix,iy,h2_reso_vs_xy->GetBinError(ix,iy));
-			sigmaT_XYaverage_afterTW += h2_reso_vs_xy->GetBinContent(ix,iy);
-			e_sigmaT_XYaverage_afterTW += h2_reso_vs_xy->GetBinError(ix,iy) * h2_reso_vs_xy->GetBinError(ix,iy);
 			}
 
 			h2_meanT_vs_xy_afterTW->SetBinContent(ix,iy,1000.0*meanT);
@@ -2637,9 +2555,6 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 		}
 	}
 
-	sigmaT_XYaverage_afterTW = sigmaT_XYaverage_afterTW/(1.0*N_usefulbins_XY_afterTW);
-	e_sigmaT_XYaverage_afterTW = sqrt(e_sigmaT_XYaverage_afterTW)/(1.0*N_usefulbins_XY_afterTW);
-
 	myC->SetGridy(1);
 	myC->SetGridx(1);
 
@@ -2651,7 +2566,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h2_reso_vs_xy_afterTW->GetYaxis()->SetTitle("beam position Y [mm]");
 	h2_reso_vs_xy_afterTW->GetZaxis()->SetTitle("time resolution [ps]");
 	float maxY_t_2D_afterTW = std::min(200.0, 5.0+h2_reso_vs_xy_afterTW->GetMaximum()); 
-	h2_reso_vs_xy_afterTW->GetZaxis()->SetRangeUser(20.0,80.0);//maxY_t_2D_afterTW);
+	h2_reso_vs_xy_afterTW->GetZaxis()->SetRangeUser(30.0,80.0);//maxY_t_2D_afterTW);
 	h2_reso_vs_xy_afterTW->SetTitle("");
 	h2_reso_vs_xy_afterTW->GetXaxis()->SetTitleSize( axisTitleSizeX );
 	h2_reso_vs_xy_afterTW->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
@@ -2660,16 +2575,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h2_reso_vs_xy_afterTW->GetXaxis()->SetRangeUser(x_low+2.0, x_high-2.0);
 	h2_reso_vs_xy_afterTW->GetYaxis()->SetRangeUser(y_low+2.0, y_high-2.0);
 	h2_reso_vs_xy_afterTW->SetMarkerSize(2);
-
-	TLatex *tlatex_xybins_afterTW =  new TLatex();
-        tlatex_xybins_afterTW->SetNDC();
-        tlatex_xybins_afterTW->SetTextAngle(0);
-        tlatex_xybins_afterTW->SetTextColor(kBlack);
-        tlatex_xybins_afterTW->SetTextFont(63);
-        tlatex_xybins_afterTW->SetTextAlign(11);
-        tlatex_xybins_afterTW->SetTextSize(30);
-        tlatex_xybins_afterTW->DrawLatex(0.5, 0.95, ("average #sigma = "+std::to_string(int(ceil(sigmaT_XYaverage_afterTW))) +" #pm "+std::to_string(int(ceil(e_sigmaT_XYaverage_afterTW))) +" ps").c_str());
-
+ 
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_afterTW_2Dtimereso_ch"+ch1+analysis_tag+".pdf").c_str());
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_afterTW_2Dtimereso_ch"+ch1+analysis_tag+".png").c_str());
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_afterTW_2Dtimereso_ch"+ch1+analysis_tag+".C").c_str());
@@ -2717,7 +2623,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 +std::to_string(x_cor_xyonly_p1)+"*x_dut[0] + "+std::to_string(x_cor_xyonly_p2)+"*x_dut[0]*x_dut[0]+"+std::to_string(x_cor_xyonly_p3)+"*x_dut[0]*x_dut[0]*x_dut[0]+"+std::to_string(x_cor_xyonly_p4)+"*x_dut[0]*x_dut[0]*x_dut[0]*x_dut[0]+"
 +std::to_string(y_cor_xyonly_p0)+" + "
 +std::to_string(y_cor_xyonly_p1)+"*y_dut[0] + "+std::to_string(y_cor_xyonly_p2)+"*y_dut[0]*y_dut[0]+"+std::to_string(y_cor_xyonly_p3)+"*y_dut[0]*y_dut[0]*y_dut[0]+"+std::to_string(y_cor_xyonly_p4)+"*y_dut[0]*y_dut[0]*y_dut[0]*y_dut[0]"
-+")>>h_deltaT_corr_amp"+std::to_string(iamp)).c_str(),(cut_sipm+" && amp["+ch1+"]>"+std::to_string(thisAmp_low)+"&& amp["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
++")>>h_deltaT_corr_amp"+std::to_string(iamp)).c_str(),(cut_sample+" && amp["+ch1+"]>"+std::to_string(thisAmp_low)+"&& amp["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
 
 
 
@@ -2807,13 +2713,13 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 		float thisAmp_high = effamp_low_afterXY + ieffamp*(effamp_high_afterXY-effamp_low_afterXY)/10.0;
 		
 		TH1F * h_deltaT_corr = new TH1F(("h_deltaT_corr_effamp"+std::to_string(ieffamp)).c_str(),("h_deltaT_corr_effamp"+std::to_string(ieffamp)).c_str(),100000, -1000.0, 1000.0);
-		//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]>>h_deltaT_corr_effamp"+std::to_string(ieffamp)).c_str(),(cut_sipm+" && amp["+ch1+"]/baseline_RMS["+ch1+"]>"+std::to_string(thisAmp_low)+" && amp["+ch1+"]/baseline_RMS["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
+		//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]>>h_deltaT_corr_effamp"+std::to_string(ieffamp)).c_str(),(cut_sample+" && amp["+ch1+"]/baseline_RMS["+ch1+"]>"+std::to_string(thisAmp_low)+" && amp["+ch1+"]/baseline_RMS["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
 
         	tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]- (" + std::to_string(x_cor_xyonly_p0)+" + "
 +std::to_string(x_cor_xyonly_p1)+"*x_dut[0] + "+std::to_string(x_cor_xyonly_p2)+"*x_dut[0]*x_dut[0]+"+std::to_string(x_cor_xyonly_p3)+"*x_dut[0]*x_dut[0]*x_dut[0]+"+std::to_string(x_cor_xyonly_p4)+"*x_dut[0]*x_dut[0]*x_dut[0]*x_dut[0]+"
 +std::to_string(y_cor_xyonly_p0)+" + "
 +std::to_string(y_cor_xyonly_p1)+"*y_dut[0] + "+std::to_string(y_cor_xyonly_p2)+"*y_dut[0]*y_dut[0]+"+std::to_string(y_cor_xyonly_p3)+"*y_dut[0]*y_dut[0]*y_dut[0]+"+std::to_string(y_cor_xyonly_p4)+"*y_dut[0]*y_dut[0]*y_dut[0]*y_dut[0]"
-+")>>h_deltaT_corr_effamp"+std::to_string(ieffamp)).c_str(),(cut_sipm+" && amp["+ch1+"]/baseline_RMS["+ch1+"]>"+std::to_string(thisAmp_low)+" && amp["+ch1+"]/baseline_RMS["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
++")>>h_deltaT_corr_effamp"+std::to_string(ieffamp)).c_str(),(cut_sample+" && amp["+ch1+"]/baseline_RMS["+ch1+"]>"+std::to_string(thisAmp_low)+" && amp["+ch1+"]/baseline_RMS["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
 
 
 		if(h_deltaT_corr->Integral() < 100.0) 
