@@ -18,7 +18,7 @@
 #include "TLatex.h"
 
 
-void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch2  = "0", const std::string& ch1  = "16", const std::string& ch1_tl  = "16", const std::string& time_ch1  = "LP2_10", float amp_low_ch2 = 20.0, float amp_high_ch2 = 300.0, float amp_low = 200.0, float amp_high = 850.0, float x_tile_low = 20.0, float x_tile_high = 30.0, float y_tile_low = 5.0, float y_tile_high = 12.0, float x_sipm_low = 23.0, float x_sipm_high = 27.0, float y_sipm_low = 7.0, float y_sipm_high = 10.0, const std::string& analysis_tag="")
+void goodplot_0618_v5_final_1mm(const std::string& inFileName, const std::string& ch2  = "0", const std::string& ch1  = "16", const std::string& ch1_tl  = "16", const std::string& time_ch1  = "LP2_10", float amp_low_ch2 = 20.0, float amp_high_ch2 = 300.0, float amp_low = 200.0, float amp_high = 850.0, float x_tile_low = 20.0, float x_tile_high = 30.0, float y_tile_low = 5.0, float y_tile_high = 12.0, float x_sipm_low = 23.0, float x_sipm_high = 27.0, float y_sipm_low = 7.0, float y_sipm_high = 10.0, const std::string& analysis_tag="")
 {
 	//string ch1 = "15";
 	//string ch2 = "9";
@@ -84,7 +84,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	//string inputDir = "/eos/cms/store/group/phys_susy/razor/Timing/2018_06/data/VME/RECO/v3/combine/";
 	//string inputDir = "/eos/uscms/store/user/cmstestbeam/BTL_ETL/2018_06/data/VME/RECO/v5_noMeas/";
 	string inputDir = "/eos/cms/store/group/phys_susy/razor/Timing/2018_06/data/VME/RECO/v5_combine/";
-	string plotDir = "plots_0618_v5_final/";
+	string plotDir = "plots_0618_v5_final_1mm/";
 	//string plotDir = "/afs/cern.ch/user/z/zhicaiz/www/sharebox/TestBeam/FNAL_June2018/";
 
 	mkdir(plotDir.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
@@ -245,25 +245,25 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	myC->SetGridy(0);
 	myC->SetGridx(0);
 
-	TH2F * h2_reso_vs_xy =  new TH2F("h2_reso_vs_xy","h2_reso_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
-	TH2F * h2_meanAmp_vs_xy =  new TH2F("h2_meanAmp_vs_xy","h2_meanAmp_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
-	TH2F * h2_meanAmp_fit_vs_xy =  new TH2F("h2_meanAmp_fit_vs_xy","h2_meanAmp_fit_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
-	TH2F * h2_meanRisetime_vs_xy =  new TH2F("h2_meanRisetime_vs_xy","h2_meanRisetime_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
-	TH2F * h2_meanT_vs_xy =  new TH2F("h2_meanT_vs_xy","h2_meanT_vs_xy", 9, x_low, x_high, 9, y_low, y_high);
+	TH2F * h2_reso_vs_xy =  new TH2F("h2_reso_vs_xy","h2_reso_vs_xy", 18, x_low, x_high, 18, y_low, y_high);
+	TH2F * h2_meanAmp_vs_xy =  new TH2F("h2_meanAmp_vs_xy","h2_meanAmp_vs_xy", 18, x_low, x_high, 18, y_low, y_high);
+	TH2F * h2_meanAmp_fit_vs_xy =  new TH2F("h2_meanAmp_fit_vs_xy","h2_meanAmp_fit_vs_xy", 18, x_low, x_high, 18, y_low, y_high);
+	TH2F * h2_meanRisetime_vs_xy =  new TH2F("h2_meanRisetime_vs_xy","h2_meanRisetime_vs_xy", 18, x_low, x_high, 18, y_low, y_high);
+	TH2F * h2_meanT_vs_xy =  new TH2F("h2_meanT_vs_xy","h2_meanT_vs_xy", 18, x_low, x_high, 18, y_low, y_high);
 	
 	float maxY_t_2D_mean = -9999.9;//50.0+h2_meanT_vs_xy->GetMaximum(); 
 	float minY_t_2D_mean = 9999.9;//h2_meanT_vs_xy->GetMinimum()-50.0; 
 	
 	int N_usefulbins_XY_noCorr = 0;
 
-	for(int ix = 1; ix<=9; ix++)
+	for(int ix = 1; ix<=18; ix++)
 	{
-		for(int iy=1;iy<=9;iy++)
+		for(int iy=1;iy<=18;iy++)
 		{
-			float thisX_low = x_low + 2.0*(ix-1);
-			float thisX_high = x_low + 2.0*ix;
-			float thisY_low = y_low + 2.0*(iy-1);
-			float thisY_high = y_low + 2.0*iy;
+			float thisX_low = x_low + 1.0*(ix-1);
+			float thisX_high = x_low + 1.0*ix;
+			float thisY_low = y_low + 1.0*(iy-1);
+			float thisY_high = y_low + 1.0*iy;
 			
 			TH1F * h_deltaT = new TH1F(("h_deltaT_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),("h_deltaT_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),100000, -1000.0, 1000.0);
 			TH1F * h_meanAmp = new TH1F(("h_meanAmp_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),("h_meanAmp_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),400, amp_low-100.0, amp_high+200.0);
@@ -274,7 +274,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 
 			tree->Draw(("(LP2_30["+ch1+"]-LP2_10["+ch1+"])*4.0 >> h_meanRisetime_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),(cut_noPos+" && x_dut[0]>"+std::to_string(thisX_low)+" && x_dut[0]<"+std::to_string(thisX_high) +" && y_dut[0]>"+std::to_string(thisY_low)+" && y_dut[0]<"+std::to_string(thisY_high)+" && (LP2_30["+ch1+"]-LP2_10["+ch1+"])*4.0 <3.0 && (LP2_30["+ch1+"]-LP2_10["+ch1+"])*4.0 >1.0").c_str());
 			//if(h_deltaT->Integral() < 10.0) 
-			if(thisX_high < x_tile_low || thisX_low > x_tile_high || thisY_high < y_tile_low || thisY_low > y_tile_high || h_deltaT->Integral() < 100.0)
+			if(thisX_high < x_tile_low || thisX_low > x_tile_high || thisY_high < y_tile_low || thisY_low > y_tile_high || h_deltaT->Integral() < 80.0)
 			{
 				h2_reso_vs_xy->SetBinContent(ix,iy,-999.9);
 				h2_meanAmp_vs_xy->SetBinContent(ix,iy,-999.9);
@@ -307,6 +307,14 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 			tf1_gaus->SetParameter(1, h_deltaT->GetMean());
 			h_deltaT->Fit("tf1_gaus","","",lowDeltaT, highDeltaT);
 	
+			gPad->Modified();
+			gPad->Update();
+
+
+			myC->SaveAs((plotDir+"/xybins/pdf/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+analysis_tag+".pdf").c_str());
+			myC->SaveAs((plotDir+"/xybins/png/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+analysis_tag+".png").c_str());
+			myC->SaveAs((plotDir+"/xybins/C/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+analysis_tag+".C").c_str());
+
 			//amplitude, landau fit
 			float low40ch1E=h_meanAmp->GetBinCenter(h_meanAmp->FindFirstBinAbove(int(0.4*h_meanAmp->GetMaximum())));
 			TF1 * flandau_amp_temp = new TF1("flandau_amp_temp","[0]*TMath::Landau(x,[1],[2])", low40ch1E, amp_high+200.0);
@@ -347,18 +355,12 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 			if(1000.0*meanT > maxY_t_2D_mean) maxY_t_2D_mean = 1000.0*meanT;
 			if(1000.0*meanT < minY_t_2D_mean) minY_t_2D_mean = 1000.0*meanT;
 	
-			gPad->Modified();
-			gPad->Update();
-
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+analysis_tag+".pdf").c_str());
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+analysis_tag+".png").c_str());
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_ch"+ch1+analysis_tag+".C").c_str());
 			
 		}
 	}	
-	for(int ix = 1; ix<=9; ix++)
+	for(int ix = 1; ix<=18; ix++)
 	{
-		for(int iy=1;iy<=9;iy++)
+		for(int iy=1;iy<=18;iy++)
 		{
 			h2_meanT_vs_xy->SetBinContent(ix,iy,h2_meanT_vs_xy->GetBinContent(ix,iy)-minY_t_2D_mean + 0.01);
 		}
@@ -387,7 +389,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h2_reso_vs_xy->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
 	h2_reso_vs_xy->GetXaxis()->SetRangeUser(x_low+2.0, x_high-2.0);
 	h2_reso_vs_xy->GetYaxis()->SetRangeUser(y_low+2.0, y_high-2.0);
-	h2_reso_vs_xy->SetMarkerSize(2);
+	h2_reso_vs_xy->SetMarkerSize(1);
 	
 	TLatex *tlatex_xybins_noCorr =  new TLatex();
         tlatex_xybins_noCorr->SetNDC();
@@ -419,7 +421,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h2_meanT_vs_xy->GetZaxis()->SetTitleOffset( 1.2 );
 	h2_meanT_vs_xy->GetXaxis()->SetRangeUser(x_low+2.0, x_high-2.0 );
 	h2_meanT_vs_xy->GetYaxis()->SetRangeUser(y_low+2.0, y_high-2.0 );
-	h2_meanT_vs_xy->SetMarkerSize(2);
+	h2_meanT_vs_xy->SetMarkerSize(1);
  
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DtimemeanT_ch"+ch1+analysis_tag+".pdf").c_str());
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DtimemeanT_ch"+ch1+analysis_tag+".png").c_str());
@@ -439,7 +441,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h2_meanAmp_vs_xy->GetZaxis()->SetTitleOffset( 1.2 );
 	h2_meanAmp_vs_xy->GetXaxis()->SetRangeUser(x_low+2.0, x_high-2.0);
 	h2_meanAmp_vs_xy->GetYaxis()->SetRangeUser(y_low+2.0, y_high-2.0);
-	h2_meanAmp_vs_xy->SetMarkerSize(2);
+	h2_meanAmp_vs_xy->SetMarkerSize(1);
  
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DmeanAmp_ch"+ch1+analysis_tag+".pdf").c_str());
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DmeanAmp_ch"+ch1+analysis_tag+".png").c_str());
@@ -459,7 +461,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h2_meanAmp_fit_vs_xy->GetZaxis()->SetTitleOffset( 1.2 );
 	h2_meanAmp_fit_vs_xy->GetXaxis()->SetRangeUser(x_low+2.0, x_high-2.0);
 	h2_meanAmp_fit_vs_xy->GetYaxis()->SetRangeUser(y_low+2.0, y_high-2.0);
-	h2_meanAmp_fit_vs_xy->SetMarkerSize(2);
+	h2_meanAmp_fit_vs_xy->SetMarkerSize(1);
  
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DmeanAmp_Landau_fit_ch"+ch1+analysis_tag+".pdf").c_str());
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DmeanAmp_Landau_fit_ch"+ch1+analysis_tag+".png").c_str());
@@ -480,7 +482,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h2_meanRisetime_vs_xy->GetZaxis()->SetTitleOffset( 1.2 );
 	h2_meanRisetime_vs_xy->GetXaxis()->SetRangeUser(x_low+2.0, x_high-2.0);
 	h2_meanRisetime_vs_xy->GetYaxis()->SetRangeUser(y_low+2.0, y_high-2.0);
-	h2_meanRisetime_vs_xy->SetMarkerSize(2);
+	h2_meanRisetime_vs_xy->SetMarkerSize(1);
  
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DmeanRisetime_ch"+ch1+analysis_tag+".pdf").c_str());
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_2DmeanRisetime_ch"+ch1+analysis_tag+".png").c_str());
@@ -1091,7 +1093,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_vs_amp->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_vs_amp->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_vs_amp->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	p_deltaT_vs_amp->GetYaxis()->SetRangeUser(maxX_t-0.2, maxX_t+0.3);
+       	p_deltaT_vs_amp->GetYaxis()->SetRangeUser(maxX_t-0.4, maxX_t+0.3);
        	p_deltaT_vs_amp->GetXaxis()->SetRangeUser(amp_low, amp_high);
         p_deltaT_vs_amp->SetMarkerStyle( 20 );
         p_deltaT_vs_amp->SetMarkerColor( 1 );
@@ -1251,7 +1253,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	// impact point dependency of the deltaT, without TW correction, for visual effects
 	myC->SetGridy(1);
 	myC->SetGridx(1);
-	TH2F * h2_deltaT_vs_x = new TH2F("h2_deltaT_vs_x","h2_deltaT_vs_x", 72, x_low, x_high, 100, maxX_t-0.2, maxX_t+0.3);
+	TH2F * h2_deltaT_vs_x = new TH2F("h2_deltaT_vs_x","h2_deltaT_vs_x", 72, x_low, x_high, 140, maxX_t-0.4, maxX_t+0.3);
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] : x_dut[0]>>h2_deltaT_vs_x").c_str(),cut_noPos.c_str());
 	tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] : x_dut[0]>>h2_deltaT_vs_x").c_str(),(cut_noPos+" && y_dut[0]>"+std::to_string(y_sipm_low)+" && y_dut[0]<"+std::to_string(y_sipm_high)).c_str());
 	h2_deltaT_vs_x->GetXaxis()->SetTitle("beam position X [mm]");
@@ -1277,7 +1279,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_vs_x->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_vs_x->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_vs_x->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	p_deltaT_vs_x->GetYaxis()->SetRangeUser(maxX_t-0.2, maxX_t+0.3);
+       	p_deltaT_vs_x->GetYaxis()->SetRangeUser(maxX_t-0.4, maxX_t+0.3);
        	p_deltaT_vs_x->GetXaxis()->SetRangeUser(x_tile_low, x_tile_high);
         p_deltaT_vs_x->SetMarkerStyle( 20 );
         p_deltaT_vs_x->SetMarkerColor( 1 );
@@ -1291,7 +1293,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	for(int i=x_bin_left;i<=x_bin_right;i++)
 	{
 		float dt_this = p_deltaT_vs_x->GetBinContent(i);
-		if (dt_this < maxX_t-0.2 || dt_this > maxX_t+0.3) continue;
+		if (dt_this < maxX_t-0.4 || dt_this > maxX_t+0.3) continue;
 		if(dt_this < all_xydt_min) 
 		{
 			all_xydt_min = dt_this;
@@ -1338,7 +1340,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
  	myC->SaveAs((plotDir+"/Run"+inFileName+"_deltaT_vs_beamX_scatter_and_profile_ch"+ch1+analysis_tag+".png").c_str());
  	myC->SaveAs((plotDir+"/Run"+inFileName+"_deltaT_vs_beamX_scatter_and_profile_ch"+ch1+analysis_tag+".C").c_str());
 	
-	TH2F * h2_deltaT_vs_y = new TH2F("h2_deltaT_vs_y","h2_deltaT_vs_y", 72, y_low, y_high, 100, maxX_t-0.2, maxX_t+0.3);
+	TH2F * h2_deltaT_vs_y = new TH2F("h2_deltaT_vs_y","h2_deltaT_vs_y", 72, y_low, y_high, 140, maxX_t-0.4, maxX_t+0.3);
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] : y_dut[0]>>h2_deltaT_vs_y").c_str(),cut_noPos.c_str());
 	tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] : y_dut[0]>>h2_deltaT_vs_y").c_str(), (cut_noPos+" && x_dut[0] > "+std::to_string(x_sipm_low)+" && x_dut[0]<"+std::to_string(x_sipm_high)).c_str());
 	h2_deltaT_vs_y->GetXaxis()->SetTitle("beam position Y [mm]");
@@ -1364,7 +1366,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_vs_y->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_vs_y->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_vs_y->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	p_deltaT_vs_y->GetYaxis()->SetRangeUser(maxX_t-0.2, maxX_t+0.3);
+       	p_deltaT_vs_y->GetYaxis()->SetRangeUser(maxX_t-0.4, maxX_t+0.3);
        	p_deltaT_vs_y->GetXaxis()->SetRangeUser(y_tile_low, y_tile_high);
         p_deltaT_vs_y->SetMarkerStyle( 20 );
         p_deltaT_vs_y->SetMarkerColor( 1 );
@@ -1380,7 +1382,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	for(int i=x_bin_left;i<=x_bin_right;i++)
 	{
 		float dt_this = p_deltaT_vs_y->GetBinContent(i);
-		if (dt_this < maxX_t-0.2 || dt_this > maxX_t+0.3) continue;
+		if (dt_this < maxX_t-0.4 || dt_this > maxX_t+0.3) continue;
 		if(dt_this < all_xydt_min) 
 		{
 			all_xydt_min = dt_this;
@@ -1457,7 +1459,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_afterTW_vs_x->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_afterTW_vs_x->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_afterTW_vs_x->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	//p_deltaT_afterTW_vs_x->GetYaxis()->SetRangeUser(maxX_t-0.2, maxX_t+0.3);
+       	//p_deltaT_afterTW_vs_x->GetYaxis()->SetRangeUser(maxX_t-0.4, maxX_t+0.3);
        	p_deltaT_afterTW_vs_x->GetYaxis()->SetRangeUser(maxX_t_TWcorr-0.5, maxX_t_TWcorr+0.5);
        	p_deltaT_afterTW_vs_x->GetXaxis()->SetRangeUser(x_tile_low, x_tile_high);
         p_deltaT_afterTW_vs_x->SetMarkerStyle( 20 );
@@ -1475,7 +1477,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	for(int i=x_bin_left;i<=x_bin_right;i++)
 	{
 		float dt_this = p_deltaT_afterTW_vs_x->GetBinContent(i);
-		if (dt_this < maxX_t_TWcorr-0.2 || dt_this > maxX_t_TWcorr+0.3) continue;
+		if (dt_this < maxX_t_TWcorr-0.4 || dt_this > maxX_t_TWcorr+0.3) continue;
 		if(dt_this < all_xydt_min) 
 		{
 			all_xydt_min = dt_this;
@@ -1522,7 +1524,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
  	myC->SaveAs((plotDir+"/Run"+inFileName+"_deltaT_afterTW_vs_beamX_scatter_and_profile_ch"+ch1+analysis_tag+".C").c_str());
 	
 
-	TH2F * h2_deltaT_afterTW_vs_y = new TH2F("h2_deltaT_afterTW_vs_y","h2_deltaT_afterTW_vs_y", 72, y_low, y_high, 100, maxX_t_TWcorr-0.2, maxX_t_TWcorr+0.3);
+	TH2F * h2_deltaT_afterTW_vs_y = new TH2F("h2_deltaT_afterTW_vs_y","h2_deltaT_afterTW_vs_y", 72, y_low, y_high, 140, maxX_t_TWcorr-0.4, maxX_t_TWcorr+0.3);
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+std::to_string(amp_cor_p0) + " + " +std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : y_dut[0]>>h2_deltaT_afterTW_vs_y").c_str(),cut_noPos.c_str());
 	tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+std::to_string(amp_cor_p0) + " + " +std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : y_dut[0]>>h2_deltaT_afterTW_vs_y").c_str(),(cut_noPos+" && x_dut[0] > "+std::to_string(x_sipm_low)+" && x_dut[0]<"+std::to_string(x_sipm_high)).c_str());
 	h2_deltaT_afterTW_vs_y->GetXaxis()->SetTitle("beam position Y [mm]");
@@ -1548,7 +1550,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_afterTW_vs_y->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_afterTW_vs_y->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_afterTW_vs_y->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	p_deltaT_afterTW_vs_y->GetYaxis()->SetRangeUser(maxX_t_TWcorr-0.2, maxX_t_TWcorr+0.3);
+       	p_deltaT_afterTW_vs_y->GetYaxis()->SetRangeUser(maxX_t_TWcorr-0.4, maxX_t_TWcorr+0.3);
        	p_deltaT_afterTW_vs_y->GetXaxis()->SetRangeUser(y_tile_low, y_tile_high);
         p_deltaT_afterTW_vs_y->SetMarkerStyle( 20 );
         p_deltaT_afterTW_vs_y->SetMarkerColor( 1 );
@@ -1564,7 +1566,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	for(int i=x_bin_left;i<=x_bin_right;i++)
 	{
 		float dt_this = p_deltaT_afterTW_vs_y->GetBinContent(i);
-		if (dt_this < maxX_t_TWcorr-0.2 || dt_this > maxX_t_TWcorr+0.3) continue;
+		if (dt_this < maxX_t_TWcorr-0.4 || dt_this > maxX_t_TWcorr+0.3) continue;
 		if(dt_this < all_xydt_min) 
 		{
 			all_xydt_min = dt_this;
@@ -1613,7 +1615,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	// impact point dependency of the deltaT, without TW correction, for real correction
 	myC->SetGridy(1);
 	myC->SetGridx(1);
-	TH2F * h2_deltaT_vs_x_forCorr = new TH2F("h2_deltaT_vs_x_forCorr","h2_deltaT_vs_x_forCorr", 72, x_low, x_high, 100, maxX_t-0.2, maxX_t+0.3);
+	TH2F * h2_deltaT_vs_x_forCorr = new TH2F("h2_deltaT_vs_x_forCorr","h2_deltaT_vs_x_forCorr", 72, x_low, x_high, 140, maxX_t-0.4, maxX_t+0.3);
 	tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] : x_dut[0]>>h2_deltaT_vs_x_forCorr").c_str(),cut.c_str());
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] : x_dut[0]>>h2_deltaT_vs_x_forCorr").c_str(),(cut_noPos+" && y_dut[0]>"+std::to_string(y_sipm_low)+" && y_dut[0]<"+std::to_string(y_sipm_high)).c_str());
 	h2_deltaT_vs_x_forCorr->GetXaxis()->SetTitle("beam position X [mm]");
@@ -1639,7 +1641,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_vs_x_forCorr->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_vs_x_forCorr->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_vs_x_forCorr->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	p_deltaT_vs_x_forCorr->GetYaxis()->SetRangeUser(maxX_t-0.2, maxX_t+0.3);
+       	p_deltaT_vs_x_forCorr->GetYaxis()->SetRangeUser(maxX_t-0.4, maxX_t+0.3);
        	p_deltaT_vs_x_forCorr->GetXaxis()->SetRangeUser(x_tile_low, x_tile_high);
         p_deltaT_vs_x_forCorr->SetMarkerStyle( 20 );
         p_deltaT_vs_x_forCorr->SetMarkerColor( 1 );
@@ -1699,7 +1701,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
  	myC->SaveAs((plotDir+"/Run"+inFileName+"_deltaT_vs_beamX_forCorr_scatter_and_profile_ch"+ch1+analysis_tag+".png").c_str());
  	myC->SaveAs((plotDir+"/Run"+inFileName+"_deltaT_vs_beamX_forCorr_scatter_and_profile_ch"+ch1+analysis_tag+".C").c_str());
 	
-	TH2F * h2_deltaT_vs_y_forCorr = new TH2F("h2_deltaT_vs_y_forCorr","h2_deltaT_vs_y_forCorr", 72, y_low, y_high, 100, maxX_t-0.2, maxX_t+0.3);
+	TH2F * h2_deltaT_vs_y_forCorr = new TH2F("h2_deltaT_vs_y_forCorr","h2_deltaT_vs_y_forCorr", 72, y_low, y_high, 140, maxX_t-0.4, maxX_t+0.3);
 	tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] : y_dut[0]>>h2_deltaT_vs_y_forCorr").c_str(),cut.c_str());
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] : y_dut[0]>>h2_deltaT_vs_y_forCorr").c_str(), (cut_noPos+" && x_dut[0] > "+std::to_string(x_sipm_low)+" && x_dut[0]<"+std::to_string(x_sipm_high)).c_str());
 	h2_deltaT_vs_y_forCorr->GetXaxis()->SetTitle("beam position Y [mm]");
@@ -1725,7 +1727,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_vs_y_forCorr->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_vs_y_forCorr->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_vs_y_forCorr->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	p_deltaT_vs_y_forCorr->GetYaxis()->SetRangeUser(maxX_t-0.2, maxX_t+0.3);
+       	p_deltaT_vs_y_forCorr->GetYaxis()->SetRangeUser(maxX_t-0.4, maxX_t+0.3);
        	p_deltaT_vs_y_forCorr->GetXaxis()->SetRangeUser(y_tile_low, y_tile_high);
         p_deltaT_vs_y_forCorr->SetMarkerStyle( 20 );
         p_deltaT_vs_y_forCorr->SetMarkerColor( 1 );
@@ -1741,7 +1743,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	for(int i=x_bin_left;i<=x_bin_right;i++)
 	{
 		float dt_this = p_deltaT_vs_y_forCorr->GetBinContent(i);
-		if (dt_this < maxX_t-0.2 || dt_this > maxX_t+0.3) continue;
+		if (dt_this < maxX_t-0.4 || dt_this > maxX_t+0.3) continue;
 		if(dt_this < all_xydt_min) 
 		{
 			all_xydt_min = dt_this;
@@ -1790,7 +1792,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 
 	myC->SetGridy(1);
 	myC->SetGridx(1);
-	TH2F * h2_deltaT_afterTW_vs_x_forCorr = new TH2F("h2_deltaT_afterTW_vs_x_forCorr","h2_deltaT_afterTW_vs_x_forCorr", 72, x_low, x_high, 100, maxX_t_TWcorr-0.2, maxX_t_TWcorr+0.3);
+	TH2F * h2_deltaT_afterTW_vs_x_forCorr = new TH2F("h2_deltaT_afterTW_vs_x_forCorr","h2_deltaT_afterTW_vs_x_forCorr", 72, x_low, x_high, 140, maxX_t_TWcorr-0.4, maxX_t_TWcorr+0.3);
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]:x_dut[0]>>h2_deltaT_afterTW_vs_x_forCorr").c_str(),cut_noPos.c_str());
 	tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+ std::to_string(amp_cor_p0) + " + " + std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : x_dut[0]>>h2_deltaT_afterTW_vs_x_forCorr").c_str(),cut.c_str());
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+ std::to_string(amp_cor_p0) + " + " + std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : x_dut[0]>>h2_deltaT_afterTW_vs_x_forCorr").c_str(),(cut_noPos+" && y_dut[0]>"+std::to_string(y_sipm_low)+" && y_dut[0]<"+std::to_string(y_sipm_high)).c_str());
@@ -1817,8 +1819,8 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_afterTW_vs_x_forCorr->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_afterTW_vs_x_forCorr->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_afterTW_vs_x_forCorr->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	//p_deltaT_afterTW_vs_x_forCorr->GetYaxis()->SetRangeUser(maxX_t-0.2, maxX_t+0.3);
-       	p_deltaT_afterTW_vs_x_forCorr->GetYaxis()->SetRangeUser(maxX_t_TWcorr-0.2, maxX_t_TWcorr+0.3);
+       	//p_deltaT_afterTW_vs_x_forCorr->GetYaxis()->SetRangeUser(maxX_t-0.4, maxX_t+0.3);
+       	p_deltaT_afterTW_vs_x_forCorr->GetYaxis()->SetRangeUser(maxX_t_TWcorr-0.4, maxX_t_TWcorr+0.3);
        	p_deltaT_afterTW_vs_x_forCorr->GetXaxis()->SetRangeUser(x_tile_low, x_tile_high);
         p_deltaT_afterTW_vs_x_forCorr->SetMarkerStyle( 20 );
         p_deltaT_afterTW_vs_x_forCorr->SetMarkerColor( 1 );
@@ -1835,7 +1837,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	for(int i=x_bin_left;i<=x_bin_right;i++)
 	{
 		float dt_this = p_deltaT_afterTW_vs_x_forCorr->GetBinContent(i);
-		if (dt_this < maxX_t_TWcorr-0.2 || dt_this > maxX_t_TWcorr+0.3) continue;
+		if (dt_this < maxX_t_TWcorr-0.4 || dt_this > maxX_t_TWcorr+0.3) continue;
 		if(dt_this < all_xydt_min) 
 		{
 			all_xydt_min = dt_this;
@@ -1882,7 +1884,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
  	myC->SaveAs((plotDir+"/Run"+inFileName+"_deltaT_afterTW_vs_beamX_forCorr_scatter_and_profile_ch"+ch1+analysis_tag+".C").c_str());
 	
 
-	TH2F * h2_deltaT_afterTW_vs_y_forCorr = new TH2F("h2_deltaT_afterTW_vs_y_forCorr","h2_deltaT_afterTW_vs_y_forCorr", 72, y_low, y_high, 100, maxX_t_TWcorr-0.2, maxX_t_TWcorr+0.3);
+	TH2F * h2_deltaT_afterTW_vs_y_forCorr = new TH2F("h2_deltaT_afterTW_vs_y_forCorr","h2_deltaT_afterTW_vs_y_forCorr", 72, y_low, y_high, 140, maxX_t_TWcorr-0.4, maxX_t_TWcorr+0.3);
 	tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+std::to_string(amp_cor_p0) + " + " +std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : y_dut[0]>>h2_deltaT_afterTW_vs_y_forCorr").c_str(),cut.c_str());
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+std::to_string(amp_cor_p0) + " + " +std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : y_dut[0]>>h2_deltaT_afterTW_vs_y_forCorr").c_str(),(cut_noPos+" && x_dut[0] > "+std::to_string(x_sipm_low)+" && x_dut[0]<"+std::to_string(x_sipm_high)).c_str());
 	h2_deltaT_afterTW_vs_y_forCorr->GetXaxis()->SetTitle("beam position Y [mm]");
@@ -1908,7 +1910,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_afterTW_vs_y_forCorr->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_afterTW_vs_y_forCorr->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_afterTW_vs_y_forCorr->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	p_deltaT_afterTW_vs_y_forCorr->GetYaxis()->SetRangeUser(maxX_t_TWcorr-0.2, maxX_t_TWcorr+0.3);
+       	p_deltaT_afterTW_vs_y_forCorr->GetYaxis()->SetRangeUser(maxX_t_TWcorr-0.4, maxX_t_TWcorr+0.3);
        	p_deltaT_afterTW_vs_y_forCorr->GetXaxis()->SetRangeUser(y_tile_low, y_tile_high);
         p_deltaT_afterTW_vs_y_forCorr->SetMarkerStyle( 20 );
         p_deltaT_afterTW_vs_y_forCorr->SetMarkerColor( 1 );
@@ -1924,7 +1926,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	for(int i=x_bin_left;i<=x_bin_right;i++)
 	{
 		float dt_this = p_deltaT_afterTW_vs_y_forCorr->GetBinContent(i);
-		if (dt_this < maxX_t_TWcorr-0.2 || dt_this > maxX_t_TWcorr+0.3) continue;
+		if (dt_this < maxX_t_TWcorr-0.4 || dt_this > maxX_t_TWcorr+0.3) continue;
 		if(dt_this < all_xydt_min) 
 		{
 			all_xydt_min = dt_this;
@@ -2053,7 +2055,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_vs_amp_afterXYcorr->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_vs_amp_afterXYcorr->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_vs_amp_afterXYcorr->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	p_deltaT_vs_amp_afterXYcorr->GetYaxis()->SetRangeUser(maxX_t_XYcorr-0.2, maxX_t_XYcorr+0.3);
+       	p_deltaT_vs_amp_afterXYcorr->GetYaxis()->SetRangeUser(maxX_t_XYcorr-0.4, maxX_t_XYcorr+0.3);
        	p_deltaT_vs_amp_afterXYcorr->GetXaxis()->SetRangeUser(amp_low, amp_high);
         p_deltaT_vs_amp_afterXYcorr->SetMarkerStyle( 20 );
         p_deltaT_vs_amp_afterXYcorr->SetMarkerColor( 1 );
@@ -2170,7 +2172,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 
 	myC->SetGridy(1);
 	myC->SetGridx(1);
-	TH2F * h2_deltaT_afterXY_vs_x = new TH2F("h2_deltaT_afterXY_vs_x","h2_deltaT_afterXY_vs_x", 72, x_low, x_high, 100, maxX_t_XYcorr-0.2, maxX_t_XYcorr+0.3);
+	TH2F * h2_deltaT_afterXY_vs_x = new TH2F("h2_deltaT_afterXY_vs_x","h2_deltaT_afterXY_vs_x", 72, x_low, x_high, 140, maxX_t_XYcorr-0.4, maxX_t_XYcorr+0.3);
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]:x_dut[0]>>h2_deltaT_afterXY_vs_x").c_str(),cut_noPos.c_str());
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+ std::to_string(amp_cor_p0) + " + " + std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : x_dut[0]>>h2_deltaT_afterXY_vs_x").c_str(),cut_noPos.c_str());
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+ std::to_string(amp_cor_p0) + " + " + std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : x_dut[0]>>h2_deltaT_afterXY_vs_x").c_str(),(cut_noPos+" && y_dut[0]>"+std::to_string(y_sipm_low)+" && y_dut[0]<"+std::to_string(y_sipm_high)).c_str());
@@ -2205,8 +2207,8 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_afterXY_vs_x->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_afterXY_vs_x->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_afterXY_vs_x->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	//p_deltaT_afterXY_vs_x->GetYaxis()->SetRangeUser(maxX_t-0.2, maxX_t+0.3);
-       	p_deltaT_afterXY_vs_x->GetYaxis()->SetRangeUser(maxX_t_XYcorr-0.2, maxX_t_XYcorr+0.3);
+       	//p_deltaT_afterXY_vs_x->GetYaxis()->SetRangeUser(maxX_t-0.4, maxX_t+0.3);
+       	p_deltaT_afterXY_vs_x->GetYaxis()->SetRangeUser(maxX_t_XYcorr-0.4, maxX_t_XYcorr+0.3);
        	p_deltaT_afterXY_vs_x->GetXaxis()->SetRangeUser(x_tile_low, x_tile_high);
         p_deltaT_afterXY_vs_x->SetMarkerStyle( 20 );
         p_deltaT_afterXY_vs_x->SetMarkerColor( 1 );
@@ -2223,7 +2225,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	for(int i=x_bin_left;i<=x_bin_right;i++)
 	{
 		float dt_this = p_deltaT_afterXY_vs_x->GetBinContent(i);
-		if (dt_this < maxX_t_XYcorr-0.2 || dt_this > maxX_t_XYcorr+0.3) continue;
+		if (dt_this < maxX_t_XYcorr-0.4 || dt_this > maxX_t_XYcorr+0.3) continue;
 		if(dt_this < all_xydt_min) 
 		{
 			all_xydt_min = dt_this;
@@ -2264,7 +2266,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
  	myC->SaveAs((plotDir+"/Run"+inFileName+"_deltaT_afterXY_vs_beamX_scatter_and_profile_ch"+ch1+analysis_tag+".C").c_str());
 	
 
-	TH2F * h2_deltaT_afterXY_vs_y = new TH2F("h2_deltaT_afterXY_vs_y","h2_deltaT_afterXY_vs_y", 72, y_low, y_high, 100, maxX_t_XYcorr-0.2, maxX_t_XYcorr+0.3);
+	TH2F * h2_deltaT_afterXY_vs_y = new TH2F("h2_deltaT_afterXY_vs_y","h2_deltaT_afterXY_vs_y", 72, y_low, y_high, 140, maxX_t_XYcorr-0.4, maxX_t_XYcorr+0.3);
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+std::to_string(amp_cor_p0) + " + " +std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : y_dut[0]>>h2_deltaT_afterXY_vs_y").c_str(),cut_noPos.c_str());
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+std::to_string(amp_cor_p0) + " + " +std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : y_dut[0]>>h2_deltaT_afterXY_vs_y").c_str(),(cut_noPos+" && x_dut[0] > "+std::to_string(x_sipm_low)+" && x_dut[0]<"+std::to_string(x_sipm_high)).c_str());
 
@@ -2299,7 +2301,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_afterXY_vs_y->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_afterXY_vs_y->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_afterXY_vs_y->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	p_deltaT_afterXY_vs_y->GetYaxis()->SetRangeUser(maxX_t_XYcorr-0.2, maxX_t_XYcorr+0.3);
+       	p_deltaT_afterXY_vs_y->GetYaxis()->SetRangeUser(maxX_t_XYcorr-0.4, maxX_t_XYcorr+0.3);
        	p_deltaT_afterXY_vs_y->GetXaxis()->SetRangeUser(y_tile_low, y_tile_high);
         p_deltaT_afterXY_vs_y->SetMarkerStyle( 20 );
         p_deltaT_afterXY_vs_y->SetMarkerColor( 1 );
@@ -2313,7 +2315,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	for(int i=x_bin_left;i<=x_bin_right;i++)
 	{
 		float dt_this = p_deltaT_afterXY_vs_y->GetBinContent(i);
-		if (dt_this < maxX_t_XYcorr-0.2 || dt_this > maxX_t_XYcorr+0.3) continue;
+		if (dt_this < maxX_t_XYcorr-0.4 || dt_this > maxX_t_XYcorr+0.3) continue;
 		if(dt_this < all_xydt_min) 
 		{
 			all_xydt_min = dt_this;
@@ -2358,7 +2360,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 
 	myC->SetGridy(1);
 	myC->SetGridx(1);
-	TH2F * h2_deltaT_afterTWXY_vs_x = new TH2F("h2_deltaT_afterTWXY_vs_x","h2_deltaT_afterTWXY_vs_x", 72, x_low, x_high, 100, maxX_t_TWXYcorr-0.2, maxX_t_TWXYcorr+0.3);
+	TH2F * h2_deltaT_afterTWXY_vs_x = new TH2F("h2_deltaT_afterTWXY_vs_x","h2_deltaT_afterTWXY_vs_x", 72, x_low, x_high, 140, maxX_t_TWXYcorr-0.4, maxX_t_TWXYcorr+0.3);
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]:x_dut[0]>>h2_deltaT_afterTWXY_vs_x").c_str(),cut_noPos.c_str());
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+ std::to_string(amp_cor_p0) + " + " + std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : x_dut[0]>>h2_deltaT_afterTWXY_vs_x").c_str(),cut_noPos.c_str());
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+ std::to_string(amp_cor_p0) + " + " + std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : x_dut[0]>>h2_deltaT_afterTWXY_vs_x").c_str(),(cut_noPos+" && y_dut[0]>"+std::to_string(y_sipm_low)+" && y_dut[0]<"+std::to_string(y_sipm_high)).c_str());
@@ -2391,8 +2393,8 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_afterTWXY_vs_x->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_afterTWXY_vs_x->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_afterTWXY_vs_x->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	//p_deltaT_afterTWXY_vs_x->GetYaxis()->SetRangeUser(maxX_t-0.2, maxX_t+0.3);
-       	p_deltaT_afterTWXY_vs_x->GetYaxis()->SetRangeUser(maxX_t_TWXYcorr-0.2, maxX_t_TWXYcorr+0.3);
+       	//p_deltaT_afterTWXY_vs_x->GetYaxis()->SetRangeUser(maxX_t-0.4, maxX_t+0.3);
+       	p_deltaT_afterTWXY_vs_x->GetYaxis()->SetRangeUser(maxX_t_TWXYcorr-0.4, maxX_t_TWXYcorr+0.3);
        	p_deltaT_afterTWXY_vs_x->GetXaxis()->SetRangeUser(x_tile_low, x_tile_high);
         p_deltaT_afterTWXY_vs_x->SetMarkerStyle( 20 );
         p_deltaT_afterTWXY_vs_x->SetMarkerColor( 1 );
@@ -2409,7 +2411,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	for(int i=x_bin_left;i<=x_bin_right;i++)
 	{
 		float dt_this = p_deltaT_afterTWXY_vs_x->GetBinContent(i);
-		if (dt_this < maxX_t_TWXYcorr-0.2 || dt_this > maxX_t_TWXYcorr+0.3) continue;
+		if (dt_this < maxX_t_TWXYcorr-0.4 || dt_this > maxX_t_TWXYcorr+0.3) continue;
 		if(dt_this < all_xydt_min) 
 		{
 			all_xydt_min = dt_this;
@@ -2450,7 +2452,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
  	myC->SaveAs((plotDir+"/Run"+inFileName+"_deltaT_afterTWXY_vs_beamX_scatter_and_profile_ch"+ch1+analysis_tag+".C").c_str());
 	
 
-	TH2F * h2_deltaT_afterTWXY_vs_y = new TH2F("h2_deltaT_afterTWXY_vs_y","h2_deltaT_afterTWXY_vs_y", 72, y_low, y_high, 100, maxX_t_TWXYcorr-0.2, maxX_t_TWXYcorr+0.3);
+	TH2F * h2_deltaT_afterTWXY_vs_y = new TH2F("h2_deltaT_afterTWXY_vs_y","h2_deltaT_afterTWXY_vs_y", 72, y_low, y_high, 140, maxX_t_TWXYcorr-0.4, maxX_t_TWXYcorr+0.3);
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+std::to_string(amp_cor_p0) + " + " +std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : y_dut[0]>>h2_deltaT_afterTWXY_vs_y").c_str(),cut_noPos.c_str());
 	//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"] - ("+std::to_string(amp_cor_p0) + " + " +std::to_string(amp_cor_p1)+"*amp["+ch1+"]) : y_dut[0]>>h2_deltaT_afterTWXY_vs_y").c_str(),(cut_noPos+" && x_dut[0] > "+std::to_string(x_sipm_low)+" && x_dut[0]<"+std::to_string(x_sipm_high)).c_str());
 	tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]- ("+std::to_string(amp_cor_p0)+" + "+std::to_string(amp_cor_p1)+"*amp["+ch1+"] + "
@@ -2483,7 +2485,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	p_deltaT_afterTWXY_vs_y->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
 	p_deltaT_afterTWXY_vs_y->GetYaxis()->SetTitleSize( axisTitleSizeY );
 	p_deltaT_afterTWXY_vs_y->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
-       	p_deltaT_afterTWXY_vs_y->GetYaxis()->SetRangeUser(maxX_t_TWXYcorr-0.2, maxX_t_TWXYcorr+0.3);
+       	p_deltaT_afterTWXY_vs_y->GetYaxis()->SetRangeUser(maxX_t_TWXYcorr-0.4, maxX_t_TWXYcorr+0.3);
        	p_deltaT_afterTWXY_vs_y->GetXaxis()->SetRangeUser(y_tile_low, y_tile_high);
         p_deltaT_afterTWXY_vs_y->SetMarkerStyle( 20 );
         p_deltaT_afterTWXY_vs_y->SetMarkerColor( 1 );
@@ -2497,7 +2499,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	for(int i=x_bin_left;i<=x_bin_right;i++)
 	{
 		float dt_this = p_deltaT_afterTWXY_vs_y->GetBinContent(i);
-		if (dt_this < maxX_t_TWXYcorr-0.2 || dt_this > maxX_t_TWXYcorr+0.3) continue;
+		if (dt_this < maxX_t_TWXYcorr-0.4 || dt_this > maxX_t_TWXYcorr+0.3) continue;
 		if(dt_this < all_xydt_min) 
 		{
 			all_xydt_min = dt_this;
@@ -2541,22 +2543,22 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	myC->SetGridy(0);
 	myC->SetGridx(0);
 
-	TH2F * h2_reso_vs_xy_afterTW =  new TH2F("h2_reso_vs_xy_afterTW","h2_reso_vs_xy_afterTW", 9, x_low, x_high, 9, y_low, y_high);
-	TH2F * h2_meanT_vs_xy_afterTW =  new TH2F("h2_meanT_vs_xy_afterTW","h2_meanT_vs_xy_afterTW", 9, x_low, x_high, 9, y_low, y_high);
+	TH2F * h2_reso_vs_xy_afterTW =  new TH2F("h2_reso_vs_xy_afterTW","h2_reso_vs_xy_afterTW", 18, x_low, x_high, 18, y_low, y_high);
+	TH2F * h2_meanT_vs_xy_afterTW =  new TH2F("h2_meanT_vs_xy_afterTW","h2_meanT_vs_xy_afterTW", 18, x_low, x_high, 18, y_low, y_high);
 	
 	float maxY_t_2D_mean_afterTW = -9999.9;//50.0+h2_meanT_vs_xy_afterTW->GetMaximum(); 
 	float minY_t_2D_mean_afterTW = 9999.9;//h2_meanT_vs_xy_afterTW->GetMinimum()-50.0; 
 	
 	int N_usefulbins_XY_afterTW = 0;	
 	
-	for(int ix = 1; ix<=9; ix++)
+	for(int ix = 1; ix<=18; ix++)
 	{
-		for(int iy=1;iy<=9;iy++)
+		for(int iy=1;iy<=18;iy++)
 		{
-			float thisX_low = x_low + 2.0*(ix-1);
-			float thisX_high = x_low + 2.0*ix;
-			float thisY_low = y_low + 2.0*(iy-1);
-			float thisY_high = y_low + 2.0*iy;
+			float thisX_low = x_low + 1.0*(ix-1);
+			float thisX_high = x_low + 1.0*ix;
+			float thisY_low = y_low + 1.0*(iy-1);
+			float thisY_high = y_low + 1.0*iy;
 			
 			TH1F * h_deltaT_corr = new TH1F(("h_deltaT_corr_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),("h_deltaT_corr_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),100000, -1000.0, 1000.0);
 			//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]>>h_deltaT_corr_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),(cut_noPos+" && x_dut[0]>"+std::to_string(thisX_low)+" && x_dut[0]<"+std::to_string(thisX_high) +" && y_dut[0]>"+std::to_string(thisY_low)+" && y_dut[0]<"+std::to_string(thisY_high)).c_str());
@@ -2564,7 +2566,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 			tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]- ("+std::to_string(amp_cor_p0)+" + "+std::to_string(amp_cor_p1)+"*amp["+ch1+"])>>h_deltaT_corr_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),(cut_noPos+" && x_dut[0]>"+std::to_string(thisX_low)+" && x_dut[0]<"+std::to_string(thisX_high) +" && y_dut[0]>"+std::to_string(thisY_low)+" && y_dut[0]<"+std::to_string(thisY_high)).c_str());
 
 			//if(h_deltaT_corr->Integral() < 10.0) 
-			if(thisX_high < x_tile_low || thisX_low > x_tile_high || thisY_high < y_tile_low || thisY_low > y_tile_high || h_deltaT_corr->Integral() < 100.0)
+			if(thisX_high < x_tile_low || thisX_low > x_tile_high || thisY_high < y_tile_low || thisY_low > y_tile_high || h_deltaT_corr->Integral() < 80.0)
 			{
 				h2_reso_vs_xy_afterTW->SetBinContent(ix,iy,-999.9);
 				h2_meanT_vs_xy_afterTW->SetBinContent(ix,iy,-9999.9);
@@ -2587,13 +2589,22 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 			h_deltaT_corr->GetXaxis()->SetRangeUser(maxX_t-0.6, maxX_t+0.6);
 			h_deltaT_corr->Draw("E");
 
+
+
 			float highDeltaT=maxX_t+fit_range_right_noRes;//+0.02;//h_deltaT_corr->GetBinCenter(h_deltaT_corr->FindLastBinAbove(int(0.3*maxY_t)));
 			float lowDeltaT=maxX_t-fit_range_left_noRes;//-0.08;//h_deltaT_corr->GetBinCenter(h_deltaT_corr->FindFirstBinAbove(int(0.1*maxY_t)));
 			//if(highDeltaT - maxX_t > 2.0*(maxX_t-lowDeltaT)) highDeltaT = maxX_t + (maxX_t - lowDeltaT);
 			TF1 * tf1_gaus = new TF1("tf1_gaus","gaus", maxX_t - 1.0, maxX_t + 1.0);
 			tf1_gaus->SetParameter(1, h_deltaT_corr->GetMean());
 			h_deltaT_corr->Fit("tf1_gaus","","",lowDeltaT, highDeltaT);
-	
+
+			gPad->Modified();
+			gPad->Update();
+
+			myC->SaveAs((plotDir+"/xybins/pdf/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+analysis_tag+".pdf").c_str());
+			myC->SaveAs((plotDir+"/xybins/png/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+analysis_tag+".png").c_str());
+			myC->SaveAs((plotDir+"/xybins/C/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+analysis_tag+".C").c_str());
+
 			N_usefulbins_XY_afterTW ++;		
 			float sigmaT = tf1_gaus->GetParameter(2);	
 			float meanT = tf1_gaus->GetParameter(1);	
@@ -2620,19 +2631,12 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 
 			if(1000.0*meanT > maxY_t_2D_mean_afterTW) maxY_t_2D_mean_afterTW = 1000.0*meanT;
 			if(1000.0*meanT < minY_t_2D_mean_afterTW) minY_t_2D_mean_afterTW = 1000.0*meanT;
-	
-			gPad->Modified();
-			gPad->Update();
-
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+analysis_tag+".pdf").c_str());
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+analysis_tag+".png").c_str());
-			myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_afterTW_x"+std::to_string(thisX_low)+"_y"+std::to_string(thisY_low)+"_deltaT_corr_ch"+ch1+analysis_tag+".C").c_str());
 			
 		}
 	}	
-	for(int ix = 1; ix<=9; ix++)
+	for(int ix = 1; ix<=18; ix++)
 	{
-		for(int iy=1;iy<=9;iy++)
+		for(int iy=1;iy<=18;iy++)
 		{
 			h2_meanT_vs_xy_afterTW->SetBinContent(ix,iy,h2_meanT_vs_xy_afterTW->GetBinContent(ix,iy)-minY_t_2D_mean_afterTW + 0.01);
 		}
@@ -2660,7 +2664,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h2_reso_vs_xy_afterTW->GetYaxis()->SetTitleOffset( axisTitleOffsetY );
 	h2_reso_vs_xy_afterTW->GetXaxis()->SetRangeUser(x_low+2.0, x_high-2.0);
 	h2_reso_vs_xy_afterTW->GetYaxis()->SetRangeUser(y_low+2.0, y_high-2.0);
-	h2_reso_vs_xy_afterTW->SetMarkerSize(2);
+	h2_reso_vs_xy_afterTW->SetMarkerSize(1);
 
 	TLatex *tlatex_xybins_afterTW =  new TLatex();
         tlatex_xybins_afterTW->SetNDC();
@@ -2692,7 +2696,7 @@ void goodplot_0618_v5_final(const std::string& inFileName, const std::string& ch
 	h2_meanT_vs_xy_afterTW->GetZaxis()->SetTitleOffset( 1.2 );
 	h2_meanT_vs_xy_afterTW->GetXaxis()->SetRangeUser(x_low+2.0, x_high-2.0);
 	h2_meanT_vs_xy_afterTW->GetYaxis()->SetRangeUser(y_low+2.0, y_high-2.0);
-	h2_meanT_vs_xy_afterTW->SetMarkerSize(2);
+	h2_meanT_vs_xy_afterTW->SetMarkerSize(1);
  
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_afterTW_2DtimemeanT_ch"+ch1+analysis_tag+".pdf").c_str());
 	myC->SaveAs((plotDir+"/Run"+inFileName+"_xybins_afterTW_2DtimemeanT_ch"+ch1+analysis_tag+".png").c_str());
