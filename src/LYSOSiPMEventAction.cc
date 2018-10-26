@@ -19,7 +19,6 @@ LYSOSiPMEventAction::LYSOSiPMEventAction()
 		  photonIndex(0),
 		  fAmp1_sptr(kDigi),
 		  fAmp2_sptr(kDigi),
-		  photonIndex_sptr(0),
 		  nPhotons_Cerenkov(0),
 		  nPhotons_Cerenkov_Gen(0),
 		  nPhotons_Cerenkov_Collect(0),

@@ -42,7 +42,9 @@ class G4GlobalMagFieldMessenger;
 //constants 
 
 const G4double crystal_thick = 4.0 ;
-const G4double SiPM_size = 4.0;
+const G4double SiPM_size = 3.0;
+const G4double LYSO_sizeX = 8.0;
+const G4double LYSO_sizeY = 8.0;
 
 
 /// Detector construction class to define materials and geometry.

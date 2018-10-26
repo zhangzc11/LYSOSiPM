@@ -111,7 +111,7 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 
 	mpt->AddProperty("FASTCOMPONENT", ene, fast, num);
 	mpt->AddProperty("RINDEX", ene, rLyso , num);
-	//mpt->AddProperty("ABSLENGTH", ene, abs, num);
+	mpt->AddProperty("ABSLENGTH", ene, abs, num);
 	mpt->AddConstProperty("SCINTILLATIONYIELD",32.0/keV);
 	//mpt->AddConstProperty("SCINTILLATIONYIELD",4/keV);//mimic SiPM pde
 	mpt->AddConstProperty("RESOLUTIONSCALE", 1);
@@ -297,7 +297,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
     G4double worldSizeZ = 4. * cm;
 
     //Crystal Parameters
-    G4double cryst_dX = 12 * mm, cryst_dY = 12 * mm, cryst_dZ = crystal_thick * mm;
+    G4double cryst_dX = LYSO_sizeX * mm, cryst_dY = LYSO_sizeX * mm, cryst_dZ = crystal_thick * mm;
     G4double gel_dX = SiPM_size * mm, gel_dY = SiPM_size * mm, gel_dZ = 0.1 * mm;
     G4double resin_dX = SiPM_size * mm, resin_dY = SiPM_size * mm, resin_dZ = 1 * mm;
 
@@ -311,7 +311,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
 
     // Get materials
     G4Material* air_mat = G4Material::GetMaterial("G4_AIR");
-    G4Material* cryst_mat = G4Material::GetMaterial("scintillator_BaF2");
+    G4Material* cryst_mat = G4Material::GetMaterial("scintillator_LYSO");
     G4Material* gel_mat = G4Material::GetMaterial("Silicone");
     G4Material* resin_mat = G4Material::GetMaterial("Resin");
     G4Material* foil_mat = G4Material::GetMaterial("teflon");

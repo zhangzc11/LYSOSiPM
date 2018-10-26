@@ -112,7 +112,6 @@ private:
 	std::vector<G4double> fAmp2;
 
 
-	G4int photonIndex_sptr;
 	std::vector<G4double> allPhoTime_sptr;
 	std::map<G4double, G4int> time_index_sptr;
 	std::vector<G4double> allPhoTime_save_sptr;
