@@ -93,7 +93,6 @@ class LYSOSiPMDetectorConstruction : public G4VUserDetectorConstruction
     G4VPhysicalVolume*	 gelPV;
     G4VPhysicalVolume*	 resinPV;
     G4VPhysicalVolume*   cFoilPV;
-    G4VPhysicalVolume*   cFoil2PV;
     G4VPhysicalVolume*   gapPV;      // the gap physical volume
     //G4VPhysicalVolume*   gap2PV;      // the gap physical volume
 

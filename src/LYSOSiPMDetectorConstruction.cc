@@ -43,7 +43,6 @@ LYSOSiPMDetectorConstruction::LYSOSiPMDetectorConstruction()
 	  gelPV(0),
 	  resinPV(0),
           cFoilPV(0),
-          cFoil2PV(0),
           fCheckOverlaps(true) {
 }
 
@@ -280,11 +279,13 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 	G4Material* fteflon = nist->ConstructNewMaterial("teflon", elements, natoms, teflon_density);
 	const G4int num2 = 2;
 	G4double ene2[num2]   =  {2.0*eV, 3.5*eV};
-	G4double ref2[num2]   =  {1.0, 1.0};
-	G4double eff2[num2]   =  {0.0, 0.0};
+	G4double ref2[num2]   =  {0.99, 0.99};
+	G4double eff2[num2]   =  {0.5, 0.5};
+	G4double rindex2[num2]   =  {1.5, 1.5};
     G4MaterialPropertiesTable* mpt_teflon = new G4MaterialPropertiesTable();
 	mpt_teflon->AddProperty("REFLECTIVITY",ene2,ref2,num2);
     mpt_teflon->AddProperty("EFFICIENCY",ene2,eff2,num2);
+    mpt_teflon->AddProperty("RINDEX",ene2,rindex2,num2);
 	fteflon->SetMaterialPropertiesTable(mpt_teflon);	
 }
 
@@ -301,8 +302,8 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
     G4double gel_dX = SiPM_size * mm, gel_dY = SiPM_size * mm, gel_dZ = 0.1 * mm;
     G4double resin_dX = SiPM_size * mm, resin_dY = SiPM_size * mm, resin_dZ = 1 * mm;
 
-    G4double foilThickness = 0.5 * mm;
-    G4double gapThickness = 0.0 * mm; //air gap for wrapping
+    G4double foilThickness = 0.08 * mm;
+    G4double gapThickness = 0.01 * mm; //air gap for wrapping
 
     //G4double gapOut_dX = cryst_dX+gapThickness, gapOut_dY = cryst_dY+gapThickness*2, gapOut_dZ = cryst_dZ+gapThickness*2;
 
@@ -350,6 +351,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
 	//G4UnionSolid* crystalS = new G4UnionSolid("crystalBox", crystalS_p2, crystalS_p1, &rotm, translation);
 
     G4Box* crystalS = new G4Box("crystalBox", cryst_dX/2, cryst_dY/2, cryst_dZ/2);
+
     G4LogicalVolume* crystalLV
             = new G4LogicalVolume(
                     crystalS,     // its solid
@@ -410,66 +412,23 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
 	OpLYSOSurface->SetPolish(0.99);
 	G4LogicalBorderSurface* LYSOSurface = new G4LogicalBorderSurface("LYSOSurface", cAbsorberPV, worldPV, OpLYSOSurface);
 
-	/*
-	//gap
-	G4Box* gelBox = new G4Box("opticalGel", gel_dX/2, gel_dY/2, gel_dZ/2 + cryst_dZ/2);
-    G4Box* crystalBox = new G4Box("Innerbox", cryst_dX/2, cryst_dY/2, cryst_dZ/2);
 
-	G4Box* gapBox = new G4Box("Outerbox", gapOut_dX/2, gapOut_dY/2, gapOut_dZ/2);
-
-    G4SubtractionSolid* gapS_withGel = new G4SubtractionSolid("Foilwrapping_withGel", gapBox, crystalBox);
-    G4SubtractionSolid* gapS = new G4SubtractionSolid("Foilwrapping", gapS_withGel, gelBox);
-
-	G4LogicalVolume* gapLV
-            = new G4LogicalVolume(
-                    gapS,     // its solid
-                    air_mat,  // its material
-                    "airgap");   // its name
-	gapPV
-            = new G4PVPlacement(
-            0,
-            G4ThreeVector(),
-            gapLV,
-            "airgap",
-            worldLV,
-            false,
-            0,
-            fCheckOverlaps);
-
-	G4Box* gap2Box = new G4Box("gapBox2", gel_dX/2, gel_dY/2, gapThickness/2);
-
-	G4LogicalVolume* gap2LV
-            = new G4LogicalVolume(
-                    gap2Box,     // its solid
-                    air_mat,  // its material
-                    "airgap2");   // its name
-	gap2PV
-            = new G4PVPlacement(
-            0,
-            G4ThreeVector(0, 0, - cryst_dZ/2 - gapThickness/2),
-            gap2LV,
-            "airgap2",
-            worldLV,
-            false,
-            0,
-            fCheckOverlaps);
-	*/
-
-
-	/*
-	//foil
+	/////foil wrap
+	//crystal + grease box
+    G4Box* crystalGapS = new G4Box("crystalGapBox", cryst_dX/2+gapThickness, cryst_dY/2+gapThickness, cryst_dZ/2+gapThickness);
+	G4RotationMatrix rotm_g  = G4RotationMatrix();
+    G4ThreeVector  translation_g(0, 0, cryst_dZ/2+gel_dZ/2);
+	G4UnionSolid* crystalGrease = new G4UnionSolid("crystalGrease",crystalGapS, gelS, &rotm_g, translation_g);
 	G4Box* foilBox = new G4Box("Outerbox", foilOut_dX/2, foilOut_dY/2, foilOut_dZ/2);
-    //G4SubtractionSolid* foilS_withgel = new G4SubtractionSolid("Foilwrapping_withgel", foilBox, gapBox);
-    //G4SubtractionSolid* foilS = new G4SubtractionSolid("Foilwrapping_withgel", foilS_withgel, gelBox);
-    G4SubtractionSolid* foilS_withgel = new G4SubtractionSolid("Foilwrapping_withgel", foilBox, crystalBox);
-    G4SubtractionSolid* foilS = new G4SubtractionSolid("Foilwrapping_withgel", foilS_withgel, gelBox);
+	G4SubtractionSolid* foilS = new G4SubtractionSolid("Foilwrapping_withgel", foilBox, crystalGrease);
+		
 
-    G4LogicalVolume* foilLV
+	G4LogicalVolume* foilLV
             = new G4LogicalVolume(
                     foilS,     // its solid
                     foil_mat,  // its material
                     "foilwrap");   // its name
-	cFoilPV
+    cFoilPV
             = new G4PVPlacement(
             0,
             G4ThreeVector(),
@@ -479,26 +438,6 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
             false,
             0,
             fCheckOverlaps);
-	
-	G4Box* foil2Box = new G4Box("foilBox2", gel_dX/2, gel_dY/2, foilThickness/2);
-
-	G4LogicalVolume* foil2LV
-            = new G4LogicalVolume(
-                    foil2Box,     // its solid
-                    foil_mat,  // its material
-                    "foilwrap2");   // its name
-	cFoil2PV
-            = new G4PVPlacement(
-            0,
-            G4ThreeVector(0, 0, - cryst_dZ/2 - gapThickness - foilThickness/2),
-            foil2LV,
-            "foilwrap2",
-            worldLV,
-            false,
-            0,
-            fCheckOverlaps);
-	
-	*/
 	//
     worldLV->SetVisAttributes(G4VisAttributes::Invisible);
 
