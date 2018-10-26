@@ -280,7 +280,7 @@ void LYSOSiPMDetectorConstruction::DefineMaterials() {
 	const G4int num2 = 2;
 	G4double ene2[num2]   =  {2.0*eV, 3.5*eV};
 	G4double ref2[num2]   =  {0.99, 0.99};
-	G4double eff2[num2]   =  {0.5, 0.5};
+	G4double eff2[num2]   =  {0.0, 0.0};
 	G4double rindex2[num2]   =  {1.5, 1.5};
     G4MaterialPropertiesTable* mpt_teflon = new G4MaterialPropertiesTable();
 	mpt_teflon->AddProperty("REFLECTIVITY",ene2,ref2,num2);
@@ -303,7 +303,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
     G4double resin_dX = SiPM_size * mm, resin_dY = SiPM_size * mm, resin_dZ = 1 * mm;
 
     G4double foilThickness = 0.08 * mm;
-    G4double gapThickness = 0.01 * mm; //air gap for wrapping
+    G4double gapThickness = 0.00 * mm; //air gap for wrapping
 
     //G4double gapOut_dX = cryst_dX+gapThickness, gapOut_dY = cryst_dY+gapThickness*2, gapOut_dZ = cryst_dZ+gapThickness*2;
 
@@ -403,18 +403,9 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
             false,            // no boolean operation
             0,                // copy number
             fCheckOverlaps);  // checking overlaps
-
-	//surface between crystal and air
-	G4OpticalSurface* OpLYSOSurface = new G4OpticalSurface("LYSOSurface");
-	OpLYSOSurface->SetModel(glisur);
-	OpLYSOSurface->SetType(dielectric_dielectric);
-	OpLYSOSurface->SetFinish(ground);
-	OpLYSOSurface->SetPolish(0.99);
-	G4LogicalBorderSurface* LYSOSurface = new G4LogicalBorderSurface("LYSOSurface", cAbsorberPV, worldPV, OpLYSOSurface);
-
-
 	/////foil wrap
 	//crystal + grease box
+	/*	
     G4Box* crystalGapS = new G4Box("crystalGapBox", cryst_dX/2+gapThickness, cryst_dY/2+gapThickness, cryst_dZ/2+gapThickness);
 	G4RotationMatrix rotm_g  = G4RotationMatrix();
     G4ThreeVector  translation_g(0, 0, cryst_dZ/2+gel_dZ/2);
@@ -438,6 +429,18 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
             false,
             0,
             fCheckOverlaps);
+	*/	
+
+	//surface between crystal and air
+	G4OpticalSurface* OpLYSOSurface = new G4OpticalSurface("LYSOSurface");
+	OpLYSOSurface->SetModel(glisur);
+	OpLYSOSurface->SetType(dielectric_dielectric);
+	OpLYSOSurface->SetFinish(ground);
+	OpLYSOSurface->SetPolish(0.99);
+	G4LogicalBorderSurface* LYSOSurface = new G4LogicalBorderSurface("LYSOSurface", cAbsorberPV, worldPV, OpLYSOSurface);
+
+
+
 	//
     worldLV->SetVisAttributes(G4VisAttributes::Invisible);
 
