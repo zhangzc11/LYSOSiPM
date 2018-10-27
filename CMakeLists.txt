@@ -44,23 +44,41 @@ target_link_libraries(LYSOSiPM ${Geant4_LIBRARIES})
 # relies on these scripts being in the current working directory.
 #
 set(LYSOSiPM_SCRIPTS
-  LYSOSiPM.out
-  LYSOSiPM.in
-  icons.mac
-  gui.mac
-  run.png
-  init_vis.mac
-  run1.mac
-  run2.mac
-  run_x0.mac
-  run_x0_md.mac
-  run_x2.mac
-  run_x2_md.mac
-  run_x4.mac
-  run_x4_md.mac
-  run_x5.mac
-  run_x5_md.mac
-  vis.mac
+	LYSOSiPM.out
+	LYSOSiPM.in
+	icons.mac
+	gui.mac
+	icons.mac
+	init_vis.mac
+	run1.mac
+	run2.mac
+	run_edge_s10.mac
+	run_edge_s10_md.mac
+	run_edge_s11.mac
+	run_edge_s11_md.mac
+	run_edge_s12.mac
+	run_edge_s12_md.mac
+	run_edge_s4.mac
+	run_edge_s4_md.mac
+	run_edge_s5.mac
+	run_edge_s5_md.mac
+	run_edge_s6.mac
+	run_edge_s6_md.mac
+	run_edge_s7.mac
+	run_edge_s7_md.mac
+	run_edge_s8.mac
+	run_edge_s8_md.mac
+	run_edge_s9.mac
+	run_edge_s9_md.mac
+	run_x0.mac
+	run_x0_md.mac
+	run_x2.mac
+	run_x2_md.mac
+	run_x4.mac
+	run_x4_md.mac
+	run_x5.mac
+	run_x5_md.mac
+	vis.mac
   )
 
 foreach(_script ${LYSOSiPM_SCRIPTS})
