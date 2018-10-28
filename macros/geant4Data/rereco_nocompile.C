@@ -1,25 +1,3 @@
-#include <sstream>
-#include <string>
-#include <sys/stat.h>
-#include "TFile.h"
-#include "TTree.h"
-#include "TBranch.h"
-#include "TROOT.h"
-#include "TCanvas.h"
-#include "TLegend.h"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TStyle.h"
-#include "TF1.h"
-#include "TPad.h"
-#include "TProfile.h"
-#include "TColor.h"
-#include "TText.h"
-#include "TLatex.h"
-#include "TGraphErrors.h"
-#include "TGraph.h"
-#include "TMultiGraph.h"
-
 const int nDigi = 1024;
 std::vector<double> * time1 = 0;
 std::vector<double> * amp1 = 0;
@@ -159,16 +137,17 @@ tstamp[0] = (0.50*ymax-b)/slope;
 };
 
 
-void rereco()
+//void rereco(std::string inFileName)
+void rereco_nocompile()
 {
 	
 	//std::filesystem::copy(("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName+".root").c_str(),("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName+"_rereco.root").c_str());
 
-	//std::string inFileName = "ntuple_ref_center.root";	
-	TFile *f_old = new TFile(("/eos/cms/store/user/zhicaiz/geant4/"+inFileName+".root").c_str(), "READ");
-        TTree *tree_old = (TTree*)f_old->Get("tree");
+	std::string inFileName = "ntuple_ref_center";	
+	TFile *f_old = new TFile(("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/"+inFileName+".root").c_str(), "READ");
+	TTree *tree_old = (TTree*)f_old->Get("tree");
 	
-	TFile *f_new = new TFile(("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName+"_rereco.root").c_str(), "RECREATE");
+	TFile *f_new = new TFile(("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/"+inFileName+"_rereco.root").c_str(), "RECREATE");
 	TTree *tree_new = tree_old->CloneTree();
 	tree_new->Write();
 	f_old->Close();
@@ -177,9 +156,8 @@ void rereco()
 	delete f_old;
 	delete f_new;
 	
-	
 
-	TFile *f_add = new TFile(("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName+"_rereco.root").c_str(), "update");
+	TFile *f_add = new TFile(("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/"+inFileName+"_rereco.root").c_str(), "update");
 	TTree *tree_add = (TTree*)f_add->Get("tree");	
 	
 	float int_firstbin;
@@ -220,7 +198,7 @@ void rereco()
 	tree_add->SetBranchAddress("time2", &time2);
 	tree_add->SetBranchAddress("amp2_sptr", &amp2);
 	tree_add->SetBranchAddress("allPhoTime_sptr", &allPhoTime_sptr);
-	
+		
 	f_add->cd();
 
 	int NEntries = tree_add->GetEntries();
@@ -277,7 +255,7 @@ void rereco()
 
 		//risetime = RisingEdgeFitPoly2( pulse, maxLoc, 0.9) - RisingEdgeFitPoly2( pulse, maxLoc, 0.1);
 		photon100_time = allPhoTime_sptr->at(100);//RisingEdgeFitPoly2( pulse, maxLoc, 0.1);
-			
+		cout<<"entry "<<ientry<<" photon100_time "<<photon100_time<<endl;			
 		
 		
 		int_firstbin = firstPhoAboveZero;
