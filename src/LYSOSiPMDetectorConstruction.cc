@@ -436,7 +436,7 @@ G4VPhysicalVolume *LYSOSiPMDetectorConstruction::DefineVolumes() {
 	OpLYSOSurface->SetModel(glisur);
 	OpLYSOSurface->SetType(dielectric_dielectric);
 	OpLYSOSurface->SetFinish(ground);
-	OpLYSOSurface->SetPolish(0.99);
+	OpLYSOSurface->SetPolish(0.99000);
 	G4LogicalBorderSurface* LYSOSurface = new G4LogicalBorderSurface("LYSOSurface", cAbsorberPV, worldPV, OpLYSOSurface);
 
 
