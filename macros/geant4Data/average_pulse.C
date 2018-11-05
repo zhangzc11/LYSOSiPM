@@ -123,7 +123,7 @@ void average_pulse()
 	gPad->Update();
 
 
-    TLegend * leg = new TLegend(0.65,0.75,0.85,0.9);
+    TLegend * leg = new TLegend(0.6,0.75,0.85,0.9);
     leg->SetBorderSize(0);
     leg->SetTextSize(0.05);
     leg->SetLineColor(1);
@@ -132,8 +132,8 @@ void average_pulse()
     leg->SetFillColor(0);
     leg->SetFillStyle(1001);
 
-    leg->AddEntry(gr_center, "center IP", "l");
-    leg->AddEntry(gr_edge, "edge IP", "l");
+    leg->AddEntry(gr_center, "center impact point", "l");
+    leg->AddEntry(gr_edge, "edge impact point", "l");
     leg->Draw();
 
 	myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/average_pulses_ref.pdf");
