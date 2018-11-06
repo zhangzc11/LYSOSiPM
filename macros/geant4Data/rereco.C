@@ -19,6 +19,7 @@
 #include "TGraphErrors.h"
 #include "TGraph.h"
 #include "TMultiGraph.h"
+#include "TString.h"
 
 const int nDigi = 1024;
 std::vector<double> * time1 = 0;
@@ -119,23 +120,30 @@ float RisingEdgeFitPoly2(TGraphErrors * pulse, const int index_max, float fracti
 	
 }
 
-void RisingEdgeFitTime(TGraphErrors * pulse, const int index_max, const float fitLowEdge, const float fitHighEdge, float* tstamp) {
+void RisingEdgeFitTime(TGraphErrors * pulse, const int index_max, const float fitLowEdge, const float fitHighEdge, float* tstamp, bool savePlot = false, TString plotName = "example") {
   double x_low, x_high, x_peak, y;
   double ymax;
+  TCanvas *myC = new TCanvas( "myC", "myC", 200, 10, 800, 600 );
+
+
   pulse->GetPoint(index_max, x_peak, ymax);
 
   for ( int i = 1; i < 600; i++ )
     {
-      pulse->GetPoint(index_max-i, x_low, y);
-      if ( y < fitLowEdge*ymax ) break;
+      //pulse->GetPoint(index_max-i, x_low, y);
+      pulse->GetPoint(i, x_low, y);
+      if ( y > fitLowEdge*ymax ) break;
     }
   for ( int i = 1; i < 600; i++ )
     {
-      pulse->GetPoint(index_max-i, x_high, y);
-      if ( y < fitHighEdge*ymax ) break;
+      //pulse->GetPoint(index_max-i, x_high, y);
+      pulse->GetPoint(i, x_high, y);
+      if ( y > fitHighEdge*ymax ) break;
     }
 
+  pulse->GetXaxis()->SetRangeUser(-1.0, 5.0); 
 
+  pulse->Draw("AP");
   TF1* flinear = new TF1("flinear","[0]*x+[1]", x_low, x_high );
   float max = -9999;
   double* yy = pulse->GetY();
@@ -146,29 +154,33 @@ void RisingEdgeFitTime(TGraphErrors * pulse, const int index_max, const float fi
     }
 
  pulse->Fit("flinear","Q","", x_low, x_high );
+ //if(savePlot) myC->SaveAs("/Users/zhicai/cernbox/TestBeam/geant4/plots/fits/"+plotName+".png");
+ if(savePlot) myC->SaveAs("/eos/user/z/zhicaiz/www/sharebox/TestBeam/geant4/forDN/fits/"+plotName+".png");
   double slope = flinear->GetParameter(0);
   double b     = flinear->GetParameter(1);
 
-tstamp[0] = (0.50*ymax-b)/slope;
+tstamp[0] = (0.10*ymax-b)/slope;
   tstamp[1] = (0.60*ymax-b)/slope;
   tstamp[2] = (0.70*ymax-b)/slope;
   tstamp[3] = (0.80*ymax-b)/slope;
   tstamp[4] = (0.90*ymax-b)/slope;
 
   delete flinear;
+  delete myC;
 };
 
 
-void rereco()
+void rereco(TString inFileName)
 {
 	
-	//std::filesystem::copy(("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName+".root").c_str(),("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName+"_rereco.root").c_str());
 
-	//std::string inFileName = "ntuple_ref_center.root";	
-	TFile *f_old = new TFile(("/eos/cms/store/user/zhicaiz/geant4/"+inFileName+".root").c_str(), "READ");
-        TTree *tree_old = (TTree*)f_old->Get("tree");
+	//TString inFileName = "ntuple_ref_center";	
+	//TFile *f_old = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/"+inFileName+".root", "READ");
+	TFile *f_old = new TFile("/eos/cms/store/user/zhicaiz/geant4/ntuples/"+inFileName+".root", "READ");
+	TTree *tree_old = (TTree*)f_old->Get("tree");
 	
-	TFile *f_new = new TFile(("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName+"_rereco.root").c_str(), "RECREATE");
+	//TFile *f_new = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/"+inFileName+"_rereco.root", "RECREATE");
+	TFile *f_new = new TFile("/eos/cms/store/user/zhicaiz/geant4/ntuples/"+inFileName+"_rereco.root", "RECREATE");
 	TTree *tree_new = tree_old->CloneTree();
 	tree_new->Write();
 	f_old->Close();
@@ -177,9 +189,9 @@ void rereco()
 	delete f_old;
 	delete f_new;
 	
-	
 
-	TFile *f_add = new TFile(("/eos/user/z/zhicaiz/TestBeam/geant4/ntuples/"+inFileName+"_rereco.root").c_str(), "update");
+	//TFile *f_add = new TFile("/Users/zhicai/cernbox/TestBeam/geant4/ntuples/"+inFileName+"_rereco.root", "update");
+	TFile *f_add = new TFile("/eos/cms/store/user/zhicaiz/geant4/ntuples/"+inFileName+"_rereco.root", "update");
 	TTree *tree_add = (TTree*)f_add->Get("tree");	
 	
 	float int_firstbin;
@@ -191,8 +203,11 @@ void rereco()
 	float int_full;
 	float risetime;	
 	float amp;	
+	float peak_time;
 	float photon100_time;
-	float frac_50;
+	float photon10_time;
+	float photon5_time;
+	float frac_10;
 	float frac_60;
 	float frac_70;
 	float frac_80;
@@ -207,8 +222,11 @@ void rereco()
 	TBranch *b_int_full = tree_add->Branch("int_full",&int_full,"int_full/F");
 	TBranch *b_risetime = tree_add->Branch("risetime",&risetime,"risetime/F");
 	TBranch *b_amp = tree_add->Branch("amp",&amp,"amp/F");
+	TBranch *b_peak_time = tree_add->Branch("peak_time",&peak_time,"peak_time/F");
 	TBranch *b_photon100_time = tree_add->Branch("photon100_time",&photon100_time,"photon100_time/F");
-	TBranch *b_frac_50 = tree_add->Branch("frac_50",&frac_50,"frac_50/F");
+	TBranch *b_photon10_time = tree_add->Branch("photon10_time",&photon10_time,"photon10_time/F");
+	TBranch *b_photon5_time = tree_add->Branch("photon5_time",&photon5_time,"photon5_time/F");
+	TBranch *b_frac_10 = tree_add->Branch("frac_10",&frac_10,"frac_10/F");
 	TBranch *b_frac_60 = tree_add->Branch("frac_60",&frac_60,"frac_60/F");
 	TBranch *b_frac_70 = tree_add->Branch("frac_70",&frac_70,"frac_70/F");
 	TBranch *b_frac_80 = tree_add->Branch("frac_80",&frac_80,"frac_80/F");
@@ -220,7 +238,7 @@ void rereco()
 	tree_add->SetBranchAddress("time2", &time2);
 	tree_add->SetBranchAddress("amp2_sptr", &amp2);
 	tree_add->SetBranchAddress("allPhoTime_sptr", &allPhoTime_sptr);
-	
+		
 	f_add->cd();
 
 	int NEntries = tree_add->GetEntries();
@@ -238,6 +256,7 @@ void rereco()
 		int maxLoc = findMaxLoc();
 
 		amp = amp1->at(maxLoc);
+		peak_time = time1->at(maxLoc);
 		int_peak = getIntegral(time1->at(maxLoc));
 		int_full = getIntegral(100.0);
 		int_0p01 = getIntegral(0.01);
@@ -265,10 +284,13 @@ void rereco()
 		
 		
 		float fs[5];
-		float cft_low_range  = 0.50;
-      		float cft_high_range = 0.80;
-		RisingEdgeFitTime( pulse, maxLoc, cft_low_range, cft_high_range, fs);
-		frac_50 = fs[0];
+		float cft_low_range  = 0.10;
+		float cft_high_range = 0.70;
+		TString plotName;
+		plotName.Form("fit_%d",ientry);
+		if(ientry < 10) RisingEdgeFitTime( pulse, maxLoc, cft_low_range, cft_high_range, fs, true,inFileName+"_"+plotName);
+		else RisingEdgeFitTime( pulse, maxLoc, cft_low_range, cft_high_range, fs, false);
+		frac_10 = fs[0];
 		frac_60 = fs[1];
 		frac_70 = fs[2];
 		frac_80 = fs[3];
@@ -276,13 +298,18 @@ void rereco()
 		
 
 		//risetime = RisingEdgeFitPoly2( pulse, maxLoc, 0.9) - RisingEdgeFitPoly2( pulse, maxLoc, 0.1);
-		photon100_time = allPhoTime_sptr->at(100);//RisingEdgeFitPoly2( pulse, maxLoc, 0.1);
-			
+		photon100_time = allPhoTime_sptr->at(100);
+		photon10_time = allPhoTime_sptr->at(10);
+		photon5_time = allPhoTime_sptr->at(5);
+		cout<<"entry "<<ientry<<" peak_time "<<peak_time<<endl;			
+		cout<<"entry "<<ientry<<" photon100_time "<<photon100_time<<endl;			
+		cout<<"entry "<<ientry<<" photon10_time "<<photon10_time<<endl;			
+		cout<<"entry "<<ientry<<" photon5_time "<<photon5_time<<endl;			
 		
 		
 		int_firstbin = firstPhoAboveZero;
 	
-		risetime = frac_90-photon100_time;
+		risetime = frac_90 - frac_10;
 	
 		b_int_firstbin->Fill();
 		b_int_0p01->Fill();
@@ -293,10 +320,13 @@ void rereco()
 		b_int_full->Fill();
 		b_risetime->Fill();
 		b_amp->Fill();
+		b_peak_time->Fill();
 		b_photon100_time->Fill();
+		b_photon10_time->Fill();
+		b_photon5_time->Fill();
 		b_frac_80->Fill();
 		b_frac_70->Fill();
-		b_frac_50->Fill();
+		b_frac_10->Fill();
 		b_frac_60->Fill();
 		b_frac_90->Fill();
 	}	
