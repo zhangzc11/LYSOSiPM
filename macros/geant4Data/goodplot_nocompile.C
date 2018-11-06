@@ -103,8 +103,8 @@ float drawT100(TTree * tree_center, TTree * tree_edge, std::string& inFileName, 
 	
 	myC->SetGridx(1);
 	
-	TH1F * h100_center = new TH1F("h100_center","h100_center",100,0,1.5);
-	TH1F * h100_edge = new TH1F("h100_edge","h100_edge",100,0,1.5);
+	TH1F * h100_center = new TH1F("h100_center","h100_center",150,0,2.5);
+	TH1F * h100_edge = new TH1F("h100_edge","h100_edge",150,0,2.5);
 	tree_center->Draw("allPhoTime_sptr>>h100_center","allPhoIndex==100");
 	tree_edge->Draw("allPhoTime_sptr>>h100_edge","allPhoIndex==100");
 
@@ -188,7 +188,7 @@ float drawT100(TTree * tree_center, TTree * tree_edge, std::string& inFileName, 
 
 }
 
-float drawT20(TTree * tree_center, TTree * tree_edge, std::string& inFileName, std::string& plotDir)
+float drawT60(TTree * tree_center, TTree * tree_edge, std::string& inFileName, std::string& plotDir)
 {
 	TCanvas *myC = new TCanvas( "myC", "myC", 200, 10, 800, 600 );
 	myC->SetHighLightColor(2);
@@ -204,13 +204,13 @@ float drawT20(TTree * tree_center, TTree * tree_edge, std::string& inFileName, s
 	
 	myC->SetGridx(1);
 	
-	TH1F * h20_center = new TH1F("h20_center","h20_center",100,0,1.0);
-	TH1F * h20_edge = new TH1F("h20_edge","h20_edge",100,0,1.0);
-	tree_center->Draw("allPhoTime_sptr>>h20_center","allPhoIndex==20");
-	tree_edge->Draw("allPhoTime_sptr>>h20_edge","allPhoIndex==20");
+	TH1F * h20_center = new TH1F("h20_center","h20_center",140,0,2.0);
+	TH1F * h20_edge = new TH1F("h20_edge","h20_edge",140,0,2.0);
+	tree_center->Draw("allPhoTime_sptr>>h20_center","allPhoIndex==60");
+	tree_edge->Draw("allPhoTime_sptr>>h20_edge","allPhoIndex==60");
 
 	h20_center->SetTitle("");
-	h20_center->GetXaxis()->SetTitle("t_{20} [ns]");
+	h20_center->GetXaxis()->SetTitle("t_{60} [ns]");
 	h20_center->GetYaxis()->SetTitle("Events");
 	h20_center->GetXaxis()->SetTitleSize( axisTitleSizeX );
 	h20_center->GetXaxis()->SetTitleOffset( axisTitleOffsetX );
@@ -219,9 +219,9 @@ float drawT20(TTree * tree_center, TTree * tree_edge, std::string& inFileName, s
 	h20_center->SetLineWidth(4);
 	h20_center->SetLineColor(kRed);
 	h20_center->Draw("hist");
-	myC->SaveAs((plotDir+inFileName+"_time_photon20_center.pdf").c_str());
-	myC->SaveAs((plotDir+inFileName+"_time_photon20_center.png").c_str());
-	myC->SaveAs((plotDir+inFileName+"_time_photon20_center.C").c_str());
+	myC->SaveAs((plotDir+inFileName+"_time_photon60_center.pdf").c_str());
+	myC->SaveAs((plotDir+inFileName+"_time_photon60_center.png").c_str());
+	myC->SaveAs((plotDir+inFileName+"_time_photon60_center.C").c_str());
 
 	h20_edge->SetTitle("");
 	h20_edge->GetXaxis()->SetTitle("t_{20} [ns]");
@@ -233,9 +233,9 @@ float drawT20(TTree * tree_center, TTree * tree_edge, std::string& inFileName, s
 	h20_edge->SetLineWidth(4);
 	h20_edge->SetLineColor(kBlue);
 	h20_edge->Draw("hist");
-	myC->SaveAs((plotDir+inFileName+"_time_photon20_edge.pdf").c_str());
-	myC->SaveAs((plotDir+inFileName+"_time_photon20_edge.png").c_str());
-	myC->SaveAs((plotDir+inFileName+"_time_photon20_edge.C").c_str());
+	myC->SaveAs((plotDir+inFileName+"_time_photon60_edge.pdf").c_str());
+	myC->SaveAs((plotDir+inFileName+"_time_photon60_edge.png").c_str());
+	myC->SaveAs((plotDir+inFileName+"_time_photon60_edge.C").c_str());
 
 	h20_center->Scale(1.0/h20_center->Integral());
 	h20_edge->Scale(1.0/h20_edge->Integral());
@@ -275,9 +275,9 @@ float drawT20(TTree * tree_center, TTree * tree_edge, std::string& inFileName, s
 	ts_dt.Form("%d",deltaT);
 	tlatex->DrawLatex(0.40, 0.68, "#Delta T = "+ ts_dt +" ps");
 		
-	myC->SaveAs((plotDir+inFileName+"_time_photon20_centerEdge.pdf").c_str());
-	myC->SaveAs((plotDir+inFileName+"_time_photon20_centerEdge.png").c_str());
-	myC->SaveAs((plotDir+inFileName+"_time_photon20_centerEdge.C").c_str());
+	myC->SaveAs((plotDir+inFileName+"_time_photon60_centerEdge.pdf").c_str());
+	myC->SaveAs((plotDir+inFileName+"_time_photon60_centerEdge.png").c_str());
+	myC->SaveAs((plotDir+inFileName+"_time_photon60_centerEdge.C").c_str());
 
 	delete myC;
 	delete h20_center;
@@ -607,7 +607,7 @@ h_Risetime->GetXaxis()->SetTitleSize( axisTitleSizeX );
 
 void goodplot_nocompile()
 {
-	std::string inFileName = "ntuple_LYSOpolishScan_polish80_center";
+	std::string inFileName = "ntuple_ref_center";
 
 	std::string inFileName_center = inFileName;
 	
@@ -632,7 +632,7 @@ void goodplot_nocompile()
 	float * risetime_center = drawRisetime(tree_center, inFileName_center, plotDir);
 	float * risetime_edge = drawRisetime(tree_edge, inFileName_edge, plotDir);
 
-	float deltaT_centerEdge = drawT100(tree_center, tree_edge, inFileName_centerEdge, plotDir);
+	float deltaT_centerEdge = drawT60(tree_center, tree_edge, inFileName_centerEdge, plotDir);
 
 	float * nPhotons_center = draw_nPhotons(tree_center, inFileName_center, plotDir, "nPhotons", "NPE", 15000.0);
 
