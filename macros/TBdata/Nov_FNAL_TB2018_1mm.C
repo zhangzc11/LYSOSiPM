@@ -294,8 +294,8 @@ void Nov_FNAL_TB2018_1mm(const std::string& inFileName, const std::string& ch2  
 			//cout<<"h_deltaT->GetEntries() : "<< h_deltaT->GetEntries() <<endl;
 			//cout<<"h_meanRisetime->GetEntries() : "<< h_meanRisetime->GetEntries() <<endl;
 			//if(h_deltaT->Integral() < 10.0) 
-/*
-			if(thisX_high < x_tile_low || thisX_low > x_tile_high || thisY_high < y_tile_low || thisY_low > y_tile_high || h_deltaT->Integral() < 5.0)
+
+			if(thisX_high < x_tile_low || thisX_low > x_tile_high || thisY_high < y_tile_low || thisY_low > y_tile_high || h_deltaT->Integral() < 50.0)
 			{
 				h2_reso_vs_xy->SetBinContent(ix,iy,-999.9);
 				h2_meanAmp_vs_xy->SetBinContent(ix,iy,-999.9);
@@ -304,7 +304,7 @@ void Nov_FNAL_TB2018_1mm(const std::string& inFileName, const std::string& ch2  
 				h2_meanT_vs_xy->SetBinContent(ix,iy,-99999.9);
 				continue;	
 			}	
-*/			
+			
 			h_deltaT->SetTitle("");
 			h_deltaT->SetMarkerStyle( 20 );
 			h_deltaT->SetMarkerColor( 1 );
@@ -526,13 +526,13 @@ void Nov_FNAL_TB2018_1mm(const std::string& inFileName, const std::string& ch2  
 		
 		TH1F * h_deltaT = new TH1F(("h_deltaT_amp"+std::to_string(iamp)).c_str(),("h_deltaT_amp"+std::to_string(iamp)).c_str(),100000, -1000.0, 1000.0);
 		tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]>>h_deltaT_amp"+std::to_string(iamp)).c_str(),(cut_sipm+" && amp["+ch1+"]>"+std::to_string(thisAmp_low)+" && amp["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
-/*
-		if(h_deltaT->Integral() < 100.0) 
+
+		if(h_deltaT->Integral() < 50.0) 
 		{
 			h1_reso_vs_amp->SetBinContent(iamp,-999.9);
 			continue;	
 		}	
-*/		
+		
 		h_deltaT->SetTitle("");
 		h_deltaT->SetMarkerStyle( 20 );
 		h_deltaT->SetMarkerColor( 1 );
@@ -607,13 +607,13 @@ void Nov_FNAL_TB2018_1mm(const std::string& inFileName, const std::string& ch2  
 		
 		TH1F * h_deltaT = new TH1F(("h_deltaT_effamp"+std::to_string(ieffamp)).c_str(),("h_deltaT_effamp"+std::to_string(ieffamp)).c_str(),100000, -1000.0, 1000.0);
 		tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]>>h_deltaT_effamp"+std::to_string(ieffamp)).c_str(),(cut_sipm+" && amp["+ch1+"]/baseline_RMS["+ch1+"]>"+std::to_string(thisAmp_low)+" && amp["+ch1+"]/baseline_RMS["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
-/*
-		if(h_deltaT->Integral() < 100.0) 
+
+		if(h_deltaT->Integral() < 50.0) 
 		{
 			h1_reso_vs_effamp->SetBinContent(ieffamp,-999.9);
 			continue;	
 		}	
-*/		
+		
 		h_deltaT->SetTitle("");
 		h_deltaT->SetMarkerStyle( 20 );
 		h_deltaT->SetMarkerColor( 1 );
@@ -2586,15 +2586,15 @@ void Nov_FNAL_TB2018_1mm(const std::string& inFileName, const std::string& ch2  
 			//tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]>>h_deltaT_corr_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),(cut_noPos+" && x_dut[0]>"+std::to_string(thisX_low)+" && x_dut[0]<"+std::to_string(thisX_high) +" && y_dut[0]>"+std::to_string(thisY_low)+" && y_dut[0]<"+std::to_string(thisY_high)).c_str());
 
 			tree->Draw((time_ch1+"["+ch1_tl+"]-"+time_ch2+"["+ch2+"]- ("+std::to_string(amp_cor_p0)+" + "+std::to_string(amp_cor_p1)+"*amp["+ch1+"])>>h_deltaT_corr_x"+std::to_string(ix)+"_y"+std::to_string(iy)).c_str(),(cut_noPos+" && x_dut[0]>"+std::to_string(thisX_low)+" && x_dut[0]<"+std::to_string(thisX_high) +" && y_dut[0]>"+std::to_string(thisY_low)+" && y_dut[0]<"+std::to_string(thisY_high)).c_str());
-/*
+
 			//if(h_deltaT_corr->Integral() < 10.0) 
-			if(thisX_high < x_tile_low || thisX_low > x_tile_high || thisY_high < y_tile_low || thisY_low > y_tile_high || h_deltaT_corr->Integral() < 80.0)
+			if(thisX_high < x_tile_low || thisX_low > x_tile_high || thisY_high < y_tile_low || thisY_low > y_tile_high || h_deltaT_corr->Integral() < 50.0)
 			{
 				h2_reso_vs_xy_afterTW->SetBinContent(ix,iy,-999.9);
 				h2_meanT_vs_xy_afterTW->SetBinContent(ix,iy,-9999.9);
 				continue;	
 			}	
-*/			
+			
 			h_deltaT_corr->SetTitle("");
 			h_deltaT_corr->SetMarkerStyle( 20 );
 			h_deltaT_corr->SetMarkerColor( 1 );
@@ -2829,13 +2829,13 @@ void Nov_FNAL_TB2018_1mm(const std::string& inFileName, const std::string& ch2  
 
 
 
-/*
-		if(h_deltaT_corr->Integral() < 100.0) 
+
+		if(h_deltaT_corr->Integral() < 50.0) 
 		{
 			h1_reso_vs_amp_afterXY->SetBinContent(iamp,-999.9);
 			continue;	
 		}	
-*/		
+		
 		h_deltaT_corr->SetTitle("");
 		h_deltaT_corr->SetMarkerStyle( 20 );
 		h_deltaT_corr->SetMarkerColor( 1 );
@@ -2923,13 +2923,13 @@ void Nov_FNAL_TB2018_1mm(const std::string& inFileName, const std::string& ch2  
 +std::to_string(y_cor_xyonly_p1)+"*y_dut[0] + "+std::to_string(y_cor_xyonly_p2)+"*y_dut[0]*y_dut[0]+"+std::to_string(y_cor_xyonly_p3)+"*y_dut[0]*y_dut[0]*y_dut[0]+"+std::to_string(y_cor_xyonly_p4)+"*y_dut[0]*y_dut[0]*y_dut[0]*y_dut[0]"
 +")>>h_deltaT_corr_effamp"+std::to_string(ieffamp)).c_str(),(cut_sipm+" && amp["+ch1+"]/baseline_RMS["+ch1+"]>"+std::to_string(thisAmp_low)+" && amp["+ch1+"]/baseline_RMS["+ch1+"]<"+std::to_string(thisAmp_high)).c_str());
 
-/*
-		if(h_deltaT_corr->Integral() < 100.0) 
+
+		if(h_deltaT_corr->Integral() < 50.0) 
 		{
 			h1_reso_vs_effamp_afterXY->SetBinContent(ieffamp,-999.9);
 			continue;	
 		}	
-*/		
+		
 		h_deltaT_corr->SetTitle("");
 		h_deltaT_corr->SetMarkerStyle( 20 );
 		h_deltaT_corr->SetMarkerColor( 1 );
