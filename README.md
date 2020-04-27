@@ -28,9 +28,16 @@ cd /YourPath/
 mkdir geant4_10_04-build
 mkdir geant4_10_04-install
 cd geant4_10_04-build
-cmake -DGEANT4_USE_OPENGL_X11=ON -DGEANT4_USE_GDML=ON -DGEANT4_USE_QT=ON DGEANT4_INSTALL_DATA=ON -DCMAKE_INSTALL_PREFIX=/YourPath/geant4_10_04-install /YourPath/geant4_10_04
+cmake -DGEANT4_USE_OPENGL_X11=ON -DGEANT4_USE_GDML=ON -DGEANT4_USE_QT=ON -DGEANT4_INSTALL_DATA=ON -DCMAKE_INSTALL_PREFIX=/YourPath/geant4_10_04-install /YourPath/geant4_10_04
 make -j8 
 make install
+```
+
+most likely it will complain about some missing libraries, for example `exerces`, for ubuntu, i do this:
+```
+sudo apt-get install libxerces-c-dev
+sudo apt-get install libxerces-c-doc
+sudo apt-get install libxerces-c-samples
 ```
 
 3. then you should be able to use your geant4 by source the following file:
