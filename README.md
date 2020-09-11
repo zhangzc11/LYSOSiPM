@@ -19,7 +19,7 @@ make -j8
 How to install Geant4
 -----------------------------
 1. download the source files and unzip to /YourPath/geant4_10_04
-http://geant4.web.cern.ch/geant4/support/download.shtml (ZIP format)
+https://geant4.web.cern.ch/support/download (ZIP format)
 
 2. do the following:
 
